@@ -1,0 +1,17 @@
+@import '../../styles/variables';
+
+.sidebar {
+	min-width: 256px;
+	width: 256px;
+	max-width: 256px;
+	flex-grow: 1;
+	position: relative;
+	border-right: 1px solid $color-lighter-gray;
+	& > *:not([class^=modal-inner]) {
+		margin: 10px 0;
+	}
+}
+
+.create-schedule-wrapper {
+	position: relative;
+}
