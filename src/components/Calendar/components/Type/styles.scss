@@ -1,0 +1,45 @@
+$time-lbl-width: 4rem;
+
+.calendar-component-container {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	justify-content: flex-end;
+}
+
+.calendar-grid {
+	display: grid;
+	// grid-auto-columns: minmax(0, 1fr);
+	grid-auto-flow: column;
+	height: auto;
+	flex: 1 0 0;
+}
+
+.calendar-grid > * {
+	min-width: 120px;
+}
+
+.calendar__date-cols {
+	width: auto;
+}
+
+.calendar-headers-container {
+	display: grid;
+	grid-auto-columns: minmax(0, 1fr);
+	grid-auto-flow: column;
+	margin: .8rem 0;
+}
+
+.calendar-headers-container:first-of-type {
+	margin-left: calc($time-lbl-width + 2rem);
+}
+.calendar-component-container:nth-child(1) {
+	position: sticky;
+	height: max-content;
+	margin-top: 1rem;
+	margin-bottom: -8px;
+}
+
+.calendar-component-container:nth-child(2) {
+	margin-bottom: 1rem;
+}

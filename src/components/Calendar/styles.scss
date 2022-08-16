@@ -1,0 +1,8 @@
+.calendar-wrapper {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	overflow-x: auto;
+	height: auto;
+	flex-grow: 1;
+}

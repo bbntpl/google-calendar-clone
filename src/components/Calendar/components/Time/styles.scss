@@ -1,0 +1,36 @@
+@import '../../../../styles/variables.scss';
+
+$time-row-height: 38px;
+
+.calendar__time-row {
+	position: relative;
+	display: flex;
+	height: $time-row-height;
+}
+
+.calendar__time-lbl {
+	color: $color-rolling-stone;
+	width: 4rem;
+	max-width: 4rem;
+	margin-top: -7px;
+	margin-right: 1.5rem;
+	text-align: right;
+	height: $time-row-height + 7px;
+	align-self: flex-end;
+}
+
+.calendar__block {
+	width: 100%;
+	height: 100%;
+	border-right: 1px solid $color-rolling-stone;
+	border-bottom: 1px solid $color-rolling-stone;
+}
+
+.calendar__block-side {
+	width: 7px;
+	height: 100%;
+	position: absolute;
+	left: -7px;
+	border-right: 1px solid $color-rolling-stone;
+	border-bottom: 1px solid $color-rolling-stone;
+}
