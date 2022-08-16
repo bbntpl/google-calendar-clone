@@ -1,0 +1,63 @@
+@import '../../styles/variables';
+
+.header-input {
+	color: $primary-color-font;
+	border: 1px solid $color-lighter-gray;
+	border-radius: 4px;
+	background-color: transparent;
+	width: max-content;
+	cursor: pointer;
+	padding: 8px;
+	border-radius: 3px;
+}
+
+.header-input:hover {
+	background-color: #f1f3f4;
+}
+
+.header{
+	display: flex;
+	height: 64px;
+	border-bottom: 1px solid $color-lighter-gray;
+	min-width: min-content;
+	width: 100%;
+	&__inner {
+		width: 100%;
+		div:not(.logo):not([class^=modal-inner]):not([class^=calendar]):not([class^=numerical-day]){
+			position: relative;
+			gap: 0 1rem;
+		}
+	}
+}
+
+.header-text {
+	width: max-content;
+	font-size: 1.1rem;
+	color: #5f6368;
+}
+
+.logo{
+	&__width{
+	@include isometric-dim($size: 40px);
+		.logo-img {
+			@include isometric-dim($size: 40px);
+		}
+	}
+	&__text {
+		font-family: 'Product-Sans', Arial, sans-serif;
+		color: #5f6368;
+		font-size: 20px;
+		font-weight: 500;
+	}
+}
+
+.user-image-wrapper {
+	border-radius: 2px;
+	@include isometric-dim($size: 40px);
+	background-color: transparent;
+	border-radius: 50%;
+	& > img {
+		@include isometric-dim($size: 30px);
+	}
+	border: 1px solid $color-lighter-gray;
+}
