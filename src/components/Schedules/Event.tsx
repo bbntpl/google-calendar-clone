@@ -10,7 +10,7 @@ import GlobalContextInterface from '../../context/global/index.model';
 export default function Event(): JSX.Element {
 	const { calendarList } = useContext(GlobalContext) as GlobalContextInterface;
 	return (
-		<div className='event-box schedule-modal'>
+		<div className='event-box schedule-dialog'>
 			<dl>
 				<dd>
 					<img src={ClockIcon} />

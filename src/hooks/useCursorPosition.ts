@@ -7,4 +7,4 @@ export default function useCursorPosition(initPos = { x: 0, y: 0 }) {
 		setPosition({ x: e.clientX, y: e.clientY })
 	};
 	return { position, recordPos };
-};
+}

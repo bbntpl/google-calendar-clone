@@ -23,7 +23,7 @@
 	width: 100%;
 	&__inner {
 		width: 100%;
-		div:not(.logo):not([class^=modal-inner]):not([class^=calendar]):not([class^=numerical-day]){
+		div:not(.logo):not([class^=dialog-inner]):not([class^=calendar]):not([class^=numerical-day]){
 			position: relative;
 			gap: 0 1rem;
 		}

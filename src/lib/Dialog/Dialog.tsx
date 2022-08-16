@@ -1,10 +1,10 @@
-import { ModalArgs } from './index.model';
-import { forwardRef } from 'react';
+import { DialogArgs } from './index.model';
+import React, { forwardRef } from 'react';
 
-import ModalCore from './ModalCore';
+import DialogCore from './DialogCore';
 
 type ComponentToPassRef = HTMLDivElement | null;
-const ModalOptions = forwardRef<ComponentToPassRef, ModalArgs>((props, ref) => {
+const DialogOptions = forwardRef<ComponentToPassRef, DialogArgs>((props, ref) => {
 	const {
 		closeable = true,
 		componentProps,
@@ -13,20 +13,20 @@ const ModalOptions = forwardRef<ComponentToPassRef, ModalArgs>((props, ref) => {
 		// represents change in x or/and y
 		delta = { x: 0, y: 0 },
 		draggable = true,
-		isModalVisible,
-		setIsModalVisible,
+		isDialogVisible,
+		setIsDialogVisible,
 		stylePosition = 'fixed',
 	} = props;
 
-	// props to be passed on the modal component
-	const modalProps = {
+	// props to be passed on the dialog component
+	const dialogProps = {
 		defaultPosition,
 		delta,
 		draggableProps: {
 			handle: '.handle',
 		},
 		eventHandlers: {
-			toggleModal: () => setIsModalVisible((visible: boolean) => !visible),
+			toggleDialog: () => setIsDialogVisible((visible: boolean) => !visible),
 		},
 		flags: { draggable, closeable },
 		stylePosition,
@@ -34,28 +34,28 @@ const ModalOptions = forwardRef<ComponentToPassRef, ModalArgs>((props, ref) => {
 
 	const componentPropsWithVisibilityControl = {
 		...componentProps,
-		isModalVisible,
-		setIsModalVisible,
+		isDialogVisible,
+		setIsDialogVisible,
 	}
 
-	const modalCoreArgs = {
+	const dialogCoreArgs = {
 		Component,
 		props: {
 			componentProps: componentPropsWithVisibilityControl,
-			modalProps,
+			dialogProps,
 		},
 	};
 
 	return (
 		<>
 			{
-				isModalVisible
-					? <ModalCore ref={ref} {...modalCoreArgs} />
+				isDialogVisible
+					? <DialogCore ref={ref} {...dialogCoreArgs} />
 					: null}
 		</>
 	)
 })
 
-ModalOptions.displayName = 'ModalOptions';
+DialogOptions.displayName = 'DialogOptions';
 
-export default ModalOptions;
+export default DialogOptions;

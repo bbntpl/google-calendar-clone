@@ -1,12 +1,25 @@
 import React from 'react';
 import TimeRow from './TimeRow'
-import { getDayTime } from '../../../../util/calendar-arrangement';
+import { getDateValues, getDayTime } from '../../../../util/calendar-arrangement';
+import { Dayjs } from 'dayjs';
 
-export function HoursBlockCol({ dayIndex }: { dayIndex: number }) {
+interface HoursBlockColProps {
+	dayIndex: number,
+	dateObj: Dayjs
+}
+
+export function HoursBlockCol(props: HoursBlockColProps) {
+	const { dayIndex, dateObj } = props;
 	return <>
 		{
-			getDayTime().map((time, index) => {
-				return <TimeRow key={`${time}-${index}`}time={time} dayIndex={dayIndex} />
+			getDayTime().map((hour, hourIndex) => {
+				return <TimeRow
+					key={`${hour}-${hourIndex}`}
+					dateValues={getDateValues(dateObj)}
+					hour={hour}
+					hourIndex={hourIndex}
+					dayIndex={dayIndex}
+				/>
 			})
 		}
 	</>

@@ -1,17 +1,17 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Position } from '../context/global/index.model';
 
-interface ModalDimension {
+interface Dimension {
 	width: number,
 	height: number,
 }
 
-export default function usePositionModal(
+export default function usePositionDialog(
 	initCursorPos: Position,
 	delta: Position,
-	modalDim: ModalDimension,
+	dialogDim: Dimension,
 	) {
-	const [modalPos, setModalPos] = useState({
+	const [dialogPos, setDialogPos] = useState({
 		x: initCursorPos.x + delta.x,
 		y: initCursorPos.y + delta.y,
 	});
@@ -19,7 +19,7 @@ export default function usePositionModal(
 	const browserDim = useCallback(() => ({
 		innerWidth: window.innerWidth, innerHeight: window.innerHeight,
 	}), [window.innerWidth, window.innerHeight]);
-	const { height, width } = modalDim;
+	const { height, width } = dialogDim;
 	const { innerHeight, innerWidth } = browserDim();
 
 	const isCursorPositioned = ({ x, y }: Position) => ({
@@ -29,23 +29,23 @@ export default function usePositionModal(
 		bottom: Math.round(y / innerHeight) * 100 > Math.round(innerHeight / 2) / 100,
 	})
 
-	// position the modal
+	// position the dialog
 	useEffect(() => {
 		const { left, right, top, bottom } = isCursorPositioned(initCursorPos);
 		if (left && bottom) {
-			setModalPos({ ...modalPos, 
-				x: modalPos.x, 
+			setDialogPos({ ...dialogPos, 
+				x: dialogPos.x, 
 				y: innerHeight - height,
 			});
 		} else if (right && top) {
-			setModalPos({ ...modalPos, x: innerWidth + width });
+			setDialogPos({ ...dialogPos, x: innerWidth + width });
 		} else if (right && bottom) {
-			setModalPos({
+			setDialogPos({
 				x: innerWidth + width,
 				y: innerHeight - height,
 			});
 		}
 	}, [])
 
-	return modalPos;
+	return dialogPos;
 }

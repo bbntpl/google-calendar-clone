@@ -1,6 +1,6 @@
 @import '../../styles/variables';
 
-[class^=modal-inner] {
+[class^=dialog-inner] {
 	@include child-attribute('--absolute') {
 		position: absolute;
 	}

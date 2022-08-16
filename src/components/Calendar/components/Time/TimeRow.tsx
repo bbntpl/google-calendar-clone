@@ -2,19 +2,22 @@ import React from 'react';
 import './styles.scss';
 import { useContext } from 'react';
 import GlobalContext from '../../../../context/global/GlobalContext';
-import GlobalContextInterface from '../../../../context/global/index.model';
+import GlobalContextInterface, { SelectedDate } from '../../../../context/global/index.model';
+import { stringifiedDate } from '../../../../util/calendar-arrangement';
 
 interface TimeRowProps {
 	dayIndex: number,
-	hour: string,
-	hourIndex: number,
+	hour?: string,
+	hourIndex?: number,
+	dateValues: SelectedDate
 }
 
 export default function TimeRow(props: TimeRowProps) {
-	const { hour, hourIndex, dayIndex } = props;
+	const { hour, hourIndex = -1, dayIndex, dateValues } = props;
 	const { 
-		setIsEvtModalVisible,
-		setDefaultDay,
+		setIsEvtDialogVisible,
+		setDefaultDate,
+		setDefaultTimeIndex,
 	} = useContext(GlobalContext) as GlobalContextInterface;
 
 	return (
@@ -25,8 +28,9 @@ export default function TimeRow(props: TimeRowProps) {
 			<div
 				className='calendar__block'
 				onClick={() => {
-					setDefaultDay
-					setIsEvtModalVisible(true);
+					setDefaultDate(stringifiedDate(dateValues));
+					setDefaultTimeIndex(hourIndex);
+					setIsEvtDialogVisible(true);
 				}}
 			>
 			</div>

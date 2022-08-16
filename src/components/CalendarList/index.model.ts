@@ -1,6 +1,6 @@
 import { CalendarLabelType, CalendarListActionTypes, COLORS } from '../../context/global/index.model';
 import { Dispatch, SetStateAction } from 'react';
-import { UseComponentVisibleAsProps } from '../../lib/modal/index.model';
+import { UseComponentVisibleAsProps } from '../../lib/Dialog/index.model';
 
 interface CalendarListSetStateAction {
 	calendarList: Array<CalendarLabelType> | [],

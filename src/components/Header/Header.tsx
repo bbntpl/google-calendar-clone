@@ -12,7 +12,7 @@ import './styles.scss';
 import SortDown from '../../assets/icons/sort-down.png';
 
 import MiniCalendar from '../MiniCalendar';
-import Modal from '../../lib/modal';
+import Dialog from '../../lib/Dialog';
 import Switcher from '../../lib/switcher/index';
 import { HamburgerLogo } from './HamburgerLogo';
 import CalendarTypeOptions from './CalendarTypeOptions';
@@ -36,8 +36,8 @@ export default function Header(): JSX.Element {
 		Component: MiniCalendar,
 		defaultPosition: { x: 0, y: 40 },
 		draggable: false,
-		isModalVisible: isMiniCalendarVisible,
-		setIsModalVisible: setIsMiniCalendarVisible,
+		isDialogVisible: isMiniCalendarVisible,
+		setIsDialogVisible: setIsMiniCalendarVisible,
 		stylePosition: 'absolute' as const,
 	}
 
@@ -118,7 +118,7 @@ export default function Header(): JSX.Element {
 										<img className='icon--small' src={SortDown} />
 									</button>
 							}
-							<Modal ref={miniCalendarRef} {...miniCalendarProps} />
+							<Dialog ref={miniCalendarRef} {...miniCalendarProps} />
 						</>
 					</div>
 				</div>

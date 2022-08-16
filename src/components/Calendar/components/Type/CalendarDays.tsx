@@ -13,7 +13,7 @@ import TimeLabel from '../Time/TimeLabel';
 import { HoursLblCol } from '../Time/HoursLblCol';
 
 dayjs.extend(utc);
-dayjs.extend(timezone); 
+dayjs.extend(timezone);
 const timezoneGMT = dayjs().format('ZZ');
 
 export default function CalendarDays({ numOfDays }: { numOfDays: number }) {
@@ -49,12 +49,15 @@ export default function CalendarDays({ numOfDays }: { numOfDays: number }) {
 				</div>
 				<div className='calendar-grid'>
 					{
-						Array.from({ length: numOfDays }, (_, i) => {
+						Array.from({ length: numOfDays }, (_, dayIndex) => {
 							return (
 								<div
-									key={`time-col-${i + 1}`}
+									key={`time-col-${dayIndex + 1}`}
 									className='calendar__date-cols'>
-									<HoursBlockCol dayIndex={i} dateObj={dateObj(i)} />
+									<HoursBlockCol
+										dayIndex={dayIndex}
+										dateObj={dateObj(dayIndex)}
+									/>
 								</div>
 							)
 						})

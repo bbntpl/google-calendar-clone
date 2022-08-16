@@ -2,7 +2,7 @@ import { Dayjs } from 'dayjs';
 import './styles.scss';
 
 import TimeRow from '../Time/TimeRow';
-import { dateToday } from '../../../../util/calendar-arrangement';
+import { dateToday, getDateValues } from '../../../../util/calendar-arrangement';
 import { SelectedDate } from '../../../../context/global/index.model';
 import GlobalContext from '../../../../context/global/GlobalContext';
 import { useContext } from 'react';
@@ -64,7 +64,7 @@ export default function DayHeader(props: DayHeaderProps) {
 					{dateObj.format('D')}
 				</h1>
 			</div>
-			<TimeRow time={'GMT-04'} dayIndex={dayIndex} />
+			<TimeRow dateValues={getDateValues(dateObj)} dayIndex={dayIndex} />
 		</div>
 	)
 }

@@ -42,7 +42,7 @@ interface DraggableProps {
 	scale?: number
 }
 
-interface ModalFlags {
+interface DialogFlags {
 	draggable: boolean,
 	closeable: boolean,
 }
@@ -52,19 +52,19 @@ interface EventHandlers {
 }
 
 export interface UseComponentVisibleAsProps {
-	isModalVisible: boolean,
-	setIsModalVisible: Dispatch<SetStateAction<boolean>>,
+	isDialogVisible: boolean,
+	setIsDialogVisible: Dispatch<SetStateAction<boolean>>,
 }
 
 interface ComponentProps {
 	[key: string]: CommonTypes | Record<string, any> | any
 }
 
-export interface ModalProps {
+export interface DialogProps {
 	delta: Position,
 	defaultPosition: Position | null,
 	draggableProps: DraggableProps,
-	flags: ModalFlags,
+	flags: DialogFlags,
 	eventHandlers: EventHandlers,
 	stylePosition: string,
 }
@@ -72,21 +72,20 @@ export interface ModalProps {
 export interface ComponentWithVisibleControl extends
 	ComponentProps, UseComponentVisibleAsProps { }
 
-interface ModalAndWrappedComponentProps {
+interface DialogAndWrappedComponentProps {
 	componentProps: ComponentWithVisibleControl,
-	modalProps: ModalProps,
+	dialogProps: DialogProps,
 }
 
-export interface ModalCoreArgs {
+export interface DialogCoreArgs {
 	Component: (props: any) => JSX.Element,
-	props: ModalAndWrappedComponentProps,
+	props: DialogAndWrappedComponentProps,
 }
 
-export interface ModalArgs extends
+export interface DialogArgs extends
 	UseComponentVisibleAsProps {
 	componentProps: ComponentProps,
 	Component: (props: any) => JSX.Element,
-	//modal flags
 	closeable?: boolean,
 	defaultPosition?: Position | null,
 	delta?: Position,

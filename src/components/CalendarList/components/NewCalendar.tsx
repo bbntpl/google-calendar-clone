@@ -7,11 +7,11 @@ import {
 import useComponentVisible from '../../../hooks/useComponentVisible';
 import { uniqueID } from '../../../util/reusable-funcs';
 import { AddNewCalendarProps, InitCalendarLblProps } from '../index.model';
-import { ModalArgs } from '../../../lib/modal/index.model';
+import { DialogArgs } from '../../../lib/Dialog/index.model';
 import '../styles.scss';
 
 
-import Modal from '../../../lib/modal';
+import Dialog from '../../../lib/Dialog';
 import Options from './Options';
 
 const initCalendarLblProps: InitCalendarLblProps = {
@@ -30,7 +30,7 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 	} = props;
 
 	const [newCalendar, setNewCalendar] = useState(initCalendarLblProps);
-	const [modalRef, isModalVisible, setIsModalVisible] = useComponentVisible(false);
+	const [dialogRef, isDialogVisible, setIsDialogVisible] = useComponentVisible(false);
 
 	// event handlers
 	const addCalendar = () => {
@@ -58,7 +58,7 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 		setNewCalendar({ ...newCalendar, color });
 	}
 
-	// props to be passed on the reusable modal component
+	// props to be passed on the reusable dialog component
 	const componentProps = {
 		flags: { options: false, colors: true },
 		calendarProps: newCalendar as CalendarLabelType,
@@ -72,11 +72,11 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 		},
 	}
 
-	const modalOptionsProps: ModalArgs = {
+	const dialogOptionsProps: DialogArgs = {
 		componentProps,
 		Component: Options,
-		isModalVisible,
-		setIsModalVisible,
+		isDialogVisible,
+		setIsDialogVisible,
 	}
 
 	return (
@@ -91,10 +91,10 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 					className={`${newCalendar.color} rounded-color`}
 					onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
 						recordPos(e);
-						setIsModalVisible(visible => !visible);
+						setIsDialogVisible(visible => !visible);
 					}}
 				/>
-				<Modal ref={modalRef} {...modalOptionsProps} />
+				<Dialog ref={dialogRef} {...dialogOptionsProps} />
 			</li>
 		</>
 	)

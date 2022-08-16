@@ -114,16 +114,16 @@ export interface GlobalContextInterface {
 	setVisibilities: Dispatch<SetStateAction<BooleansOnlyObj>>,
 	position: Position,
 	recordPos: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void,
-	defaultDay: string,
-	defaultTime: string,
+	defaultDate: string,
+	defaultTimeIndex: number,
 	setDefaultDate: Dispatch<SetStateAction<string>>,
-	setDefaultTime: Dispatch<SetStateAction<string>>,
+	setDefaultTimeIndex: Dispatch<SetStateAction<number>>,
 	evtRef: MutableRefObject<HTMLDivElement | null>,
 	tskRef: MutableRefObject<HTMLDivElement | null>,
-	isEvtModalVisible: boolean,
-	isTskModalVisible: boolean,
-	setIsEvtModalVisible: Dispatch<SetStateAction<boolean>>,
-	setIsTskModalVisible: Dispatch<SetStateAction<boolean>>,
+	isEvtDialogVisible: boolean,
+	isTskDialogVisible: boolean,
+	setIsEvtDialogVisible: Dispatch<SetStateAction<boolean>>,
+	setIsTskDialogVisible: Dispatch<SetStateAction<boolean>>,
 }
 
 export default GlobalContextInterface;

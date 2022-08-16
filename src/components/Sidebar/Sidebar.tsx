@@ -4,7 +4,7 @@ import SortDown from '../../assets/icons/sort-down.png';
 import MiniCalendar from '../MiniCalendar';
 import { GooglePlus } from '../../lib/icons';
 import CalendarList from '../CalendarList';
-import withScheduleModalToggle, { ScheduleCreationProps } from '../Schedules/components/ScheduleHOC';
+import withScheduleDialogToggle, { ScheduleCreationProps } from '../Schedules/components/ScheduleHOC';
 
 function ScheduleBtn(props: ScheduleCreationProps): JSX.Element {
 	const { hocMethods } = props;
@@ -25,7 +25,7 @@ function ScheduleBtn(props: ScheduleCreationProps): JSX.Element {
 	)
 }
 
-const CreateSchedule = withScheduleModalToggle(ScheduleBtn);
+const CreateSchedule = withScheduleDialogToggle(ScheduleBtn);
 
 export default function Sidebar(): JSX.Element {
 	return (

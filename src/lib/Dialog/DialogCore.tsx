@@ -1,13 +1,14 @@
+import React from 'react';
 import Draggable from 'react-draggable';
 import { forwardRef, MutableRefObject, useContext, useEffect, useState } from 'react';
-import { ModalCoreArgs } from './index.model';
+import { DialogCoreArgs } from './index.model';
 import './styles.scss';
 import '../../styles/main.scss';
 
 import MultiplyIcon from '../../assets/icons/multiply.png';
 import GlobalContext from '../../context/global/GlobalContext';
 import GlobalContextInterface from '../../context/global/index.model';
-import usePositionModal from '../../hooks/usePositionModal';
+import usePositionDialog from '../../hooks/usePositionDialog';
 
 const CloseBtn = ({ eventHandler }: { eventHandler: () => void }) => (
 	<button className='clear-btn--no-effects close-btn' onClick={eventHandler}>
@@ -15,11 +16,11 @@ const CloseBtn = ({ eventHandler }: { eventHandler: () => void }) => (
 	</button>
 );
 
-const ModalCore = forwardRef<HTMLDivElement, ModalCoreArgs>(
+const DialogCore = forwardRef<HTMLDivElement, DialogCoreArgs>(
 	({ Component, props }, ref) => {
 
 		// eslint-disable-next-line react/display-name
-		const { componentProps, modalProps } = props;
+		const { componentProps, dialogProps } = props;
 		const {
 			flags,
 			draggableProps,
@@ -27,19 +28,19 @@ const ModalCore = forwardRef<HTMLDivElement, ModalCoreArgs>(
 			stylePosition,
 			delta,
 			defaultPosition,
-		} = modalProps;
-		const { toggleModal } = eventHandlers;
+		} = dialogProps;
+		const { toggleDialog } = eventHandlers;
 		const { closeable, draggable } = flags;
 		const { handle } = draggableProps;
 		const { position } = useContext(GlobalContext) as GlobalContextInterface;
-		const [modalDim, setModalDim] = useState({ width: 0, height: 0 });
-		const cursorPosition = usePositionModal(position, delta, modalDim);
+		const [dialogDim, setDialogDim] = useState({ width: 0, height: 0 });
+		const cursorPosition = usePositionDialog(position, delta, dialogDim);
 		const refCurrent = (ref as MutableRefObject<HTMLDivElement>).current;
 
 		useEffect(() => {
 			if (refCurrent) {
 				const { clientHeight, clientWidth } = refCurrent;
-				setModalDim(dim => ({ ...dim, width: clientWidth, height: clientHeight }));
+				setDialogDim(dim => ({ ...dim, width: clientWidth, height: clientHeight }));
 			}
 		}, [])
 
@@ -49,12 +50,12 @@ const ModalCore = forwardRef<HTMLDivElement, ModalCoreArgs>(
 				defaultPosition={defaultPosition || cursorPosition}
 				disabled={!draggable}
 			>
-				<div ref={ref} className={`modal-inner--${stylePosition}`}>
+				<div ref={ref} className={`dialog-inner--${stylePosition}`}>
 					{
 						(draggable || closeable) &&
 						<div className='row middle-xs handle-wrapper'>
 							{draggable && <div className={`o-wrapper ${handle.slice(1)}`} />}
-							{closeable && <CloseBtn eventHandler={toggleModal} />}
+							{closeable && <CloseBtn eventHandler={toggleDialog} />}
 						</div>
 					}
 					<div>
@@ -65,6 +66,6 @@ const ModalCore = forwardRef<HTMLDivElement, ModalCoreArgs>(
 		)
 	})
 
-ModalCore.displayName = 'ModalCore';
+DialogCore.displayName = 'DialogCore';
 
-export default ModalCore;
+export default DialogCore;

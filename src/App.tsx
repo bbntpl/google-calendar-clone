@@ -8,11 +8,11 @@ import './styles/flexbox.css';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import Calendar from './components/Calendar';
-import withScheduleModalToggle from './components/Schedules/components/ScheduleHOC';
+import withScheduleDialogToggle from './components/Schedules/components/ScheduleHOC';
 import MiniScheduleCreation from './components/Schedules/components/MiniScheduleCreation';
-import { GlobalModals } from './components/Modal/index';
+import { ScheduleDialog } from './components/Schedules/ScheduleDialog';
 
-const CreateSchedule = withScheduleModalToggle(MiniScheduleCreation);
+const CreateSchedule = withScheduleDialogToggle(MiniScheduleCreation);
 
 function App(): JSX.Element {
 	const {
@@ -29,7 +29,7 @@ function App(): JSX.Element {
 						: <CreateSchedule />
 				}
 				<Calendar />
-				<GlobalModals />
+				<ScheduleDialog />
 			</main>
 		</div>
 	);

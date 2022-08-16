@@ -11,7 +11,7 @@ export default function Options(props: WrappedComponentProps) {
 		flags, 
 		calendarProps, 
 		globalContextProps, 
-		setIsModalVisible, 
+		setIsDialogVisible, 
 		eventHandlers = {} as EventHandlers, 
 	} = props;
 	const { options, colors } = flags;
@@ -41,12 +41,12 @@ export default function Options(props: WrappedComponentProps) {
 				},
 			})
 		});
-		setIsModalVisible(visible => !visible);
+		setIsDialogVisible(visible => !visible);
 	}
 
 	return (
-		<div className='modal-calendar'>
-			<ul className='modal__options start-xs'>
+		<div className='dialog-calendar'>
+			<ul className='dialog__options start-xs'>
 				{
 					options
 						? <li>
@@ -62,7 +62,7 @@ export default function Options(props: WrappedComponentProps) {
 			</ul>
 			{
 				colors ?
-					<div className='o-wrapper modal-calendar__colors-container'>
+					<div className='o-wrapper dialog-calendar__colors-container'>
 						{COLOR_NAMES.map((color, index) => {
 							const { color: selectedColor } = calendarProps;
 							return (

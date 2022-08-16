@@ -7,7 +7,7 @@
 	flex-grow: 1;
 	position: relative;
 	border-right: 1px solid $color-lighter-gray;
-	& > *:not([class^=modal-inner]) {
+	& > *:not([class^=dialog-inner]) {
 		margin: 10px 0;
 	}
 }

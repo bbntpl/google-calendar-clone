@@ -3,14 +3,14 @@ import useComponentVisible from '../../../hooks/useComponentVisible';
 import GlobalContext from '../../../context/global/GlobalContext';
 import GlobalContextInterface, { UserActionType } from '../../../context/global/index.model';
 import { LabelProps } from '../index.model';
-import { ModalArgs } from '../../../lib/modal/index.model';
+import { DialogArgs } from '../../../lib/Dialog/index.model';
 
 import '../styles.scss';
 import MenuVertical from '../../../assets/icons/menu-vertical.png';
 import MultiplyIcon from '../../../assets/icons/multiply.png';
 
-import Alert from '../../../lib/alert/Alert';
-import Modal from '../../../lib/modal';
+import Alert from '../../../lib/Alert/Alert';
+import Dialog from '../../../lib/Dialog';
 import Options from './Options';
 
 export default function Label(props: LabelProps): JSX.Element {
@@ -21,7 +21,7 @@ export default function Label(props: LabelProps): JSX.Element {
 
 	const [showOptions, setShowOptions] = useState(false);
 	const [alertRef, isAlertVisible, setIsAlertVisible] = useComponentVisible(false);
-	const [modalRef, isModalVisible, setIsModalVisible] = useComponentVisible(false);
+	const [dialogRef, isDialogVisible, setIsDialogVisible] = useComponentVisible(false);
 
 	const handleToggleCbox = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.stopPropagation();
@@ -37,7 +37,7 @@ export default function Label(props: LabelProps): JSX.Element {
 	};
 
 	// props to be passed on the wrapped component
-	const componentProps: ModalArgs = {
+	const componentProps: DialogArgs = {
 		componentProps: {
 			flags: { options: true, colors: true },
 			...props,
@@ -45,8 +45,8 @@ export default function Label(props: LabelProps): JSX.Element {
 		Component: Options,
 		delta: { x: 20, y: 0 },
 		stylePosition: 'fixed',
-		isModalVisible,
-		setIsModalVisible,
+		isDialogVisible,
+		setIsDialogVisible,
 	}
 
 	return (
@@ -83,7 +83,7 @@ export default function Label(props: LabelProps): JSX.Element {
 							<button
 								onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
 									recordPos(e);
-									setIsModalVisible(true);
+									setIsDialogVisible(true);
 								}}
 								className='clear-btn--no-effects'
 							>
@@ -103,7 +103,7 @@ export default function Label(props: LabelProps): JSX.Element {
 					/>
 					: null
 			}
-			<Modal ref={modalRef} {...componentProps} />
+			<Dialog ref={dialogRef} {...componentProps} />
 		</>
 	)
 }

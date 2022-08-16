@@ -49,6 +49,7 @@ export function getDateValues(dateObj: Dayjs) {
 	const year = Number(dateObj.format('YYYY'));
 	const month = Number(dateObj.format('M'));
 	const day = Number(dateObj.format('D'));
+// props based on date codes, not zero-indexed
 	return { year, month, day }
 }
 
@@ -80,7 +81,6 @@ export function stringifiedDate(args: Record<NonOptionalKeys<SelectedDate>, numb
 	// convert month code to zero-indexed 0-11
 	const monthIndex = args.month - 1;
 	const datePropsToArr: ArrayThreeOrMore<number> = objKeysToArr({...args, month: monthIndex}) as ArrayThreeOrMore<number>;
-	// console.log(args, datePropsToArr);
 	return (new Date(...datePropsToArr))
 		.toISOString()
 		.replace(/[^0-9]/g, '')

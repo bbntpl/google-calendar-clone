@@ -83,12 +83,12 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
 		labels: true,
 	});
 
-	const [evtRef, isEvtModalVisible, setIsEvtModalVisible] = useComponentVisible(false);
-	const [tskRef, isTskModalVisible, setIsTskModalVisible] = useComponentVisible(false);
+	const [evtRef, isEvtDialogVisible, setIsEvtDialogVisible] = useComponentVisible(false);
+	const [tskRef, isTskDialogVisible, setIsTskDialogVisible] = useComponentVisible(false);
 
-	// default values for schedule modal(task or event)
-	const [defaultDay, setDefaultDay] = useState(stringifiedDate(dateToday));
-	const [defaultTime, setDefaultTime] = useState(new Date().getHours().toString());
+	// default values for schedule dialog(task or event)
+	const [defaultDate, setDefaultDate] = useState(stringifiedDate(dateToday));
+	const [defaultTimeIndex, setDefaultTimeIndex] = useState(new Date().getHours());
 
 	const filteredSchedules = useMemo(() => {
 		const calendarIds = calendarList
@@ -116,16 +116,16 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
 		setSelectedDate,
 		position,
 		recordPos,
-		defaultDay,
-		defaultTime,
-		setDefaultDay,
-		setDefaultTime,
+		defaultDate,
+		defaultTimeIndex,
+		setDefaultDate,
+		setDefaultTimeIndex,
 		evtRef,
 		tskRef,
-		isEvtModalVisible,
-		isTskModalVisible,
-		setIsEvtModalVisible,
-		setIsTskModalVisible,
+		isEvtDialogVisible,
+		isTskDialogVisible,
+		setIsEvtDialogVisible,
+		setIsTskDialogVisible,
 	}
 
 	return (
