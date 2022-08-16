@@ -1,0 +1,143 @@
+@import './variables.scss';
+
+@font-face {
+	font-family: 'Product Sans';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Open Sans'), local('OpenSans'), url(https://fonts.gstatic.com/s/productsans/v5/HYvgU2fE2nRJvZ5JFAumwegdm0LZdjqr5-oayXSOefg.woff2) format('woff2');
+}
+
+@import url(https://fonts.googleapis.com/earlyaccess/notosanssc.css);
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+button {
+	cursor: pointer;
+}
+
+.App {
+	display: grid;
+	grid-template-rows: minmax(min-content, max-content) auto;
+	width: 100vw;
+	max-width: 100%;
+	height: 100vh;
+	font-family: 'Noto Sans SC', Helvetica, Arial, sans-serif;
+}
+
+.header > * , .sidebar > *, .calendar-wrapper > * {
+	padding: 4px 16px;
+}
+
+.header, .sidebar {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	 -ms-user-select: none;
+			 user-select: none;
+}
+
+.main {
+	display: flex;
+	flex-direction: row;
+	position: relative;
+	height: calc(100vh - 64px);
+}
+
+.max-content{
+	width: max-content!important;
+}
+
+[class^=icon] {
+	filter: $filtered-color-light;
+	@include child-attribute('--small') {
+		@include isometric-dim(16px);
+	}
+	@include child-attribute('--medium') {
+		@include isometric-dim(24px);
+	}
+	@include child-attribute('--large') {
+		@include isometric-dim(30px);
+	}
+}
+
+button:hover > [class^=icon]{
+	filter: $filtered-color-dark;
+}
+
+/* global input elements stylings */
+[class^=clear-btn] {
+	background-color: transparent;
+	margin: 0;
+	border: none;
+	width: max-content;
+	height: max-content;
+	border-radius: 50%;
+	padding: 3px 4px;
+	&:hover {
+		background-color: $bg-color--hover;
+	}
+}
+
+.clear-btn--no-effects:hover {
+	background-color: transparent!important;
+}
+
+.create-schedule {
+	@extend %btn-to-modal1;
+}
+
+%btn-to-modal1 {
+	box-shadow: 0px 1px 2px 0px rgba(60, 64, 67, 0.2), 0px 1px 3px 1px rgba(60, 64, 67, 0.2);
+	border-radius: 48px;
+	width: max-content!important;
+	gap: 1rem;
+	padding: 5px 20px 5px 5px;
+	cursor: pointer;
+	color: #3c4043;
+	font-size: 14px;
+	max-height: 46px;
+	border: none;
+	background-color: #fff;
+}
+
+%btn-to-modal1:hover {
+	box-shadow: 0px 2px 8px 1px rgba(60, 64, 67, 0.2), 0px 2px 10px 2px rgba(60, 64, 67, 0.2);
+} 
+
+.google-plus-wrapper {
+	position: absolute;
+	z-index: 10000;
+	top: 15px;
+	left: 22px;
+	&--small {
+		@extend %btn-to-modal1;
+		padding: 5px;
+	}
+}
+
+.o-wrapper {
+	padding: 1rem;
+}
+
+.modal__options {
+	display: flex;
+	flex-direction: column;
+	min-width: 100%;
+	width: 120px;
+	li {
+		list-style-type: none;
+		width: 100%;
+		button {
+			width: 100%;
+			height: 100%;
+			background: none;
+			border: none;
+		}
+	}
+	li:hover {
+		background-color: $modal-item--hover;
+	}
+}
