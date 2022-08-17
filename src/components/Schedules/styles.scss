@@ -1,0 +1,36 @@
+@import '../../styles/variables';
+
+%hover-effect {
+	color: #5f6368;
+	padding: 4px 2px;
+}
+[class^=schedule-type] {
+	background-color: #e8f0fe;
+	@extend %hover-effect;
+	@include child-attribute('--active') {
+		color: $color-royal-blue;
+	}
+}
+
+.schedule-block {
+	width: 100%;
+	margin: 1.5rem 2rem;
+}
+
+.schedule-input-list {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+	flex-direction: row;
+	span:first-of-type {
+		width: 44px;
+		img {
+			filter: $filtered-color-grafito;
+		}
+	}
+	& .hover-effect {
+		@extend %hover-effect;
+	}
+	margin: .5rem 0;
+}

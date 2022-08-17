@@ -45,14 +45,6 @@ export function getMonth(month = dayjs().month()) {
 	return daysMatrix;
 }
 
-export function getDateValues(dateObj: Dayjs) {
-	const year = Number(dateObj.format('YYYY'));
-	const month = Number(dateObj.format('M'));
-	const day = Number(dateObj.format('D'));
-// props based on date codes, not zero-indexed
-	return { year, month, day }
-}
-
 export function getYear(year = dayjs().year()) {
 	year = Math.floor(year);
 	console.log(year);
@@ -61,7 +53,22 @@ export function getYear(year = dayjs().year()) {
 	})
 }
 
-export function getDayTime() {
+export function getDateValues(dateObj: Dayjs) {
+	const year = Number(dateObj.format('YYYY'));
+	const month = Number(dateObj.format('M'));
+	const day = Number(dateObj.format('D'));
+// props based on date codes, not zero-indexed
+	return { year, month, day }
+}
+
+export function getShortDate(dateObj: Dayjs) {
+	const year = Number(dateObj.format('YYYY'));
+	const month = Number(dateObj.format('MMM'));
+	const day = Number(dateObj.format('DD'));
+	return `${month} ${day}, ${year}`
+}
+
+export function getDayHours() {
 	const dayTimeArr: string[] = new Array(24).fill([]).map((_, i) => {
 		const hourCount = i + 1;
 		const hours = (hourCount % 12) === 0 ? 12 : hourCount % 12;

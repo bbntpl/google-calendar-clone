@@ -38,6 +38,7 @@ export default function CalendarDays({ numOfDays }: { numOfDays: number }) {
 								key={`day-header-${i + 1}`}
 								dateObj={dateObj(i)}
 								dayIndex={i}
+								isCentered={numOfDays !== 1}
 							/>
 						})
 					}

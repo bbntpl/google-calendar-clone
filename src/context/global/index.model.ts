@@ -7,11 +7,15 @@ export type NonOptionalKeys<T> = {
 	[k in keyof T]-?: undefined extends T[k] ? never : k
 }[keyof T];
 
+interface TimeSetting {
+	start: string
+	end: string | never
+}
 export interface DateTimeInputInterface {
 	allDay: boolean,
 	once: boolean,
 	date: string,
-	time: string,
+	time: TimeSetting,
 	timezone?: string,
 }
 
@@ -31,6 +35,7 @@ export interface Schedule {
 
 export interface EventInterface extends Schedule {
 	location?: string,
+	color?: string
 }
 
 export interface EditEvent extends OmitScheduleProps {

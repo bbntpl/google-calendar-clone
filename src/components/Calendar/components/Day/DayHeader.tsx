@@ -53,16 +53,16 @@ export default function DayHeader(props: DayHeaderProps) {
 	
 	return (
 		<div className='calendar-day__header'>
-			<div className={`calendar-day__info--${!isCentered ? 'not-' : ''}centered`}>
+			<div className={`calendar-day__info--${!isCentered ? 'not-' : ''}centered flex-centered`}>
 				<h6 className={`calendar-day__ddd-format${dateInfoModifierName()}`}>
 					{dateObj.format('ddd')}
 				</h6>
-				<h1
-					className={`calendar-day__num-format${dateInfoModifierName()}`}
+				<div
+					className={`calendar-day__num-format${dateInfoModifierName()} flex-centered`}
 					onClick={switchDateAndCalendarType}
 				>
 					{dateObj.format('D')}
-				</h1>
+				</div>
 			</div>
 			<TimeRow dateValues={getDateValues(dateObj)} dayIndex={dayIndex} />
 		</div>

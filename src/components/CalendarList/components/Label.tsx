@@ -96,7 +96,7 @@ export default function Label(props: LabelProps): JSX.Element {
 				isAlertVisible
 					? <Alert
 						ref={alertRef}
-						name={`${name} Calendar`}
+						name={`${name}'s Calendar`}
 						action={'remove'}
 						handleAction={removeCalendar}
 						handleHideComponent={() => setIsAlertVisible(false)}

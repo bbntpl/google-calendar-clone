@@ -11,17 +11,25 @@ import GlobalContextInterface, {
 } from '../../context/global/index.model';
 
 type RootElementModifier = 'static' | 'by-content';
-interface MiniCalendarProps { rootElModifier: RootElementModifier }
+type ClickHandlerType = 'select' | 'schedule';
+interface MiniCalendarProps {
+	rootElModifier: RootElementModifier,
+	clickHandlerType: ClickHandlerType
+}
 interface SelectCalendarDayProps {
 	numericalMonth: number,
 	numericalDate: SelectedDate,
 }
 
 export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
-	const { rootElModifier = 'static' } = props;
+	const {
+		rootElModifier = 'static',
+		clickHandlerType = 'select',
+	} = props;
 	const {
 		selectedDate,
 		setSelectedDate,
+		setDefaultDate,
 	} = useContext(GlobalContext) as GlobalContextInterface;
 	const [currentMonth, setCurrentMonth] = useState(getMonth());
 	const [currentMonthIndex, setCurrentMonthIndex] = useState(dayjs().month());
@@ -45,12 +53,20 @@ export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
 		setSelectedDate(date);
 	}
 
+	const handleClick = (numericalDate: SelectedDate) => {
+		if (clickHandlerType === 'select') {
+			handleSelectedDay(numericalDate);
+		} else if (clickHandlerType === 'schedule') {
+			setDefaultDate(stringifiedDate(numericalDate));
+		}
+	}
+
 	const selectCalendarDay = ({ numericalMonth, numericalDate }: SelectCalendarDayProps) => {
 		const isDayFromCurrentMonth = numericalMonth === Number(currentMonth[2][1].format('M'));
 		if (!isDayFromCurrentMonth) {
 			setCurrentMonthIndex(numericalMonth - 1);
 		}
-		handleSelectedDay(numericalDate);
+		handleClick(numericalDate);
 	}
 
 	const numericalDateModifier = ({ year, month, day }:

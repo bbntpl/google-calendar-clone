@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import GlobalContext from '../../context/global/GlobalContext';
 import GlobalContextInterface from '../../context/global/index.model';
 
-export default function ScheduleDialog(props: DialogArgs) {
+export default function ScheduleTypeList(props: DialogArgs) {
 	const { setIsDialogVisible } = props;
 	const {
 		setIsEvtDialogVisible,

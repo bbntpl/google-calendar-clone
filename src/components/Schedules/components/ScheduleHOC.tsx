@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import ScheduleDialog from '../ScheduleTypeList';
+import ScheduleTypeList from '../ScheduleTypeList';
 import useComponentVisible from '../../../hooks/useComponentVisible';
 import GlobalContext from '../../../context/global/GlobalContext';
 import GlobalContextInterface from '../../../context/global/index.model';
@@ -23,7 +23,7 @@ export default function withScheduleDialogToggle(Component: any) {
 
 		const dialogProps: DialogArgs = {
 			componentProps: {},
-			Component: ScheduleDialog,
+			Component: ScheduleTypeList,
 			closeable: false,
 			defaultPosition: { x: 20, y: 50 },
 			delta: { x: 10, y: 10 },

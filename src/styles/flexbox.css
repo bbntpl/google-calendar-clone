@@ -1,4 +1,11 @@
 /* Credits to drewbot for this css stylesheet */
+
+.flex-centered {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .row {
 	box-sizing: border-box;
 	display: flex;

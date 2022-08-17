@@ -11,7 +11,7 @@ interface AlertProps {
 const Alert = forwardRef<HTMLDivElement, AlertProps>((props, ref) => {
 	const { handleAction, handleHideComponent, action, name } = props;
 	return (
-		<div className='alert-wrapper'>
+		<div className='alert-wrapper flex-centered'>
 			<div ref={ref} className='alert'>
 				<p>{`Are you sure you want to ${action} ${name}`}</p>
 				<span className='btn-container row between-xs'>

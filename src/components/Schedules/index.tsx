@@ -1,6 +1,6 @@
 import Event from './Event';
-import ScheduleDialog from './ScheduleTypeList';
+import ScheduleTypeList from './ScheduleTypeList';
 import Task from './Task';
 
-export default ScheduleDialog;
-export { Event, Task };
+export default ScheduleTypeList;
+export { Event, Task, ScheduleTypeList };
