@@ -10,7 +10,7 @@ import Sidebar from './components/Sidebar';
 import Calendar from './components/Calendar';
 import withScheduleDialogToggle from './components/Schedules/components/ScheduleHOC';
 import MiniScheduleCreation from './components/Schedules/components/MiniScheduleCreation';
-import { ScheduleDialog } from './components/Schedules/ScheduleDialog';
+import DialogController from './components/Schedules/DialogController';
 
 const CreateSchedule = withScheduleDialogToggle(MiniScheduleCreation);
 
@@ -29,7 +29,7 @@ function App(): JSX.Element {
 						: <CreateSchedule />
 				}
 				<Calendar />
-				<ScheduleDialog />
+				<DialogController />
 			</main>
 		</div>
 	);

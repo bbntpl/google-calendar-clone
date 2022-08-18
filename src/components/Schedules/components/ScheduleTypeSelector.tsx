@@ -1,35 +1,28 @@
 import React, { useContext } from 'react';
+import '../styles.scss';
 import GlobalContext from '../../../context/global/GlobalContext';
-import GlobalContextInterface from '../../../context/global/index.model';
+import GlobalContextInterface, {
+	ScheduleNames,
+} from '../../../context/global/index.model';
 
-function ScheduleTypeSelector(props: { scheduleType: string }) {
-	const { scheduleType } = props;
+function ScheduleTypeSelector() {
 	const {
-		isEvtDialogVisible,
-		isTskDialogVisible,
-		setIsEvtDialogVisible,
-		setIsTskDialogVisible,
+		selectedScheduleType,
+		setSelectedScheduleType,
 	} = useContext(GlobalContext) as GlobalContextInterface;
-	const scheduleTypeClassName = (buttonName) => {
-		return `schedule-type${buttonName === scheduleType ? '--active' : ''}`;
+	const scheduleTypeClassName = (buttonName: ScheduleNames) => {
+		return `schedule-type${buttonName === selectedScheduleType
+			? '--active' : ''}`;
 	}
 	return (
 		<div>
 			<button
 				className={scheduleTypeClassName('event')}
-				onClick={() => {
-					if (isEvtDialogVisible) return;
-					setIsEvtDialogVisible(true);
-					setIsTskDialogVisible(false);
-				}}
+				onClick={() => setSelectedScheduleType('event')}
 			>Event</button>
 			<button
 				className={scheduleTypeClassName('task')}
-				onClick={() => {
-					if (isTskDialogVisible) return;
-					setIsEvtDialogVisible(false);
-					setIsTskDialogVisible(true);
-				}}
+				onClick={() => setSelectedScheduleType('task')}
 			>Task</button>
 		</div>
 	)

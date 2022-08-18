@@ -3,10 +3,19 @@ import { CalendarType, NonOptionalKeys, SelectedDate } from '../context/global/i
 import { objKeysToArr } from './reusable-funcs';
 
 type ArrayThreeOrMore<T> = [T, T, ...T[]]
+type AvailableMinutes = '00' | '15' | '30' | '45';
 interface DayjsObjByDay {
 	date: SelectedDate | undefined,
 	calendarType: CalendarType,
 	index: number,
+}
+interface DayTimeElement {
+	dayPortion: 'AM' | 'PM',
+	hour: number,
+	hourIndex: number,
+	minute: AvailableMinutes,
+	time: string
+	timeWithoutMinutes: string
 }
 
 export function convertTZ(date: Date, tzString: string) {
@@ -57,7 +66,7 @@ export function getDateValues(dateObj: Dayjs) {
 	const year = Number(dateObj.format('YYYY'));
 	const month = Number(dateObj.format('M'));
 	const day = Number(dateObj.format('D'));
-// props based on date codes, not zero-indexed
+	// props based on date codes, not zero-indexed
 	return { year, month, day }
 }
 
@@ -68,26 +77,36 @@ export function getShortDate(dateObj: Dayjs) {
 	return `${month} ${day}, ${year}`
 }
 
-export function getDayHours() {
-	const dayTimeArr: string[] = new Array(24).fill([]).map((_, i) => {
-		const hourCount = i + 1;
+export function getScheduleTimeOptions() {
+	const minutes = ['00', '15', '30', '45'];
+	const dayTime: DayTimeElement[] = new Array(96).fill([]).map((_, i) => {
+		const hourCount = Math.floor(i / 4) + 1;
 		const hours = (hourCount % 12) === 0 ? 12 : hourCount % 12;
-		const ampm = hourCount < 12 || hourCount === 24 ? 'AM' : 'PM'
-		return `${hours}${ampm}`;
+		const ampm = hourCount < 12 || hourCount === 24 ? 'AM' : 'PM';
+		return {
+			dayPortion: ampm,
+			hour: hours,
+			hourIndex: hourCount - 1,
+			minute: minutes[i % 4] as AvailableMinutes,
+			time: `${hours} ${ampm}`,
+			timeWithoutMinutes: `${hours}:${minutes[i % 4]} ${ampm}`,
+		}
 	});
-	// const offset = new Date().getTimezoneOffset();
-	// console.log(offset, dayTimeArr);
 
-	// move the last item as the first item
-	dayTimeArr.unshift(dayTimeArr.pop() as string);
-	return dayTimeArr;
+	// move the last group of items(12AM) in front 
+	const startingIndex = (24 * minutes.length) - minutes.length;
+	dayTime.splice(0, 1, dayTime[startingIndex]);
+	dayTime.splice(1, 1, dayTime[startingIndex + 1]);
+	dayTime.splice(2, 1, dayTime[startingIndex + 2]);
+	dayTime.splice(3, 1, dayTime[startingIndex + 3]);
+	return dayTime;
 }
 
 // excluding seconds "ss"
 export function stringifiedDate(args: Record<NonOptionalKeys<SelectedDate>, number>) {
 	// convert month code to zero-indexed 0-11
 	const monthIndex = args.month - 1;
-	const datePropsToArr: ArrayThreeOrMore<number> = objKeysToArr({...args, month: monthIndex}) as ArrayThreeOrMore<number>;
+	const datePropsToArr: ArrayThreeOrMore<number> = objKeysToArr({ ...args, month: monthIndex }) as ArrayThreeOrMore<number>;
 	return (new Date(...datePropsToArr))
 		.toISOString()
 		.replace(/[^0-9]/g, '')

@@ -7,17 +7,16 @@ import { stringifiedDate } from '../../../../util/calendar-arrangement';
 
 interface TimeRowProps {
 	dayIndex: number,
-	hour?: string,
+	time?: string,
 	hourIndex?: number,
 	dateValues: SelectedDate
 }
 
 export default function TimeRow(props: TimeRowProps) {
-	const { hour, hourIndex = -1, dayIndex, dateValues } = props;
-	const { 
-		setIsEvtDialogVisible,
-		setDefaultDate,
-		setDefaultTimeIndex,
+	const { time, hourIndex = -1, dayIndex, dateValues } = props;
+	const {
+		setIsScheduleDialogVisible,
+		setDefaultDateTime,
 	} = useContext(GlobalContext) as GlobalContextInterface;
 
 	return (
@@ -28,9 +27,14 @@ export default function TimeRow(props: TimeRowProps) {
 			<div
 				className='calendar__block'
 				onClick={() => {
-					setDefaultDate(stringifiedDate(dateValues));
-					setDefaultTimeIndex(hourIndex);
-					setIsEvtDialogVisible(true);
+					setDefaultDateTime({
+						date: stringifiedDate(dateValues),
+						time: { 
+							start: hourIndex, 
+							end: (hourIndex + 1),
+						 },
+					});
+					setIsScheduleDialogVisible(true);
 				}}
 			>
 			</div>

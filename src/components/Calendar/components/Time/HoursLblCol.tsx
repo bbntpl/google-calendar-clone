@@ -1,12 +1,13 @@
 import React from 'react';
-import { getDayHours } from '../../../../util/calendar-arrangement';
+import { getScheduleTimeOptions } from '../../../../util/calendar-arrangement';
 import TimeLabel from './TimeLabel';
 
 export function HoursLblCol() {
 	return <>
 		{
-			getDayHours().map((time, index) => {
-				return <TimeLabel key={`${time}-${index}`}time={time} />
+			getScheduleTimeOptions().map(({ time }, index) => {
+				if(index % 4 !== 0) return;  
+				return <TimeLabel key={`${time}-${index}`} time={time} />
 			})
 		}
 	</>

@@ -6,8 +6,8 @@ import GlobalContextInterface from '../../context/global/index.model';
 export default function ScheduleTypeList(props: DialogArgs) {
 	const { setIsDialogVisible } = props;
 	const {
-		setIsEvtDialogVisible,
-		setIsTskDialogVisible,
+		setIsScheduleDialogVisible,
+		setSelectedScheduleType,
 	} = useContext(GlobalContext) as GlobalContextInterface;
 
 	return (
@@ -16,8 +16,9 @@ export default function ScheduleTypeList(props: DialogArgs) {
 				<li>
 					<button
 						onClick={() => {
+							setSelectedScheduleType('event');
 							setIsDialogVisible(false);
-							setIsEvtDialogVisible(true);
+							setIsScheduleDialogVisible(true);
 						}}
 					>
 						Event
@@ -25,8 +26,9 @@ export default function ScheduleTypeList(props: DialogArgs) {
 				</li>
 				<li>
 					<button onClick={() => {
+						setSelectedScheduleType('task');
 						setIsDialogVisible(false);
-						setIsTskDialogVisible(true);
+						setIsScheduleDialogVisible(true);
 					}}>
 						Task
 					</button>

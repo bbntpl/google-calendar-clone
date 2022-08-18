@@ -34,7 +34,7 @@ export default function Header(): JSX.Element {
 	const miniCalendarProps = {
 		componentProps: {},
 		Component: MiniCalendar,
-		defaultPosition: { x: 0, y: 40 },
+		positionOffset: { x: 0, y: 40 },
 		draggable: false,
 		isDialogVisible: isMiniCalendarVisible,
 		setIsDialogVisible: setIsMiniCalendarVisible,
@@ -106,7 +106,7 @@ export default function Header(): JSX.Element {
 							Today
 						</button>
 						<Switcher {...dateRangeSwitcher()} />
-						<>
+						<div>
 							{
 								visibilities.sidebar
 									? <h6 className='header-text'>{displayRelevantDate()}</h6>
@@ -119,7 +119,7 @@ export default function Header(): JSX.Element {
 									</button>
 							}
 							<Dialog ref={miniCalendarRef} {...miniCalendarProps} />
-						</>
+						</div>
 					</div>
 				</div>
 				<CalendarTypeOptions />

@@ -1,47 +1,41 @@
-import React, { useContext, useState } from 'react';
+import React, { Dispatch, SetStateAction, useContext } from 'react';
 import './styles.scss';
+import GlobalContext from '../../context/global/GlobalContext';
+import GlobalContextInterface, {
+	EventInterface, TaskInterface,
+} from '../../context/global/index.model';
 
 import ClockIcon from '../../assets/icons/clock.png';
 import LocationIcon from '../../assets/icons/location.png';
 import DescIcon from '../../assets/icons/menu-vertical.png';
 import CalendarIcon from '../../assets/icons/calendar.png';
 
-import GlobalContext from '../../context/global/GlobalContext';
-import GlobalContextInterface from '../../context/global/index.model';
-import { EventInterface } from '../../context/global/index.model';
-import { uniqueID } from '../../util/reusable-funcs';
-import { getDayHours, getShortDate } from '../../util/calendar-arrangement';
+import {
+	getScheduleTimeOptions,
+} from '../../util/calendar-arrangement';
 
-export default function Event(): JSX.Element {
+interface ScheduleStates extends EventInterface, TaskInterface { }
+interface ScheduleEventProps {
+	evtProps: Omit<EventInterface, 'id' | 'type' | 'title'>,
+	setScheduleProps: Dispatch<SetStateAction<ScheduleStates>>,
+}
+export default function Event(props: ScheduleEventProps): JSX.Element {
 	const {
 		calendarList,
-		defaultDate,
-		defaultTimeIndex,
 	} = useContext(GlobalContext) as GlobalContextInterface;
-	const [evtProps, setEvtProps] = useState({
-		calendarId: calendarList[0].id,
-		color: calendarList[0].color,
-		dateTime: {
-			allday: false,
-			once: true,
-			date: String,
-			time: {
-				start: getDayHours()[defaultTimeIndex],
-				end: getDayHours()[defaultTimeIndex],
-			},
-			timezone: '',
-		},
-		description: '',
-		id: uniqueID(),
-		location: '',
-		type: 'event',
-	})
-
+	const { evtProps, setScheduleProps } = props;
+	const {
+		location,
+		description,
+		color,
+		calendarId,
+		dateTime,
+	} = evtProps;
 	const selectHoursEl = () => {
 		return (
 			<select>
 				{
-					getDayHours().map((hour, hourIndex) => {
+					getScheduleTimeOptions().map(({ hour }, hourIndex) => {
 						return (
 							<option
 								key={`hour-${hourIndex}`}
@@ -63,10 +57,8 @@ export default function Event(): JSX.Element {
 						{/* {getShortDate(dayjsObj())} */}
 					</div>
 					<div>
-						{
-							selectHoursEl();
-							selectHoursEl();
-						}
+						{selectHoursEl()}
+						{selectHoursEl()}
 					</div>
 				</span>
 			</div>
@@ -75,7 +67,17 @@ export default function Event(): JSX.Element {
 					<img src={LocationIcon} />
 				</span>
 				<div>
-					<input type='text' placeholder='Add location of the event' />
+					<input
+						type='text'
+						placeholder='Add location of the event'
+						value={location}
+						onChange={(e) => {
+							setScheduleProps(scheduleProps => ({
+								...scheduleProps,
+								location: e.target.value,
+							}));
+						}}
+					/>
 				</div>
 			</div>
 			<div className='schedule-input-list'>
@@ -92,8 +94,9 @@ export default function Event(): JSX.Element {
 				</span>
 				<div>
 					<div>
-						{defaultDate}
-						{defaultTimeIndex}
+						<div>
+							{/* {defaultDateTime} */}
+						</div>
 						<select>
 							{
 								calendarList.map(({ name }, cIndex) => {

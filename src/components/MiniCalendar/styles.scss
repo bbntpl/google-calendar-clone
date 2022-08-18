@@ -3,7 +3,7 @@
 .calendar-container {
 	position: relative;
 	&--static { width: 230px;}
-	&--by-content {width: 100%;}
+	&--by-content { width: 100%; }
 }
 .calendar__month--small {
 	width: 100%;

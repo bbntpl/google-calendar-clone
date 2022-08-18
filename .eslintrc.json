@@ -32,12 +32,6 @@
 				"max": 35
 			}
 		],
-		"max-statements": [
-			"error",
-			{
-				"max": 8
-			}
-		],
 		"indent": [
 			0,								
 			"tab"

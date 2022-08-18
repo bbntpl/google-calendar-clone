@@ -8,34 +8,38 @@ export type NonOptionalKeys<T> = {
 }[keyof T];
 
 interface TimeSetting {
-	start: string
-	end: string | never
+	start: number
+	end: number | never
 }
+
 export interface DateTimeInputInterface {
 	allDay: boolean,
 	once: boolean,
-	date: string,
+	date: string, //YYYYMMDD format
 	time: TimeSetting,
-	timezone?: string,
+	timezone?: string | never,
+}
+
+export interface DefaultDateTime {
+	date: string, //YYYYMMDD format
+	time: TimeSetting,
 }
 
 type OmitScheduleProps
 	= Omit<TaskInterface | EventInterface, 'dateTime' | 'calendarId'>;
-// interface ScheduleReqToOpt {
-// 	dateTime?: DateTimeInputInterface,
-// 	calendarId?: string,
-// } 
+
 export interface Schedule {
 	id: number,
-	description?: string,
+	title: string,
+	description: string,
 	calendarId: number,
 	dateTime: DateTimeInputInterface,
 	type: ScheduleNames,
 }
 
 export interface EventInterface extends Schedule {
-	location?: string,
-	color?: string
+	location: string,
+	color: COLORS,
 }
 
 export interface EditEvent extends OmitScheduleProps {
@@ -44,7 +48,7 @@ export interface EditEvent extends OmitScheduleProps {
 }
 
 export interface TaskInterface extends Schedule {
-	completed?: boolean,
+	completed: boolean,
 }
 
 export interface EditTask extends OmitScheduleProps {
@@ -119,16 +123,13 @@ export interface GlobalContextInterface {
 	setVisibilities: Dispatch<SetStateAction<BooleansOnlyObj>>,
 	position: Position,
 	recordPos: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void,
-	defaultDate: string,
-	defaultTimeIndex: number,
-	setDefaultDate: Dispatch<SetStateAction<string>>,
-	setDefaultTimeIndex: Dispatch<SetStateAction<number>>,
-	evtRef: MutableRefObject<HTMLDivElement | null>,
-	tskRef: MutableRefObject<HTMLDivElement | null>,
-	isEvtDialogVisible: boolean,
-	isTskDialogVisible: boolean,
-	setIsEvtDialogVisible: Dispatch<SetStateAction<boolean>>,
-	setIsTskDialogVisible: Dispatch<SetStateAction<boolean>>,
+	defaultDateTime: DefaultDateTime,
+	setDefaultDateTime: Dispatch<SetStateAction<DefaultDateTime>>,
+	scheduleDialogRef: MutableRefObject<HTMLDivElement | null>,
+	isScheduleDialogVisible: boolean,
+	setIsScheduleDialogVisible: Dispatch<SetStateAction<boolean>>,
+	selectedScheduleType: ScheduleNames,
+	setSelectedScheduleType: Dispatch<SetStateAction<ScheduleNames>>
 }
 
 export default GlobalContextInterface;

@@ -1,14 +1,14 @@
 import React from 'react';
-import Draggable from 'react-draggable';
+import Draggable, { DraggableProps } from 'react-draggable';
 import { forwardRef, MutableRefObject, useContext, useEffect, useState } from 'react';
 import { DialogCoreArgs } from './index.model';
 import './styles.scss';
 import '../../styles/main.scss';
 
 import MultiplyIcon from '../../assets/icons/multiply.png';
-import GlobalContext from '../../context/global/GlobalContext';
-import GlobalContextInterface from '../../context/global/index.model';
-import usePositionDialog from '../../hooks/usePositionDialog';
+// import GlobalContext from '../../context/global/GlobalContext';
+// import GlobalContextInterface from '../../context/global/index.model';
+// import usePositionDialog from '../../hooks/usePositionDialog';
 
 const CloseBtn = ({ eventHandler }: { eventHandler: () => void }) => (
 	<button className='clear-btn--no-effects close-btn' onClick={eventHandler}>
@@ -26,29 +26,34 @@ const DialogCore = forwardRef<HTMLDivElement, DialogCoreArgs>(
 			draggableProps,
 			eventHandlers,
 			stylePosition,
-			delta,
-			defaultPosition,
+			//delta,
 		} = dialogProps;
 		const { toggleDialog } = eventHandlers;
 		const { closeable, draggable } = flags;
 		const { handle } = draggableProps;
-		const { position } = useContext(GlobalContext) as GlobalContextInterface;
-		const [dialogDim, setDialogDim] = useState({ width: 0, height: 0 });
-		const cursorPosition = usePositionDialog(position, delta, dialogDim);
-		const refCurrent = (ref as MutableRefObject<HTMLDivElement>).current;
-
-		useEffect(() => {
-			if (refCurrent) {
-				const { clientHeight, clientWidth } = refCurrent;
-				setDialogDim(dim => ({ ...dim, width: clientWidth, height: clientHeight }));
-			}
-		}, [])
+		// const { position } = useContext(GlobalContext) as GlobalContextInterface;
+		// const [dialogDim, setDialogDim] = useState({ width: 0, height: 0 });
+		// const cursorPosition = usePositionDialog(position, delta, dialogDim);
+		// const refCurrent = (ref as MutableRefObject<HTMLDivElement>).current;
+		
+		// useEffect(() => {
+		// 	if (refCurrent) {
+		// 		const { clientHeight, clientWidth } = refCurrent;
+		// 		setDialogDim(dim => ({
+		// 			...dim,
+		// 			width: clientWidth,
+		// 			height: clientHeight,
+		// 		}));
+		// 	}
+		// }, [])
 
 		return (
 			<Draggable
-				handle={handle}
-				defaultPosition={defaultPosition || cursorPosition}
-				disabled={!draggable}
+				// handle={handle}
+				// defaultPosition={defaultPosition}
+				// positionOffset={positionOffset}
+				// disabled={!draggable}
+				{...draggableProps}
 			>
 				<div ref={ref} className={`dialog-inner--${stylePosition}`}>
 					{

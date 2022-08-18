@@ -14,7 +14,7 @@ type RootElementModifier = 'static' | 'by-content';
 type ClickHandlerType = 'select' | 'schedule';
 interface MiniCalendarProps {
 	rootElModifier: RootElementModifier,
-	clickHandlerType: ClickHandlerType
+	clickHandlerType?: ClickHandlerType
 }
 interface SelectCalendarDayProps {
 	numericalMonth: number,
@@ -29,7 +29,7 @@ export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
 	const {
 		selectedDate,
 		setSelectedDate,
-		setDefaultDate,
+		setDefaultDateTime,
 	} = useContext(GlobalContext) as GlobalContextInterface;
 	const [currentMonth, setCurrentMonth] = useState(getMonth());
 	const [currentMonthIndex, setCurrentMonthIndex] = useState(dayjs().month());
@@ -53,11 +53,15 @@ export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
 		setSelectedDate(date);
 	}
 
+	// onclick handler when clicking the day in calendar
 	const handleClick = (numericalDate: SelectedDate) => {
 		if (clickHandlerType === 'select') {
 			handleSelectedDay(numericalDate);
 		} else if (clickHandlerType === 'schedule') {
-			setDefaultDate(stringifiedDate(numericalDate));
+			setDefaultDateTime(defaultDateTime =>({
+				...defaultDateTime,
+				date: stringifiedDate(numericalDate),
+			}));
 		}
 	}
 
@@ -69,6 +73,7 @@ export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
 		handleClick(numericalDate);
 	}
 
+	// it results in a styling modifier depending on the met conditions
 	const numericalDateModifier = ({ year, month, day }:
 		Record<NonOptionalKeys<SelectedDate>, number>) => {
 		const isReceivedDateToday =
@@ -100,9 +105,7 @@ export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
 				<div className='calendar__week-grid--small'>
 					{currentMonth[0].map((day, i) => (
 						<div key={`day-${i}`}>
-							<span
-								className='calendar__week-grid__day-type'
-							>
+							<span className='calendar__week-grid__day-type'>
 								{day.format('dd').charAt(0)}
 							</span>
 						</div>

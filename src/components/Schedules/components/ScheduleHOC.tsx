@@ -21,16 +21,16 @@ export default function withScheduleDialogToggle(Component: any) {
 		const { recordPos } = useContext(GlobalContext) as GlobalContextInterface;
 		const [dialogRef, isDialogVisible, setIsDialogVisible] = useComponentVisible(false);
 
-		const dialogProps: DialogArgs = {
+		const dialogProps = {
 			componentProps: {},
 			Component: ScheduleTypeList,
 			closeable: false,
-			defaultPosition: { x: 20, y: 50 },
+			positionOffset: { x: 20, y: 50 },
 			delta: { x: 10, y: 10 },
 			draggable: false,
 			isDialogVisible,
 			setIsDialogVisible,
-			stylePosition: 'absolute',
+			stylePosition: 'absolute' as const,
 		};
 		const toggleVisibility = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
 			recordPos(e);

@@ -11,9 +11,13 @@ import GlobalContextInterface, {
 } from './index.model';
 import { uniqueID } from '../../util/reusable-funcs';
 
+// const offset = new Date().getTimezoneOffset();
+// console.log(offset, dayTimeArr);
+
 import useCursorPosition from '../../hooks/useCursorPosition';
 import useComponentVisible from '../../hooks/useComponentVisible';
 import { dateToday, stringifiedDate } from '../../util/calendar-arrangement';
+import { ScheduleNames } from './index.model';
 
 function actionTypes<
 	StateType extends ScheduleTypes | CalendarLabelType,
@@ -61,16 +65,17 @@ const calendarListReducer = (
 // initial states
 const initialCalendarList: Array<CalendarLabelType> = [{
 	id: uniqueID(),
-	name: 'C.C. Antipolo C.C. Antipolo',
+	name: 'Your Calendar',
 	color: 'black',
 	selected: true,
-	removable: true,
+	removable: false,
 }];
 
 export default function StoreProvider({ children }: { children: ReactNode }) {
 	const [calendarType, setCalendarType] = useState<CalendarType>('day');
 	const [savedSchedules, dispatchSchedules] = useReducer(scheduleReducer, []);
 	const [selectedDate, setSelectedDate] = useState(dateToday);
+	const [selectedScheduleType, setSelectedScheduleType] = useState<ScheduleNames>('event');
 	const { position, recordPos } = useCursorPosition();
 
 	// can be a tag or a type of a schedule
@@ -83,12 +88,20 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
 		labels: true,
 	});
 
-	const [evtRef, isEvtDialogVisible, setIsEvtDialogVisible] = useComponentVisible(false);
-	const [tskRef, isTskDialogVisible, setIsTskDialogVisible] = useComponentVisible(false);
+	const [
+		scheduleDialogRef,
+		isScheduleDialogVisible,
+		setIsScheduleDialogVisible,
+	] = useComponentVisible(false);
 
 	// default values for schedule dialog(task or event)
-	const [defaultDate, setDefaultDate] = useState(stringifiedDate(dateToday));
-	const [defaultTimeIndex, setDefaultTimeIndex] = useState(new Date().getHours());
+	const [defaultDateTime, setDefaultDateTime] = useState({
+		date: stringifiedDate(dateToday),
+		time: {
+			start: new Date().getHours(),
+			end: new Date().getHours(),
+		},
+	});
 
 	const filteredSchedules = useMemo(() => {
 		const calendarIds = calendarList
@@ -116,16 +129,13 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
 		setSelectedDate,
 		position,
 		recordPos,
-		defaultDate,
-		defaultTimeIndex,
-		setDefaultDate,
-		setDefaultTimeIndex,
-		evtRef,
-		tskRef,
-		isEvtDialogVisible,
-		isTskDialogVisible,
-		setIsEvtDialogVisible,
-		setIsTskDialogVisible,
+		defaultDateTime,
+		setDefaultDateTime,
+		scheduleDialogRef,
+		isScheduleDialogVisible,
+		setIsScheduleDialogVisible,
+		selectedScheduleType,
+		setSelectedScheduleType,
 	}
 
 	return (
