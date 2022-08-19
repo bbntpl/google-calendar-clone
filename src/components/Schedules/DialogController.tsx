@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useContext } from 'react';
-import { DialogArgs } from '../../lib/Dialog/index.model';
+import { DialogProps } from '../../lib/Dialog/index.model';
 
 import Dialog from '../../lib/Dialog/index';
 import GlobalContext from '../../context/global/GlobalContext';
@@ -17,11 +17,11 @@ export default function DialogController() {
 
 	const scheduleTypeProps = {
 		componentProps: {},
-		positionOffset: { x: '50%', y: '50%' },
-		stylePosition: 'fixed' as const,
+		positionOffset: { x:'-50%', y:'-50%' },
+		stylePosition: 'centered' as const,
 	}
 
-	const scheduleDialogProps: DialogArgs = Object.assign({
+	const scheduleDialogProps: DialogProps = Object.assign({
 		Component: ScheduleDialog,
 		isDialogVisible: isScheduleDialogVisible,
 		setIsDialogVisible: setIsScheduleDialogVisible,

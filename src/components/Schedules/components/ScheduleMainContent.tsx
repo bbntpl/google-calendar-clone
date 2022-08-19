@@ -9,24 +9,25 @@ interface MainContentProps {
 export default function ScheduleMainContent(props: MainContentProps) {
 	const { title, setTitle } = props;
 	return (
-		<>
-			<dl>
-				<dt></dt>
-				<dd>
+		<div className='schedule-block'>
+			<div className='schedule-input-list'>
+				<span></span>
+				<div>
 					<input
+						className='schedule-input__title'
 						type='text'
 						placeholder='Add a title'
 						value={title}
 						onChange={(e) => setTitle(e.target.value)}
 					/>
-				</dd>
-			</dl>
-			<dl>
-				<dt></dt>
-				<dd>
+				</div>
+			</div>
+			<div className='schedule-input-list'>
+				<span></span>
+				<div>
 					<ScheduleTypeSelector />
-				</dd>
-			</dl>
-		</>
+				</div>
+			</div>
+		</div>
 	)
 }

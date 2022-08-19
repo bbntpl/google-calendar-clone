@@ -1,5 +1,5 @@
 import dayjs, { Dayjs } from 'dayjs';
-import { CalendarType, NonOptionalKeys, SelectedDate } from '../context/global/index.model';
+import { CalendarType, COLORS, NonOptionalKeys, SelectedDate } from '../context/global/index.model';
 import { objKeysToArr } from './reusable-funcs';
 
 type ArrayThreeOrMore<T> = [T, T, ...T[]]
@@ -17,6 +17,9 @@ interface DayTimeElement {
 	time: string
 	timeWithoutMinutes: string
 }
+
+export const COLOR_NAMES: Array<COLORS>
+	= ['raddichio', 'tangerine', 'citron', 'basil', 'blueberry', 'black', 'grafito'];
 
 export function convertTZ(date: Date, tzString: string) {
 	return new Date((typeof date === 'string' ? new Date(date) : date)
@@ -56,7 +59,6 @@ export function getMonth(month = dayjs().month()) {
 
 export function getYear(year = dayjs().year()) {
 	year = Math.floor(year);
-	console.log(year);
 	return Array.from({ length: 12 }, (_, i) => {
 		return getMonth(i);
 	})

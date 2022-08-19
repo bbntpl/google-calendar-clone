@@ -7,6 +7,14 @@
 	@include child-attribute('--fixed') {
 		position: fixed;
 	}
+	@include child-attribute('--default') {
+		position: static;
+	}
+	@include child-attribute('--centered') {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+	}
 	top: 0;
 	left: 0;
 	width: max-content;

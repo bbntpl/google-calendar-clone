@@ -46,6 +46,6 @@ export default function usePositionDialog(
 			});
 		}
 	}, [])
-
+	console.log(dialogPos);
 	return dialogPos;
 }

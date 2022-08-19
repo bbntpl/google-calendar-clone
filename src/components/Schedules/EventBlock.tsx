@@ -1,28 +1,41 @@
-import React, { Dispatch, SetStateAction, useContext } from 'react';
+import React, { Dispatch, SetStateAction, useContext, useCallback } from 'react';
 import './styles.scss';
 import GlobalContext from '../../context/global/GlobalContext';
 import GlobalContextInterface, {
+	COLORS,
 	EventInterface, TaskInterface,
 } from '../../context/global/index.model';
 
 import ClockIcon from '../../assets/icons/clock.png';
 import LocationIcon from '../../assets/icons/location.png';
-import DescIcon from '../../assets/icons/menu-vertical.png';
+import DescIcon from '../../assets/icons/desc.png';
 import CalendarIcon from '../../assets/icons/calendar.png';
 
 import {
+	COLOR_NAMES,
 	getScheduleTimeOptions,
 } from '../../util/calendar-arrangement';
+import { getIndexByProp } from '../../util/reusable-funcs';
 
 interface ScheduleStates extends EventInterface, TaskInterface { }
 interface ScheduleEventProps {
 	evtProps: Omit<EventInterface, 'id' | 'type' | 'title'>,
 	setScheduleProps: Dispatch<SetStateAction<ScheduleStates>>,
 }
-export default function Event(props: ScheduleEventProps): JSX.Element {
-	const {
-		calendarList,
-	} = useContext(GlobalContext) as GlobalContextInterface;
+
+const SelectColors = () => {
+	return <>{
+		COLOR_NAMES.map((color, cIndex) => {
+			return <option
+				key={`calendar-${cIndex + 1}`}
+				value={color}>
+				{color}
+			</option>
+		})
+	}</>
+}
+export default function EventBlock(props: ScheduleEventProps): JSX.Element {
+	const { calendarList } = useContext(GlobalContext) as GlobalContextInterface;
 	const { evtProps, setScheduleProps } = props;
 	const {
 		location,
@@ -31,6 +44,16 @@ export default function Event(props: ScheduleEventProps): JSX.Element {
 		calendarId,
 		dateTime,
 	} = evtProps;
+
+	const defaultCalendarColor = () => {
+		const matchingIndex = getIndexByProp({
+			arr: calendarList,
+			key: 'id',
+			value: calendarId,
+		});
+		return calendarList[matchingIndex].color;
+	};
+
 	const selectHoursEl = () => {
 		return (
 			<select>
@@ -46,6 +69,7 @@ export default function Event(props: ScheduleEventProps): JSX.Element {
 			</select>
 		)
 	}
+
 	return (
 		<div className='calendar-schedule__event schedule-block'>
 			<div className='schedule-input-list flex-centered'>
@@ -108,16 +132,14 @@ export default function Event(props: ScheduleEventProps): JSX.Element {
 								})
 							}
 						</select>
-						<select>
-							{
-								calendarList.map(({ color }, cIndex) => {
-									return <option
-										key={`calendar-${cIndex + 1}`}
-										value={color}>
-										{color}
-									</option>
-								})
-							}
+						<select 
+						value={defaultCalendarColor()} 
+						onChange={(e) => setScheduleProps(state => ({
+							...state,
+							color: e.target.value as COLORS,
+						})) }
+						>
+							<SelectColors />
 						</select>
 					</div>
 				</div>

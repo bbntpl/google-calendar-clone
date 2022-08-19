@@ -1,10 +1,9 @@
 import { COLORS, UserActionType } from '../../../context/global/index.model';
 import { EventHandlers, WrappedComponentProps } from '../index.model';
+import { COLOR_NAMES } from '../../../util/calendar-arrangement';
 
 import '../styles.scss';
 import CheckIcon from '../../../assets/icons/check.png';
-
-const COLOR_NAMES: Array<COLORS> = ['raddichio', 'tangerine', 'citron', 'basil', 'blueberry', 'black', 'grafito'];
 
 export default function Options(props: WrappedComponentProps) {
 	const { 

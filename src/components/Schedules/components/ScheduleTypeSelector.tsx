@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import '../styles.scss';
 import GlobalContext from '../../../context/global/GlobalContext';
 import GlobalContextInterface, {
 	ScheduleNames,
@@ -10,12 +9,14 @@ function ScheduleTypeSelector() {
 		selectedScheduleType,
 		setSelectedScheduleType,
 	} = useContext(GlobalContext) as GlobalContextInterface;
+
 	const scheduleTypeClassName = (buttonName: ScheduleNames) => {
 		return `schedule-type${buttonName === selectedScheduleType
 			? '--active' : ''}`;
 	}
+	
 	return (
-		<div>
+		<div className='schedule-type-selector'>
 			<button
 				className={scheduleTypeClassName('event')}
 				onClick={() => setSelectedScheduleType('event')}

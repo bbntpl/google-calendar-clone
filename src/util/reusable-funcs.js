@@ -4,3 +4,7 @@ export const uniqueID = () =>
 export const objKeysToArr = (obj) => {
 	return Object.keys(obj).map((value) => obj[value]);
 }
+
+export const getIndexByProp = ({ arr, key, value }) => {
+	return arr.findIndex(obj => obj[key] === value);
+}

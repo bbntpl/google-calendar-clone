@@ -3,7 +3,7 @@ import ScheduleTypeList from '../ScheduleTypeList';
 import useComponentVisible from '../../../hooks/useComponentVisible';
 import GlobalContext from '../../../context/global/GlobalContext';
 import GlobalContextInterface from '../../../context/global/index.model';
-import { DialogArgs } from '../../../lib/Dialog/index.model';
+import { DialogProps } from '../../../lib/Dialog/index.model';
 import Dialog from '../../../lib/Dialog';
 
 interface HOCMethods {
@@ -11,7 +11,7 @@ interface HOCMethods {
 }
 
 export interface ScheduleCreationProps {
-	dialogProps: DialogArgs,
+	dialogProps: DialogProps,
 	hocMethods: HOCMethods
 }
 

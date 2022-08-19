@@ -3,7 +3,7 @@ import useComponentVisible from '../../../hooks/useComponentVisible';
 import GlobalContext from '../../../context/global/GlobalContext';
 import GlobalContextInterface, { UserActionType } from '../../../context/global/index.model';
 import { LabelProps } from '../index.model';
-import { DialogArgs } from '../../../lib/Dialog/index.model';
+import { DialogProps } from '../../../lib/Dialog/index.model';
 
 import '../styles.scss';
 import MenuVertical from '../../../assets/icons/menu-vertical.png';
@@ -37,7 +37,7 @@ export default function Label(props: LabelProps): JSX.Element {
 	};
 
 	// props to be passed on the wrapped component
-	const componentProps: DialogArgs = {
+	const componentProps: DialogProps = {
 		componentProps: {
 			flags: { options: true, colors: true },
 			...props,

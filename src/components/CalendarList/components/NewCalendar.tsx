@@ -7,7 +7,7 @@ import {
 import useComponentVisible from '../../../hooks/useComponentVisible';
 import { uniqueID } from '../../../util/reusable-funcs';
 import { AddNewCalendarProps, InitCalendarLblProps } from '../index.model';
-import { DialogArgs } from '../../../lib/Dialog/index.model';
+import { DialogProps } from '../../../lib/Dialog/index.model';
 import '../styles.scss';
 
 
@@ -72,7 +72,7 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 		},
 	}
 
-	const dialogOptionsProps: DialogArgs = {
+	const dialogOptionsProps: DialogProps = {
 		componentProps,
 		Component: Options,
 		isDialogVisible,

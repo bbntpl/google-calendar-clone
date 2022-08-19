@@ -1,14 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { DraggableProps } from 'react-draggable';
 import { Position } from '../../context/global/index.model';
 
 type CommonTypes = string | number | boolean | null;
-
-interface PositionOffset {
-	x: number | string,
-	y: number | string
-}
 
 interface DialogFlags {
 	draggable: boolean,
@@ -19,44 +14,44 @@ interface EventHandlers {
 	[key: string]: () => void,
 }
 
-export interface UseComponentVisibleAsProps {
+export interface DialogViewState {
 	isDialogVisible: boolean,
 	setIsDialogVisible: Dispatch<SetStateAction<boolean>>,
 }
 
-interface ComponentProps {
+interface ComponentGenericProps {
 	[key: string]: CommonTypes | Record<string, any> | any
 }
 
-export interface DialogProps {
+export interface DraggableDialogProps {
 	delta: Position,
-	draggableProps: DraggableProps,
+	draggableProps: Partial<DraggableProps>,
 	flags: DialogFlags,
 	eventHandlers: EventHandlers,
 	stylePosition: string,
 }
 
 export interface ComponentWithVisibleControl extends
-	ComponentProps, UseComponentVisibleAsProps { }
+ComponentGenericProps, DialogViewState { }
 
-interface DialogAndWrappedComponentProps {
+interface DialogWithInsertedComponentProps {
 	componentProps: ComponentWithVisibleControl,
-	dialogProps: DialogProps,
+	dialogProps: DraggableDialogProps,
 }
 
-export interface DialogCoreArgs {
+export interface WrappedDialogProps {
 	Component: (props: any) => JSX.Element,
-	props: DialogAndWrappedComponentProps,
+	props: DialogWithInsertedComponentProps,
 }
 
-export interface DialogArgs extends
-	UseComponentVisibleAsProps {
-	componentProps: ComponentProps,
+export interface DialogProps extends
+	DialogViewState {
+	componentProps: ComponentGenericProps,
 	Component: (props: any) => JSX.Element,
 	closeable?: boolean,
 	defaultPosition?: DraggableProps['defaultPosition'],
 	delta?: Position,
-  draggable?: boolean,
+	draggable?: boolean,
 	positionOffset?: DraggableProps['positionOffset'],
-	stylePosition?: 'absolute' | 'fixed'
+	stylePosition?: 'absolute' | 'fixed' | 'default' | 'centered'
 }

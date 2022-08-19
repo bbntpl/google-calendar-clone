@@ -1,14 +1,25 @@
 @import '../../styles/variables';
 
 %hover-effect {
-	color: #5f6368;
-	padding: 4px 2px;
+	color: $color-royal-blue;
 }
+
+.schedule-type-selector {
+	display: flex;
+	gap: 0 12px;
+}
+
 [class^=schedule-type] {
-	background-color: #e8f0fe;
-	@extend %hover-effect;
+	border: 0;
+	padding: 8px 4px;
+	background-color: transparent;
+	font-weight: 500;
 	@include child-attribute('--active') {
-		color: $color-royal-blue;
+		@extend %hover-effect;
+		background-color: #e8f0fe;
+	}
+	:hover {
+		@extend %hover-effect;
 	}
 }
 
@@ -17,20 +28,37 @@
 	margin: 1.5rem 2rem;
 }
 
+.schedule-input__title {
+	height: 35px;
+	font-size: 1.2rem;
+	padding: 0 2px;
+	border: none;
+	border-bottom: 1px solid rgba(0,0,0,0.6);
+}
+
+.calendar-schedule__event {
+	& > div {
+		margin: 1rem 0;
+	}
+}
+
 .schedule-input-list {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
 	width: 100%;
 	flex-direction: row;
+
 	span:first-of-type {
 		width: 44px;
 		img {
+			display: flex;
+			align-self: center;
+			width: 22px;
 			filter: $filtered-color-grafito;
 		}
 	}
 	& .hover-effect {
 		@extend %hover-effect;
 	}
-	margin: .5rem 0;
 }

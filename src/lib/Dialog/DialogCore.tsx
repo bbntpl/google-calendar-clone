@@ -1,9 +1,8 @@
 import React from 'react';
-import Draggable, { DraggableProps } from 'react-draggable';
-import { forwardRef, MutableRefObject, useContext, useEffect, useState } from 'react';
-import { DialogCoreArgs } from './index.model';
+import Draggable from 'react-draggable';
+import { forwardRef } from 'react';
+import { WrappedDialogProps } from './index.model';
 import './styles.scss';
-import '../../styles/main.scss';
 
 import MultiplyIcon from '../../assets/icons/multiply.png';
 // import GlobalContext from '../../context/global/GlobalContext';
@@ -16,7 +15,7 @@ const CloseBtn = ({ eventHandler }: { eventHandler: () => void }) => (
 	</button>
 );
 
-const DialogCore = forwardRef<HTMLDivElement, DialogCoreArgs>(
+const DialogCore = forwardRef<HTMLDivElement, WrappedDialogProps>(
 	({ Component, props }, ref) => {
 
 		// eslint-disable-next-line react/display-name
@@ -26,7 +25,6 @@ const DialogCore = forwardRef<HTMLDivElement, DialogCoreArgs>(
 			draggableProps,
 			eventHandlers,
 			stylePosition,
-			//delta,
 		} = dialogProps;
 		const { toggleDialog } = eventHandlers;
 		const { closeable, draggable } = flags;
@@ -35,7 +33,7 @@ const DialogCore = forwardRef<HTMLDivElement, DialogCoreArgs>(
 		// const [dialogDim, setDialogDim] = useState({ width: 0, height: 0 });
 		// const cursorPosition = usePositionDialog(position, delta, dialogDim);
 		// const refCurrent = (ref as MutableRefObject<HTMLDivElement>).current;
-		
+
 		// useEffect(() => {
 		// 	if (refCurrent) {
 		// 		const { clientHeight, clientWidth } = refCurrent;
@@ -48,18 +46,12 @@ const DialogCore = forwardRef<HTMLDivElement, DialogCoreArgs>(
 		// }, [])
 
 		return (
-			<Draggable
-				// handle={handle}
-				// defaultPosition={defaultPosition}
-				// positionOffset={positionOffset}
-				// disabled={!draggable}
-				{...draggableProps}
-			>
+			<Draggable {...draggableProps}>
 				<div ref={ref} className={`dialog-inner--${stylePosition}`}>
 					{
 						(draggable || closeable) &&
 						<div className='row middle-xs handle-wrapper'>
-							{draggable && <div className={`o-wrapper ${handle.slice(1)}`} />}
+							{draggable && <div className={`o-wrapper ${handle?.slice(1)}`} />}
 							{closeable && <CloseBtn eventHandler={toggleDialog} />}
 						</div>
 					}

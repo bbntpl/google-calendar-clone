@@ -1,11 +1,12 @@
 import { useContext, useState } from 'react';
+import './styles.scss';
 import GlobalContext from '../../context/global/GlobalContext';
 import GlobalContextInterface from '../../context/global/index.model';
 
 import { uniqueID } from '../../util/reusable-funcs';
 import ScheduleMainContent from './components/ScheduleMainContent';
-import Event from './Event';
-import Task from './Task';
+import TaskBlock from './TaskBlock';
+import EventBlock from './EventBlock';
 
 export function ScheduleDialog() {
 	const {
@@ -13,7 +14,6 @@ export function ScheduleDialog() {
 		calendarList,
 		defaultDateTime,
 	} = useContext(GlobalContext) as GlobalContextInterface;
-	console.log(calendarList);
 	const [scheduleProps, setScheduleProps] = useState({
 		calendarId: calendarList[0].id,
 		color: calendarList[0].color,
@@ -36,16 +36,15 @@ export function ScheduleDialog() {
 	const setTitle = (title: string) => {
 		setScheduleProps(setScheduleProps => ({ ...setScheduleProps, title }));
 	}
-	console.log(scheduleProps);
 	return (
-		<div>
+		<div className='max-content'>
 			<ScheduleMainContent
 				title={scheduleProps.title}
 				setTitle={setTitle}
 			/>
 			{
 				selectedScheduleType === 'event'
-					? <Event
+					? <EventBlock
 						evtProps={{
 							calendarId: scheduleProps.calendarId,
 							color: scheduleProps.color,
@@ -56,7 +55,7 @@ export function ScheduleDialog() {
 						setScheduleProps={setScheduleProps}
 					/>
 					: <div></div>
-				// <Task
+				// <TaskBlock
 				// 	calendarId={scheduleProps.calendarId}
 				//  completed={scheduleProps.completed}
 				// 	dateTime={scheduleProps.dateTime}
@@ -64,6 +63,11 @@ export function ScheduleDialog() {
 				// 	setScheduleProps={setScheduleProps}
 				// />
 			}
+			<div>
+				<button>
+					Save
+				</button>
+			</div>
 		</div>
 	)
 }
