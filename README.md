@@ -1,6 +1,13 @@
-# Getting Started with Create React App
+# Google Calendar Clone
+Built with React + TypeScript
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Available features
+- CRUD using Firebase
+- Google sign-in
+- Calendar List
+- Mini Calendar
+- Schedule types: Event and Task
+- Calendar types: Day, Week and Month
 
 ## Available Scripts
 
