@@ -1,12 +1,12 @@
 import { Dayjs } from 'dayjs';
-import './styles.scss';
+import '../styles.scss';
 
 import TimeRow from '../Time/TimeRow';
-import { dateToday, getDateValues } from '../../../../util/calendar-arrangement';
-import { SelectedDate } from '../../../../context/global/index.model';
-import GlobalContext from '../../../../context/global/GlobalContext';
+import { dateToday, getDateValues } from '../../../util/calendar-arrangement';
+import { SelectedDate } from '../../../context/global/index.model';
+import GlobalContext from '../../../context/global/GlobalContext';
 import { useContext } from 'react';
-import GlobalContextInterface from '../../../../context/global/index.model';
+import GlobalContextInterface from '../../../context/global/index.model';
 
 interface DayHeaderProps {
 	dateObj: Dayjs,
@@ -14,6 +14,7 @@ interface DayHeaderProps {
 	isCentered?: boolean | undefined,
 	isSelectable?: boolean | undefined,
 }
+
 export default function DayHeader(props: DayHeaderProps) {
 	const {
 		selectedDate,

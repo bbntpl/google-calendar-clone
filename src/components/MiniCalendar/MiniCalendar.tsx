@@ -11,10 +11,8 @@ import GlobalContextInterface, {
 } from '../../context/global/index.model';
 
 type RootElementModifier = 'static' | 'by-content';
-type ClickHandlerType = 'select' | 'schedule';
 interface MiniCalendarProps {
 	rootElModifier: RootElementModifier,
-	clickHandlerType?: ClickHandlerType
 }
 interface SelectCalendarDayProps {
 	numericalMonth: number,
@@ -24,12 +22,10 @@ interface SelectCalendarDayProps {
 export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
 	const {
 		rootElModifier = 'static',
-		clickHandlerType = 'select',
 	} = props;
 	const {
 		selectedDate,
 		setSelectedDate,
-		setDefaultDateTime,
 	} = useContext(GlobalContext) as GlobalContextInterface;
 	const [currentMonth, setCurrentMonth] = useState(getMonth());
 	const [currentMonthIndex, setCurrentMonthIndex] = useState(dayjs().month());
@@ -55,14 +51,7 @@ export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
 
 	// onclick handler when clicking the day in calendar
 	const handleClick = (numericalDate: SelectedDate) => {
-		if (clickHandlerType === 'select') {
-			handleSelectedDay(numericalDate);
-		} else if (clickHandlerType === 'schedule') {
-			setDefaultDateTime(defaultDateTime =>({
-				...defaultDateTime,
-				date: stringifiedDate(numericalDate),
-			}));
-		}
+		handleSelectedDay(numericalDate);
 	}
 
 	const selectCalendarDay = ({ numericalMonth, numericalDate }: SelectCalendarDayProps) => {
@@ -91,8 +80,8 @@ export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
 
 	return (
 		<div className={`calendar-container--${rootElModifier}`}>
-			<div className='calendar__month--small'>
-				<div className='calendar__month__header--small'>
+			<div className='calendar-month--mini'>
+				<div className='calendar-month__header--mini'>
 					<h5>{`
 					${currentMonth[2][1].format('MMMM')} 
 					${currentMonth[2][1].format('YYYY')}
@@ -102,7 +91,7 @@ export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
 						chevronRightHandler={incrementMonthIndex}
 					/>
 				</div>
-				<div className='calendar__week-grid--small'>
+				<div className='calendar__week-grid--mini'>
 					{currentMonth[0].map((day, i) => (
 						<div key={`day-${i}`}>
 							<span className='calendar__week-grid__day-type'>

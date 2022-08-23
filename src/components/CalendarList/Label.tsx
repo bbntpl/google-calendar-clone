@@ -1,16 +1,16 @@
 import { useContext, useState } from 'react';
-import useComponentVisible from '../../../hooks/useComponentVisible';
-import GlobalContext from '../../../context/global/GlobalContext';
-import GlobalContextInterface, { UserActionType } from '../../../context/global/index.model';
-import { LabelProps } from '../index.model';
-import { DialogProps } from '../../../lib/Dialog/index.model';
+import useComponentVisible from '../../hooks/useComponentVisible';
+import GlobalContext from '../../context/global/GlobalContext';
+import GlobalContextInterface, { UserActionType } from '../../context/global/index.model';
+import { LabelProps } from './index.model';
 
-import '../styles.scss';
-import MenuVertical from '../../../assets/icons/menu-vertical.png';
-import MultiplyIcon from '../../../assets/icons/multiply.png';
+import './styles.scss';
+import MenuVertical from '../../assets/icons/menu-vertical.png';
+import MultiplyIcon from '../../assets/icons/multiply.png';
 
-import Alert from '../../../lib/Alert/Alert';
-import Dialog from '../../../lib/Dialog';
+import Alert from '../../lib/Alert/Alert';
+import { DialogProps } from '../../lib/Dialog/index.model';
+import Dialog from '../../lib/Dialog';
 import Options from './Options';
 
 export default function Label(props: LabelProps): JSX.Element {

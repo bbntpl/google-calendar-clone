@@ -1,14 +1,14 @@
 import { useContext, useState } from 'react';
-import './styles.scss';
-import GlobalContext from '../../context/global/GlobalContext';
-import GlobalContextInterface from '../../context/global/index.model';
+import '../styles.scss';
+import GlobalContext from '../../../context/global/GlobalContext';
+import GlobalContextInterface from '../../../context/global/index.model';
 
-import { uniqueID } from '../../util/reusable-funcs';
-import ScheduleMainContent from './components/ScheduleMainContent';
-import TaskBlock from './TaskBlock';
-import EventBlock from './EventBlock';
+import { uniqueID } from '../../../util/reusable-funcs';
+import ScheduleMainContent from './ScheduleMainContent';
+import TaskBlock from '../Task/TaskBlock';
+import EventBlock from '../Event/EventBlock';
 
-export function ScheduleDialog() {
+export default function ScheduleDialog() {
 	const {
 		selectedScheduleType,
 		calendarList,

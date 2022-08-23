@@ -13,8 +13,8 @@ import GlobalContextInterface, {
 import GlobalContext from '../../context/global/GlobalContext';
 import { uniqueID } from '../../util/reusable-funcs';
 
-import NewCalendar from './components/NewCalendar';
-import LabelList from './components/LabelList';
+import NewCalendar from './NewCalendar';
+import LabelList from './LabelList';
 
 export default function CalendarList(): JSX.Element {
 	const { 

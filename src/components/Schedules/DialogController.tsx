@@ -6,8 +6,9 @@ import { DialogProps } from '../../lib/Dialog/index.model';
 import Dialog from '../../lib/Dialog/index';
 import GlobalContext from '../../context/global/GlobalContext';
 import GlobalContextInterface from '../../context/global/index.model';
-import { ScheduleDialog } from './ScheduleDialog';
+import ScheduleDialog from './Dialog';
 
+// It controls the visibility of the schedule dialog
 export default function DialogController() {
 	const {
 		scheduleDialogRef,

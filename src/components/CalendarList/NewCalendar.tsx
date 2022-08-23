@@ -1,17 +1,16 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
 	UserActionType,
 	CalendarLabelType,
 	COLORS,
-} from '../../../context/global/index.model';
-import useComponentVisible from '../../../hooks/useComponentVisible';
-import { uniqueID } from '../../../util/reusable-funcs';
-import { AddNewCalendarProps, InitCalendarLblProps } from '../index.model';
-import { DialogProps } from '../../../lib/Dialog/index.model';
-import '../styles.scss';
+} from '../../context/global/index.model';
+import useComponentVisible from '../../hooks/useComponentVisible';
+import { uniqueID } from '../../util/reusable-funcs';
+import { AddNewCalendarProps, InitCalendarLblProps } from './index.model';
+import { DialogProps } from '../../lib/Dialog/index.model';
+import './styles.scss';
 
-
-import Dialog from '../../../lib/Dialog';
+import Dialog from '../../lib/Dialog';
 import Options from './Options';
 
 const initCalendarLblProps: InitCalendarLblProps = {

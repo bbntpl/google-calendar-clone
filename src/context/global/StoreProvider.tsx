@@ -1,4 +1,4 @@
-import { ReactNode, useMemo, useReducer, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useReducer, useState } from 'react';
 import GlobalContext from './GlobalContext';
 import GlobalContextInterface, {
 	BooleansOnlyObj,
@@ -10,9 +10,6 @@ import GlobalContextInterface, {
 	UserActionType,
 } from './index.model';
 import { uniqueID } from '../../util/reusable-funcs';
-
-// const offset = new Date().getTimezoneOffset();
-// console.log(offset, dayTimeArr);
 
 import useCursorPosition from '../../hooks/useCursorPosition';
 import useComponentVisible from '../../hooks/useComponentVisible';
@@ -60,7 +57,6 @@ const calendarListReducer = (
 	return actionTypes<CalendarLabelType, CalendarListActionTypes>
 		(state, action, actionTypeAdd);
 }
-
 
 // initial states
 const initialCalendarList: Array<CalendarLabelType> = [{
@@ -111,6 +107,13 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
 			return calendarIds.includes(schedule.id);
 		});
 	}, [savedSchedules, calendarList]);
+
+	useEffect(() => {
+		setDefaultDateTime(defaultDateTime => ({
+			...defaultDateTime, 
+			date: stringifiedDate(selectedDate),
+		}));
+	}, [selectedDate]);
 
 	const contextValues: GlobalContextInterface = {
 		calendarType,

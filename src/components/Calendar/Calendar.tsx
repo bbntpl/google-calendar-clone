@@ -1,10 +1,11 @@
 import { useContext } from 'react';
-import './styles.scss';
 import GlobalContextInterface, { 
 	CalendarType, 
 } from '../../context/global/index.model';
 import GlobalContext from '../../context/global/GlobalContext';
-import CalendarDays from './components/Type/CalendarDays';
+import './styles.scss';
+
+import CalendarDays from './Type/CalendarDays';
 
 function CalendarByType({ calendarType }: { calendarType: CalendarType }) {
 	switch (calendarType) {
@@ -18,6 +19,7 @@ function CalendarByType({ calendarType }: { calendarType: CalendarType }) {
 			return <div>default</div>
 	}
 }
+
 export default function Calendar() {
 	const { calendarType } = useContext(GlobalContext) as GlobalContextInterface;
 	return (

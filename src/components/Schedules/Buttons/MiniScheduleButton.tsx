@@ -1,7 +1,7 @@
 import { GooglePlus } from '../../../lib/icons';
-import { ScheduleCreationProps } from './ScheduleHOC';
+import { ScheduleButtonProps } from './index.model';
 
-export default function MiniScheduleCreation(props: ScheduleCreationProps): JSX.Element {
+export default function MiniScheduleButton(props: ScheduleButtonProps): JSX.Element {
 	const { hocMethods } = props;
 	const { toggleVisibility } = hocMethods;
 	return (

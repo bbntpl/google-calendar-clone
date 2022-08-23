@@ -1,19 +1,9 @@
 import { useContext } from 'react';
-import ScheduleTypeList from '../ScheduleTypeList';
-import useComponentVisible from '../../../hooks/useComponentVisible';
-import GlobalContext from '../../../context/global/GlobalContext';
-import GlobalContextInterface from '../../../context/global/index.model';
-import { DialogProps } from '../../../lib/Dialog/index.model';
-import Dialog from '../../../lib/Dialog';
-
-interface HOCMethods {
-	toggleVisibility: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void,
-}
-
-export interface ScheduleCreationProps {
-	dialogProps: DialogProps,
-	hocMethods: HOCMethods
-}
+import { ScheduleTypeList } from './Dialog';
+import useComponentVisible from '../../hooks/useComponentVisible';
+import GlobalContext from '../../context/global/GlobalContext';
+import GlobalContextInterface from '../../context/global/index.model';
+import Dialog from '../../lib/Dialog';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function withScheduleDialogToggle(Component: any) {

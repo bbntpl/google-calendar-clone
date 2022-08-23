@@ -1,5 +1,5 @@
-import { CalendarLabelType, CalendarListActionTypes, COLORS } from '../../context/global/index.model';
 import { Dispatch, SetStateAction } from 'react';
+import { CalendarLabelType, CalendarListActionTypes, COLORS } from '../../context/global/index.model';
 import { DialogViewState } from '../../lib/Dialog/index.model';
 
 interface CalendarListSetStateAction {

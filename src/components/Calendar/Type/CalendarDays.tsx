@@ -1,16 +1,14 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import dayjs from 'dayjs';
-import './styles.scss';
+import GlobalContext from '../../../context/global/GlobalContext';
+import GlobalContextInterface from '../../../context/global/index.model';
+import { dayjsObjByDay } from '../../../util/calendar-arrangement';
+import '../styles.scss';
 
-import GlobalContext from '../../../../context/global/GlobalContext';
-import GlobalContextInterface from '../../../../context/global/index.model';
-import DayHeader from '../Day/DayHeader';
-import { HoursBlockCol } from '../Time/HoursBlockCol';
-import { dayjsObjByDay } from '../../../../util/calendar-arrangement';
-import TimeLabel from '../Time/TimeLabel';
-import { HoursLblCol } from '../Time/HoursLblCol';
+import { DayHeader } from '../Day';
+import { TimeBlockCol, TimeLabelCol, TimeLabel } from '../Time';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -46,7 +44,7 @@ export default function CalendarDays({ numOfDays }: { numOfDays: number }) {
 			</div>
 			<div className='calendar-component-container'>
 				<div className='calendar__date-cols'>
-					<HoursLblCol />
+					<TimeLabelCol />
 				</div>
 				<div className='calendar-grid'>
 					{
@@ -55,7 +53,7 @@ export default function CalendarDays({ numOfDays }: { numOfDays: number }) {
 								<div
 									key={`time-col-${dayIndex + 1}`}
 									className='calendar__date-cols'>
-									<HoursBlockCol
+									<TimeBlockCol
 										dayIndex={dayIndex}
 										dateObj={dateObj(dayIndex)}
 									/>

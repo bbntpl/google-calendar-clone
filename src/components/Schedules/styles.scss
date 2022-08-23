@@ -28,6 +28,11 @@
 	margin: 1.5rem 2rem;
 }
 
+.input-division {
+	display: flex;
+	gap: 0 1rem;
+}
+
 .schedule-input__title {
 	height: 35px;
 	font-size: 1.2rem;
@@ -61,4 +66,8 @@
 	& .hover-effect {
 		@extend %hover-effect;
 	}
+}
+
+.schedule__create-btn-wrapper {
+	position: relative;
 }

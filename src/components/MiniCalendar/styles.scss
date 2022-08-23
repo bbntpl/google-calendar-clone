@@ -5,12 +5,12 @@
 	&--static { width: 230px;}
 	&--by-content { width: 100%; }
 }
-.calendar__month--small {
+.calendar-month--mini {
 	width: 100%;
 	position: relative;
 }
 
-.calendar__week-grid--small {
+.calendar__week-grid--mini {
 	display: flex;
 	flex-wrap: wrap;
 	width: 100%;
@@ -51,7 +51,7 @@
 	}
 }
 
-.calendar__month__header--small {
+.calendar-month__header--mini {
 	h5 {
 		color: $primary-color-font;
 		line-height: 2.5;

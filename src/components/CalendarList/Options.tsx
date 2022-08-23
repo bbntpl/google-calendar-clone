@@ -1,9 +1,9 @@
-import { COLORS, UserActionType } from '../../../context/global/index.model';
-import { EventHandlers, WrappedComponentProps } from '../index.model';
-import { COLOR_NAMES } from '../../../util/calendar-arrangement';
+import { COLORS, UserActionType } from '../../context/global/index.model';
+import { EventHandlers, WrappedComponentProps } from './index.model';
+import { COLOR_NAMES } from '../../util/calendar-arrangement';
 
-import '../styles.scss';
-import CheckIcon from '../../../assets/icons/check.png';
+import './styles.scss';
+import CheckIcon from '../../assets/icons/check.png';
 
 export default function Options(props: WrappedComponentProps) {
 	const { 
@@ -61,7 +61,7 @@ export default function Options(props: WrappedComponentProps) {
 			</ul>
 			{
 				colors ?
-					<div className='o-wrapper dialog-calendar__colors-container'>
+					<div className='o-wrapper color-selection'>
 						{COLOR_NAMES.map((color, index) => {
 							const { color: selectedColor } = calendarProps;
 							return (

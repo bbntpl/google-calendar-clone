@@ -1,4 +1,3 @@
-import React from 'react';
 import ScheduleTypeSelector from './ScheduleTypeSelector';
 
 interface MainContentProps {

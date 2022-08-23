@@ -1,4 +1,4 @@
-import { useContext} from 'react';
+import { useContext } from 'react';
 import GlobalContext from './context/global/GlobalContext';
 import GlobalContextInterface from './context/global/index.model';
 
@@ -8,11 +8,11 @@ import './styles/flexbox.css';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import Calendar from './components/Calendar';
-import withScheduleDialogToggle from './components/Schedules/components/ScheduleHOC';
-import MiniScheduleCreation from './components/Schedules/components/MiniScheduleCreation';
+import withScheduleDialogToggle from './components/Schedules/ScheduleHOC';
+import { MiniScheduleButton } from './components/Schedules/Buttons';
 import DialogController from './components/Schedules/DialogController';
 
-const CreateSchedule = withScheduleDialogToggle(MiniScheduleCreation);
+const CreateSchedule = withScheduleDialogToggle(MiniScheduleButton);
 
 function App(): JSX.Element {
 	const {

@@ -82,25 +82,25 @@ export function getShortDate(dateObj: Dayjs) {
 export function getScheduleTimeOptions() {
 	const minutes = ['00', '15', '30', '45'];
 	const dayTime: DayTimeElement[] = new Array(96).fill([]).map((_, i) => {
-		const hourCount = Math.floor(i / 4) + 1;
+		const hourCount = Math.floor(i / minutes.length) + 1;
 		const hours = (hourCount % 12) === 0 ? 12 : hourCount % 12;
 		const ampm = hourCount < 12 || hourCount === 24 ? 'AM' : 'PM';
 		return {
 			dayPortion: ampm,
 			hour: hours,
 			hourIndex: hourCount - 1,
-			minute: minutes[i % 4] as AvailableMinutes,
-			time: `${hours} ${ampm}`,
-			timeWithoutMinutes: `${hours}:${minutes[i % 4]} ${ampm}`,
+			minute: minutes[i % minutes.length] as AvailableMinutes,
+			time: `${hours}:${minutes[i % minutes.length]} ${ampm}`,
+			timeWithoutMinutes: `${hours} ${ampm}`,
 		}
 	});
 
 	// move the last group of items(12AM) in front 
-	const startingIndex = (24 * minutes.length) - minutes.length;
-	dayTime.splice(0, 1, dayTime[startingIndex]);
-	dayTime.splice(1, 1, dayTime[startingIndex + 1]);
-	dayTime.splice(2, 1, dayTime[startingIndex + 2]);
-	dayTime.splice(3, 1, dayTime[startingIndex + 3]);
+	const lastElementIndex = dayTime.length - 1;
+	for(let i = 0; i < minutes.length; i++){
+		dayTime.unshift(dayTime.splice(lastElementIndex, 1)[0]);
+	}
+
 	return dayTime;
 }
 

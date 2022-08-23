@@ -1,7 +1,7 @@
-import { DialogProps } from '../../lib/Dialog/index.model';
+import { DialogProps } from '../../../lib/Dialog/index.model';
 import { useContext } from 'react';
-import GlobalContext from '../../context/global/GlobalContext';
-import GlobalContextInterface from '../../context/global/index.model';
+import GlobalContext from '../../../context/global/GlobalContext';
+import GlobalContextInterface from '../../../context/global/index.model';
 
 export default function ScheduleTypeList(props: DialogProps) {
 	const { setIsDialogVisible } = props;

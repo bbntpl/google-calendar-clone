@@ -1,9 +1,8 @@
-import React from 'react';
-import './styles.scss';
 import { useContext } from 'react';
-import GlobalContext from '../../../../context/global/GlobalContext';
-import GlobalContextInterface, { SelectedDate } from '../../../../context/global/index.model';
-import { stringifiedDate } from '../../../../util/calendar-arrangement';
+import GlobalContext from '../../../context/global/GlobalContext';
+import GlobalContextInterface, { SelectedDate } from '../../../context/global/index.model';
+import { stringifiedDate } from '../../../util/calendar-arrangement';
+import '../styles.scss';
 
 interface TimeRowProps {
 	dayIndex: number,
@@ -20,12 +19,12 @@ export default function TimeRow(props: TimeRowProps) {
 	} = useContext(GlobalContext) as GlobalContextInterface;
 
 	return (
-		<div className='calendar__time-row'>
+		<div className='calendar-time__row'>
 			{
-				!dayIndex && <div className='calendar__block-side' />
+				!dayIndex && <div className='calendar-time__block-side' />
 			}
 			<div
-				className='calendar__block'
+				className='calendar-time__block'
 				onClick={() => {
 					setDefaultDateTime({
 						date: stringifiedDate(dateValues),

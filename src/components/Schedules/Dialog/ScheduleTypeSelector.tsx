@@ -4,7 +4,7 @@ import GlobalContextInterface, {
 	ScheduleNames,
 } from '../../../context/global/index.model';
 
-function ScheduleTypeSelector() {
+export default function ScheduleTypeSelector() {
 	const {
 		selectedScheduleType,
 		setSelectedScheduleType,
@@ -28,5 +28,3 @@ function ScheduleTypeSelector() {
 		</div>
 	)
 }
-
-export default ScheduleTypeSelector;
