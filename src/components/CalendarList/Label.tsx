@@ -31,6 +31,7 @@ export default function Label(props: LabelProps): JSX.Element {
 		})
 	};
 
+	// remove calendar from the calendar list
 	const removeCalendar = () => {
 		dispatchCalendarList({ type: UserActionType.REMOVE, payload: id });
 		setIsAlertVisible(false);
@@ -44,7 +45,7 @@ export default function Label(props: LabelProps): JSX.Element {
 		},
 		Component: Options,
 		delta: { x: 20, y: 0 },
-		stylePosition: 'fixed',
+		isSelfAdjustable: true,
 		isDialogVisible,
 		setIsDialogVisible,
 	}
@@ -53,8 +54,10 @@ export default function Label(props: LabelProps): JSX.Element {
 		<>
 			<li
 				className='row middle-xs start-xs'
+				// display label options when hovered
 				onMouseOver={() => setShowOptions(true)}
 				onMouseOut={() => setShowOptions(false)}
+				style={{ position: 'relative' }}
 			>
 				<span>
 					<input
@@ -91,6 +94,7 @@ export default function Label(props: LabelProps): JSX.Element {
 							</button>
 						</span> : <span />
 				}
+				<Dialog ref={dialogRef} {...componentProps} />
 			</li>
 			{
 				isAlertVisible
@@ -103,7 +107,6 @@ export default function Label(props: LabelProps): JSX.Element {
 					/>
 					: null
 			}
-			<Dialog ref={dialogRef} {...componentProps} />
 		</>
 	)
 }

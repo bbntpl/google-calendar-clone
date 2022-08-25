@@ -1,8 +1,17 @@
 import { Dispatch, SetStateAction } from 'react';
-import { EventInterface, TaskInterface } from '../../context/global/index.model';
+import { 
+	DateTimeInputInterface, 
+	EventInterface, 
+	TaskInterface, 
+} from '../../context/global/index.model';
 
-interface ScheduleStates extends EventInterface, TaskInterface { }
+export interface ScheduleStates extends EventInterface, TaskInterface { }
 export interface ScheduleEventProps {
 	evtProps: Omit<EventInterface, 'id' | 'type' | 'title'>,
 	setScheduleProps: Dispatch<SetStateAction<ScheduleStates>>,
+}
+
+export interface DateTimeInputsProps {
+	dateTime: DateTimeInputInterface,
+	setScheduleProps: Dispatch<SetStateAction<ScheduleStates>>
 }

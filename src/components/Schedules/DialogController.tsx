@@ -18,7 +18,6 @@ export default function DialogController() {
 
 	const scheduleTypeProps = {
 		componentProps: {},
-		positionOffset: { x:'-50%', y:'-50%' },
 		stylePosition: 'centered' as const,
 	}
 

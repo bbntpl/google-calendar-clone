@@ -75,7 +75,9 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 		componentProps,
 		Component: Options,
 		isDialogVisible,
+		positionOffset: { x: 0, y: 0 },
 		setIsDialogVisible,
+		stylePosition: 'absolute',
 	}
 
 	return (
@@ -86,14 +88,16 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 					onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => handleKeyUp(e)}
 					onChange={handleCalendarChange}
 				/>
-				<button
-					className={`${newCalendar.color} rounded-color`}
-					onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-						recordPos(e);
-						setIsDialogVisible(visible => !visible);
-					}}
-				/>
-				<Dialog ref={dialogRef} {...dialogOptionsProps} />
+				<div style={{ position: 'relative' }}>
+					<button
+						className={`${newCalendar.color} rounded-color`}
+						onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+							recordPos(e);
+							setIsDialogVisible(visible => !visible);
+						}}
+					/>
+					<Dialog ref={dialogRef} {...dialogOptionsProps} />
+				</div>
 			</li>
 		</>
 	)

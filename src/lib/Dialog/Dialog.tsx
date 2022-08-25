@@ -1,49 +1,30 @@
+import React, { forwardRef } from 'react';
 import { DialogProps } from './index.model';
-import React, { forwardRef, MutableRefObject, useContext, useEffect, useState } from 'react';
-import GlobalContext from '../../context/global/GlobalContext';
-import GlobalContextInterface from '../../context/global/index.model';
 
 import DialogCore from './DialogCore';
-import usePositionDialog from '../../hooks/usePositionDialog';
 
 type ComponentToPassRef = HTMLDivElement | null;
 const DialogOptions = forwardRef<ComponentToPassRef, DialogProps>(
 	(props, ref) => {
-		const { position } = useContext(GlobalContext) as GlobalContextInterface;
 		const {
-			closeable = true,
+			isCloseable = true,
 			componentProps,
 			Component,
-			defaultPosition = null,
 			// represents change in x or/and y
 			delta = { x: 0, y: 0 },
-			draggable = true,
+			isDraggable = true,
 			isDialogVisible,
-			positionOffset = { x: 0, y: 0 },
+			isSelfAdjustable = false,
+			positionOffset = null,
 			setIsDialogVisible,
 			stylePosition = 'fixed',
 		} = props;
-
-		const [dialogDim, setDialogDim] = useState({ width: 0, height: 0 });
-		const cursorPosition = usePositionDialog(position, delta, dialogDim);
-		const refCurrent = (ref as MutableRefObject<HTMLDivElement>).current;
-
-		useEffect(() => {
-			if (refCurrent) {
-				const { clientHeight, clientWidth } = refCurrent;
-				setDialogDim({
-					width: clientWidth,
-					height: clientHeight,
-				});
-			}
-		}, []);
 
 		// props to be passed on the dialog component
 		const dialogProps = {
 			delta,
 			draggableProps: {
-				defaultPosition: defaultPosition || cursorPosition,
-				...(!draggable && { disabled: true }),
+				...(!isDraggable && { disabled: true }),
 				handle: '.handle',
 				...(positionOffset && { positionOffset }),
 			},
@@ -52,7 +33,7 @@ const DialogOptions = forwardRef<ComponentToPassRef, DialogProps>(
 					setIsDialogVisible((visible: boolean) => !visible)
 				},
 			},
-			flags: { draggable, closeable },
+			flags: { isDraggable, isCloseable, isSelfAdjustable },
 			stylePosition,
 		}
 

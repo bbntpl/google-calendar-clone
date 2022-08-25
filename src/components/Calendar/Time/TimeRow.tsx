@@ -16,6 +16,7 @@ export default function TimeRow(props: TimeRowProps) {
 	const {
 		setIsScheduleDialogVisible,
 		setDefaultDateTime,
+		recordPos,
 	} = useContext(GlobalContext) as GlobalContextInterface;
 
 	return (
@@ -25,7 +26,8 @@ export default function TimeRow(props: TimeRowProps) {
 			}
 			<div
 				className='calendar-time__block'
-				onClick={() => {
+				onClick={(e) => {
+					recordPos(e);
 					setDefaultDateTime({
 						date: stringifiedDate(dateValues),
 						time: { 

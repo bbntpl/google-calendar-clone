@@ -6,8 +6,9 @@ import { Position } from '../../context/global/index.model';
 type CommonTypes = string | number | boolean | null;
 
 interface DialogFlags {
-	draggable: boolean,
-	closeable: boolean,
+	isDraggable: boolean,
+	isCloseable: boolean,
+	isSelfAdjustable: boolean,
 }
 
 interface EventHandlers {
@@ -45,13 +46,11 @@ export interface WrappedDialogProps {
 }
 
 export interface DialogProps extends
-	DialogViewState {
+	DialogViewState, Partial<DialogFlags> {
 	componentProps: ComponentGenericProps,
 	Component: (props: any) => JSX.Element,
-	closeable?: boolean,
 	defaultPosition?: DraggableProps['defaultPosition'],
 	delta?: Position,
-	draggable?: boolean,
 	positionOffset?: DraggableProps['positionOffset'],
 	stylePosition?: 'absolute' | 'fixed' | 'default' | 'centered'
 }

@@ -4,24 +4,27 @@ import { useState, useEffect, useRef } from 'react';
 // the written events
 export default function useComponentVisible(initialIsVisible: boolean) {
 	const [isComponentVisible, setIsComponentVisible] = useState(initialIsVisible);
-	const componentRef = useRef<HTMLDivElement>(null);
+	const linkRef = useRef<HTMLButtonElement | null>(null);
+	const componentRef = useRef<HTMLDivElement | null>(null);
 
 	const handleHideDropdown = (e: KeyboardEvent) => {
 		if (e.key !== 'Escape') return;
 		setIsComponentVisible(false);
 	};
-
+	type TargetElements = HTMLDivElement | HTMLElement | HTMLButtonElement | null;
 	const handleCurrentTarget = (
-		ref: React.MutableRefObject<HTMLElement | null>,
+		ref: React.MutableRefObject<TargetElements>,
 		{ target }: MouseEvent,
 	) => {
 		if (ref.current != null) {
 			return (!ref.current.contains(target as Node))
 		}
 	}
-
 	const handleClickOutside = (event: MouseEvent) => {
-		if (componentRef.current && handleCurrentTarget(componentRef, event)) {
+		if (
+			componentRef.current &&
+			handleCurrentTarget(componentRef, event) &&
+			handleCurrentTarget(linkRef, event)) {
 			setIsComponentVisible(false);
 		}
 	};
@@ -35,5 +38,10 @@ export default function useComponentVisible(initialIsVisible: boolean) {
 		};
 	});
 
-	return [componentRef, isComponentVisible, setIsComponentVisible] as const;
+	return [
+		componentRef,
+		isComponentVisible,
+		setIsComponentVisible,
+		linkRef,
+	] as const;
 }

@@ -50,7 +50,6 @@ export default function EventBlock(props: ScheduleEventProps): JSX.Element {
 	return (
 		<div className='calendar-schedule__event schedule-block'>
 			<DateTimeInputs
-				calendarId={calendarId}
 				dateTime={dateTime}
 				setScheduleProps={setScheduleProps}
 			/>

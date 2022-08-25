@@ -29,13 +29,14 @@ export default function Header(): JSX.Element {
 		miniCalendarRef,
 		isMiniCalendarVisible,
 		setIsMiniCalendarVisible,
+		linkRef,
 	] = useComponentVisible(false);
 
 	const miniCalendarProps = {
 		componentProps: {},
 		Component: MiniCalendar,
 		positionOffset: { x: 0, y: 40 },
-		draggable: false,
+		isDraggable: false,
 		isDialogVisible: isMiniCalendarVisible,
 		setIsDialogVisible: setIsMiniCalendarVisible,
 		stylePosition: 'absolute' as const,
@@ -111,6 +112,7 @@ export default function Header(): JSX.Element {
 								visibilities.sidebar
 									? <h6 className='header-text'>{displayRelevantDate()}</h6>
 									: <button
+										ref={linkRef}
 										className='clear-btn--no-effects row align-xs'
 										onClick={() => setIsMiniCalendarVisible(visible => !visible)}
 									>
