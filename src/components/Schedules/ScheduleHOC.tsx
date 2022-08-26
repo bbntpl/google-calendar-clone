@@ -1,16 +1,20 @@
-import { useContext } from 'react';
+import { useContext, forwardRef } from 'react';
 import { ScheduleTypeList } from './Dialog';
 import useComponentVisible from '../../hooks/useComponentVisible';
 import GlobalContext from '../../context/global/GlobalContext';
 import GlobalContextInterface from '../../context/global/index.model';
 import Dialog from '../../lib/Dialog';
-import { off } from 'process';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function withScheduleDialogToggle(Component: any) {
 	const wrappedComponent = () => {
 		const { recordPos } = useContext(GlobalContext) as GlobalContextInterface;
-		const [dialogRef, isDialogVisible, setIsDialogVisible] = useComponentVisible(false);
+		const [
+			dialogRef,
+			isDialogVisible,
+			setIsDialogVisible,
+			linkRef,
+		] = useComponentVisible(false);
 
 		const dialogProps = {
 			componentProps: {},
@@ -23,21 +27,22 @@ export default function withScheduleDialogToggle(Component: any) {
 			setIsDialogVisible,
 			stylePosition: 'absolute' as const,
 		};
+		
 		const toggleVisibility = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
 			recordPos(e);
 			setIsDialogVisible(visible => !visible);
 		}
 
-		const wrappedComponentProps = {
-			dialogProps,
+		const wrappedButtonProps = {
 			hocMethods: {
 				toggleVisibility,
 			},
 		}
 
+		const ComponentWithRef = forwardRef<HTMLButtonElement>(Component);
 		return (
 			<>
-				<Component {...wrappedComponentProps} />
+				<ComponentWithRef ref={linkRef} {...wrappedButtonProps} />
 				<Dialog ref={dialogRef} {...dialogProps} />
 			</>
 		)

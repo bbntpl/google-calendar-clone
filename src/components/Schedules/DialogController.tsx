@@ -18,11 +18,11 @@ export default function DialogController() {
 
 	const scheduleTypeProps = {
 		componentProps: {},
-		stylePosition: 'centered' as const,
 	}
 
 	const scheduleDialogProps: DialogProps = Object.assign({
 		Component: ScheduleDialog,
+		isSelfAdjustable: true,
 		isDialogVisible: isScheduleDialogVisible,
 		setIsDialogVisible: setIsScheduleDialogVisible,
 	}, scheduleTypeProps);

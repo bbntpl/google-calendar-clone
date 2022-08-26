@@ -29,7 +29,12 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 	} = props;
 
 	const [newCalendar, setNewCalendar] = useState(initCalendarLblProps);
-	const [dialogRef, isDialogVisible, setIsDialogVisible] = useComponentVisible(false);
+	const [
+		dialogRef, 
+		isDialogVisible, 
+		setIsDialogVisible,
+		dialogLinkRef,
+	] = useComponentVisible(false);
 
 	// event handlers
 	const addCalendar = () => {
@@ -75,7 +80,7 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 		componentProps,
 		Component: Options,
 		isDialogVisible,
-		positionOffset: { x: 0, y: 0 },
+		positionOffset: { x: 20, y: 20 },
 		setIsDialogVisible,
 		stylePosition: 'absolute',
 	}
@@ -90,6 +95,7 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 				/>
 				<div style={{ position: 'relative' }}>
 					<button
+						ref={dialogLinkRef}
 						className={`${newCalendar.color} rounded-color`}
 						onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
 							recordPos(e);

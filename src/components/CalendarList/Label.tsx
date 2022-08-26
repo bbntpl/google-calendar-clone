@@ -20,8 +20,19 @@ export default function Label(props: LabelProps): JSX.Element {
 	const { id, selected, color, name, removable } = calendarProps;
 
 	const [showOptions, setShowOptions] = useState(false);
-	const [alertRef, isAlertVisible, setIsAlertVisible] = useComponentVisible(false);
-	const [dialogRef, isDialogVisible, setIsDialogVisible] = useComponentVisible(false);
+	const [
+		alertRef,
+		isAlertVisible,
+		setIsAlertVisible,
+		alertLinkRef,
+	] = useComponentVisible(false);
+
+	const [
+		dialogRef,
+		isCalendarLblOptsVisible,
+		setIsCalendarLblOptsVisible,
+		dialogLinkRef,
+	] = useComponentVisible(false);
 
 	const handleToggleCbox = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.stopPropagation();
@@ -38,7 +49,7 @@ export default function Label(props: LabelProps): JSX.Element {
 	};
 
 	// props to be passed on the wrapped component
-	const componentProps: DialogProps = {
+	const calendarLblOptsProps: DialogProps = {
 		componentProps: {
 			flags: { options: true, colors: true },
 			...props,
@@ -46,8 +57,9 @@ export default function Label(props: LabelProps): JSX.Element {
 		Component: Options,
 		delta: { x: 20, y: 0 },
 		isSelfAdjustable: true,
-		isDialogVisible,
-		setIsDialogVisible,
+		isDialogVisible: isCalendarLblOptsVisible,
+		setIsDialogVisible: setIsCalendarLblOptsVisible,
+		stylePosition: 'fixed',
 	}
 
 	return (
@@ -76,6 +88,7 @@ export default function Label(props: LabelProps): JSX.Element {
 							{
 								removable
 									? <button
+										ref={alertLinkRef}
 										onClick={() => setIsAlertVisible(true)}
 										className='clear-btn--no-effects'
 									>
@@ -84,9 +97,10 @@ export default function Label(props: LabelProps): JSX.Element {
 									: null
 							}
 							<button
+								ref={dialogLinkRef}
 								onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
 									recordPos(e);
-									setIsDialogVisible(true);
+									setIsCalendarLblOptsVisible(visible => !visible);
 								}}
 								className='clear-btn--no-effects'
 							>
@@ -94,7 +108,7 @@ export default function Label(props: LabelProps): JSX.Element {
 							</button>
 						</span> : <span />
 				}
-				<Dialog ref={dialogRef} {...componentProps} />
+				<Dialog ref={dialogRef} {...calendarLblOptsProps} />
 			</li>
 			{
 				isAlertVisible

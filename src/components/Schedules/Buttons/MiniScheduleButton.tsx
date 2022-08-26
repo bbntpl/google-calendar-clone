@@ -1,14 +1,23 @@
+import { LegacyRef } from 'react';
 import { GooglePlus } from '../../../lib/icons';
 import { ScheduleButtonProps } from './index.model';
 
-export default function MiniScheduleButton(props: ScheduleButtonProps): JSX.Element {
+function MiniScheduleButton(
+	props: ScheduleButtonProps,
+	linkRef: LegacyRef<HTMLButtonElement> | undefined,
+): JSX.Element {
 	const { hocMethods } = props;
 	const { toggleVisibility } = hocMethods;
 	return (
 		<div className='google-plus-wrapper'>
-			<button className='google-plus-wrapper--small' onClick={toggleVisibility}>
+			<button
+				ref={linkRef}
+				className='google-plus-wrapper--small'
+				onClick={toggleVisibility}>
 				<GooglePlus />
 			</button>
 		</div>
 	)
 }
+
+export default MiniScheduleButton
