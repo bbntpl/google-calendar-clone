@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { DateTimeInputsProps, ScheduleStates } from '../index.model';
 import {
-	getScheduleTimeOptions,
+	stringifiedDateToObj,
+	dayjsObj,
+	getScheduleTimeOptions, getShortDate,
 } from '../../../util/calendar-arrangement';
 
 import ClockIcon from '../../../assets/icons/clock.png';
@@ -9,9 +11,13 @@ import SortDownIcon from '../../../assets/icons/sort-down.png';
 import useComponentVisible from '../../../hooks/useComponentVisible';
 import MiniCalendar from '../../MiniCalendar';
 import Dialog from '../../../lib/Dialog';
+import GlobalContext from '../../../context/global/GlobalContext';
+import GlobalContextInterface from '../../../context/global/index.model';
+import { stringifyDate } from '../../../util/calendar-arrangement';
 
 export default function DateTimeInputs(props: DateTimeInputsProps) {
 	const { dateTime, setScheduleProps } = props;
+	const { selectedDate } = useContext(GlobalContext) as GlobalContextInterface;
 	const { start, end } = dateTime.time;
 	const timeOptions = getScheduleTimeOptions();
 
@@ -31,6 +37,12 @@ export default function DateTimeInputs(props: DateTimeInputsProps) {
 		stylePosition: 'absolute' as const,
 	}
 
+	const dateToDisplay = () => {
+		const dateByValues = stringifiedDateToObj(stringifyDate(selectedDate));
+		console.log(selectedDate);
+		const date = getShortDate(dayjsObj(selectedDate));
+		return date;
+	}
 	const selectHoursEl = (index: number, propName: string) => {
 		const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
 			const value = event.target.value;
@@ -69,7 +81,7 @@ export default function DateTimeInputs(props: DateTimeInputsProps) {
 						className='clear-btn'
 						onClick={() => setIsMiniCalendarVisible(visible => !visible)} >
 						<span>
-							{/* {getShortDate(dayjsObj())} */}
+							{dateToDisplay()}
 						</span>
 						<img
 							src={SortDownIcon}

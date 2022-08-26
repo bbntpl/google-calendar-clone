@@ -3,8 +3,8 @@ import ChevronRight from '../../assets/icons/chevron-right.png';
 import '../../styles/main.scss';
 
 interface SwitcherProps {
-	chevronLeftHandler: () => void,
-	chevronRightHandler: () => void,
+	goPrev: () => void,
+	goNext: () => void,
 }
 
 const containerStyles = {
@@ -16,13 +16,13 @@ const containerStyles = {
 }
 
 export default function Switcher(props: SwitcherProps): JSX.Element {
-	const { chevronLeftHandler, chevronRightHandler } = props;
+	const { goPrev, goNext } = props;
 	return (
 		<div style={containerStyles as React.CSSProperties}>
-			<button className='clear-btn' onClick={chevronLeftHandler}>
+			<button className='clear-btn' onClick={goPrev}>
 				<img src={ChevronLeft} />
 			</button>
-			<button className='clear-btn' onClick={chevronRightHandler}>
+			<button className='clear-btn' onClick={goNext}>
 				<img src={ChevronRight} />
 			</button>
 		</div>

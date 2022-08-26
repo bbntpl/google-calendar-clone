@@ -13,7 +13,7 @@ import { uniqueID } from '../../util/reusable-funcs';
 
 import useCursorPosition from '../../hooks/useCursorPosition';
 import useComponentVisible from '../../hooks/useComponentVisible';
-import { dateToday, stringifiedDate } from '../../util/calendar-arrangement';
+import { dateToday, stringifyDate } from '../../util/calendar-arrangement';
 import { ScheduleNames } from './index.model';
 
 function actionTypes<
@@ -92,7 +92,7 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
 
 	// default values for schedule dialog(task or event)
 	const [defaultDateTime, setDefaultDateTime] = useState({
-		date: stringifiedDate(dateToday),
+		date: stringifyDate(dateToday),
 		time: {
 			start: new Date().getHours(),
 			end: new Date().getHours(),
@@ -111,7 +111,7 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
 	useEffect(() => {
 		setDefaultDateTime(defaultDateTime => ({
 			...defaultDateTime, 
-			date: stringifiedDate(selectedDate),
+			date: stringifyDate(selectedDate),
 		}));
 	}, [selectedDate]);
 

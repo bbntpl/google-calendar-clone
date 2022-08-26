@@ -10,6 +10,12 @@ interface TimeBlockColProps {
 	dateObj: Dayjs
 }
 
+const dateFormats = {
+	yearFormat: 'YYYY', 
+	monthFormat: 'M', 
+	dayFormat: 'D',
+}
+
 export default function TimeBlockCol(props: TimeBlockColProps) {
 	const { dayIndex, dateObj } = props;
 	return <>
@@ -18,7 +24,7 @@ export default function TimeBlockCol(props: TimeBlockColProps) {
 				if (hourIndex % 4 !== 0) return;
 				return <TimeRow
 					key={`${hour}-${hourIndex}`}
-					dateValues={getDateValues(dateObj)}
+					dateValues={getDateValues(dateObj, dateFormats)}
 					time={timeWithoutMinutes}
 					hourIndex={hourIndex}
 					dayIndex={dayIndex}

@@ -8,3 +8,13 @@ export const objKeysToArr = (obj) => {
 export const getIndexByProp = ({ arr, key, value }) => {
 	return arr.findIndex(obj => obj[key] === value);
 }
+
+export const arrayElsToString = (arr) => {
+	return arr.reduce((text, val) => {
+		return text += `${val} `;
+	}, '')
+}
+
+export const removeMatchedTxtOnArr = (arr, text) => {
+	return arr.filter(el => text !== el);
+}

@@ -103,15 +103,16 @@ export default function useDialogAdjuster(
 			setBounds(bounds => ({
 				...bounds,
 				left: dialogDim.width - initCursorPos.x,
+				right: windowDim.width - initCursorPos.x,
 				bottom: windowDim.height - initCursorPos.y - dialogDim.height,
 			}));
 		} else if (right && bottom) {
-			setBounds(bounds => ({
-				...bounds,
+			setBounds({
+				right: windowDim.width - initCursorPos.x,
 				left: dialogDim.width - initCursorPos.x,
 				top: initCursorPos.y * -1 + dialogDim.height,
 				bottom: windowDim.height - initCursorPos.y,
-			}));
+			});
 		}
 	}
 

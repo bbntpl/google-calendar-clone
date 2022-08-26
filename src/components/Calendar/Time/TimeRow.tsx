@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import GlobalContext from '../../../context/global/GlobalContext';
 import GlobalContextInterface, { SelectedDate } from '../../../context/global/index.model';
-import { stringifiedDate } from '../../../util/calendar-arrangement';
+import { stringifyDate } from '../../../util/calendar-arrangement';
 import '../styles.scss';
 
 interface TimeRowProps {
@@ -29,7 +29,7 @@ export default function TimeRow(props: TimeRowProps) {
 				onClick={(e) => {
 					recordPos(e);
 					setDefaultDateTime({
-						date: stringifiedDate(dateValues),
+						date: stringifyDate(dateValues),
 						time: { 
 							start: hourIndex, 
 							end: (hourIndex + 1),

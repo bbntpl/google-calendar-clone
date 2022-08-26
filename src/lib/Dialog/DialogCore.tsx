@@ -3,16 +3,21 @@ import React, {
 	useContext,
 	useEffect,
 	useState,
+	forwardRef,
 } from 'react';
 import Draggable from 'react-draggable';
-import { forwardRef } from 'react';
 import { WrappedDialogProps } from './index.model';
-import './styles.scss';
-
-import MultiplyIcon from '../../assets/icons/multiply.png';
 import GlobalContext from '../../context/global/GlobalContext';
 import GlobalContextInterface from '../../context/global/index.model';
 import useDialogAdjuster from '../../hooks/useDialogAdjuster';
+
+import './styles.scss';
+import MultiplyIcon from '../../assets/icons/multiply.png';
+
+import {
+	arrayElsToString,
+	removeMatchedTxtOnArr,
+} from '../../util/reusable-funcs';
 
 const CloseBtn = ({ eventHandler }: { eventHandler: () => void }) => (
 	<button
@@ -50,6 +55,10 @@ const DialogCore = forwardRef<HTMLDivElement, WrappedDialogProps>(
 			width: window.innerWidth,
 			height: window.innerHeight,
 		});
+		const [classNames, setClassNames] = useState([
+			`dialog-inner--${stylePosition}`,
+			'initial-dialog-transition',
+		]);
 
 		// size of the referenced component
 		const componentRefSize = {
@@ -65,9 +74,6 @@ const DialogCore = forwardRef<HTMLDivElement, WrappedDialogProps>(
 				delta,
 				windowDim,
 			);
-
-		const componentClassNames = `dialog-inner--${stylePosition} 
-		initial-dialog-transition`;
 
 		// auto update window width and height by resize update
 		useEffect(() => {
@@ -97,12 +103,13 @@ const DialogCore = forwardRef<HTMLDivElement, WrappedDialogProps>(
 		useEffect(() => {
 			if (isSelfAdjustable && isPosAdjusted) {
 				setTimeout(() => {
-					(ref as MutableRefObject<HTMLDivElement>)
-						.current.classList.remove('initial-dialog-transition');
-				}, 1000);
+					const newClassNames = removeMatchedTxtOnArr(classNames, 'initial-dialog-transition');
+					setClassNames(([
+						...newClassNames,
+					]));
+				}, 500);
 			}
 		}, [isPosAdjusted]);
-
 		return (
 			<Draggable
 				{...draggableProps}
@@ -113,7 +120,7 @@ const DialogCore = forwardRef<HTMLDivElement, WrappedDialogProps>(
 				}
 				bounds={bounds}
 			>
-				<div ref={ref} className={componentClassNames}>
+				<div ref={ref} className={arrayElsToString(classNames)}>
 					{
 						(isDraggable || isCloseable) &&
 						<div className='row middle-xs handle-wrapper'>

@@ -1,5 +1,5 @@
 import { Fragment, useState, useEffect, useContext } from 'react';
-import { getMonth, stringifiedDate, dateToday } from '../../util/calendar-arrangement';
+import { getMonth, stringifyDate, dateToday } from '../../util/calendar-arrangement';
 import './styles.scss';
 import dayjs from 'dayjs';
 
@@ -66,13 +66,13 @@ export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
 	const numericalDateModifier = ({ year, month, day }:
 		Record<NonOptionalKeys<SelectedDate>, number>) => {
 		const isReceivedDateToday =
-			stringifiedDate(dateToday) === stringifiedDate({ year, month, day });
+			stringifyDate(dateToday) === stringifyDate({ year, month, day });
 		const isSelectedMonth = month === Number(currentMonth[2][1].format('M'));
 		if (isReceivedDateToday && isSelectedMonth) {
 			return '--today';
 		} else if (!isSelectedMonth) {
 			return '--greyed';
-		} else if (stringifiedDate(selectedDate) === stringifiedDate({ year, month, day })) {
+		} else if (stringifyDate(selectedDate) === stringifyDate({ year, month, day })) {
 			return '--selected';
 		}
 		return '';
@@ -87,8 +87,8 @@ export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
 					${currentMonth[2][1].format('YYYY')}
 				`}</h5>
 					<Switcher
-						chevronLeftHandler={decrementMonthIndex}
-						chevronRightHandler={incrementMonthIndex}
+						goPrev={decrementMonthIndex}
+						goNext={incrementMonthIndex}
 					/>
 				</div>
 				<div className='calendar__week-grid--mini'>

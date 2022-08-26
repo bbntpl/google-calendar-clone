@@ -51,7 +51,13 @@ export default function DayHeader(props: DayHeaderProps) {
 		selectDateByClick();
 		setCalendarType('day');
 	}
-	
+
+	const dateFormats = {
+		yearFormat: 'YYYY',
+		monthFormat: 'M',
+		dayFormat: 'D',
+	}
+
 	return (
 		<div className='calendar-day__header'>
 			<div className={`calendar-day__info--${!isCentered ? 'not-' : ''}centered flex-centered`}>
@@ -65,7 +71,10 @@ export default function DayHeader(props: DayHeaderProps) {
 					{dateObj.format('D')}
 				</div>
 			</div>
-			<TimeRow dateValues={getDateValues(dateObj)} dayIndex={dayIndex} />
+			<TimeRow
+				dateValues={getDateValues(dateObj, dateFormats)}
+				dayIndex={dayIndex}
+			/>
 		</div>
 	)
 }

@@ -14,8 +14,14 @@ interface DayTimeElement {
 	hour: number,
 	hourIndex: number,
 	minute: AvailableMinutes,
-	time: string
-	timeWithoutMinutes: string
+	time: string,
+	timeWithoutMinutes: string,
+}
+
+interface DateFormatting {
+	yearFormat: string,
+	monthFormat: string,
+	dayFormat: string,
 }
 
 export const COLOR_NAMES: Array<COLORS>
@@ -28,8 +34,8 @@ export function convertTZ(date: Date, tzString: string) {
 
 export const dateToday = {
 	year: dayjs().year(),
-	month: Number(dayjs().format('M')),
-	day: Number(dayjs().format('D')),
+	month: Number(dayjs().format('MM')),
+	day: Number(dayjs().format('DD')),
 };
 
 export const dayjsObj = ({ year, month, day }: SelectedDate) => {
@@ -64,18 +70,21 @@ export function getYear(year = dayjs().year()) {
 	})
 }
 
-export function getDateValues(dateObj: Dayjs) {
-	const year = Number(dateObj.format('YYYY'));
-	const month = Number(dateObj.format('M'));
-	const day = Number(dateObj.format('D'));
+export function getDateValues(dateObj: Dayjs, dateFormats: DateFormatting) {
+	const { yearFormat, monthFormat, dayFormat } = dateFormats;
+	const year = Number(dateObj.format(yearFormat));
+	const month = Number(dateObj.format(monthFormat));
+	const day = Number(dateObj.format(dayFormat));
 	// props based on date codes, not zero-indexed
-	return { year, month, day }
+	return { year, month, day };
 }
 
 export function getShortDate(dateObj: Dayjs) {
-	const year = Number(dateObj.format('YYYY'));
-	const month = Number(dateObj.format('MMM'));
-	const day = Number(dateObj.format('DD'));
+	const { year, month, day} = getDateValues(dateObj, {
+		yearFormat: 'YYYY', 
+		monthFormat: 'MMM', 
+		dayFormat: 'DD',
+	});
 	return `${month} ${day}, ${year}`
 }
 
@@ -97,15 +106,14 @@ export function getScheduleTimeOptions() {
 
 	// move the last group of items(12AM) in front 
 	const lastElementIndex = dayTime.length - 1;
-	for(let i = 0; i < minutes.length; i++){
+	for (let i = 0; i < minutes.length; i++) {
 		dayTime.unshift(dayTime.splice(lastElementIndex, 1)[0]);
 	}
-
 	return dayTime;
 }
 
 // excluding seconds "ss"
-export function stringifiedDate(args: Record<NonOptionalKeys<SelectedDate>, number>) {
+export function stringifyDate(args: Record<NonOptionalKeys<SelectedDate>, number>) {
 	// convert month code to zero-indexed 0-11
 	const monthIndex = args.month - 1;
 	const datePropsToArr: ArrayThreeOrMore<number> = objKeysToArr({ ...args, month: monthIndex }) as ArrayThreeOrMore<number>;
@@ -115,11 +123,10 @@ export function stringifiedDate(args: Record<NonOptionalKeys<SelectedDate>, numb
 		.slice(0, -9);
 }
 
-export function dateObject(stringifiedDate: string) {
-	const year = Number(stringifiedDate.slice(0, 3));
-	const month = Number(stringifiedDate.slice(4, 5));
-	const day = Number(stringifiedDate.slice(6, 7));
-	const hours = stringifiedDate.slice(8, 9) || '';
-	const minutes = stringifiedDate.slice(10, 11) || '';
-	return { year, month, day, hours, minutes };
+export function stringifiedDateToObj(stringifiedDate: string) {
+	const year = stringifiedDate.slice(0, 4);
+	const month = stringifiedDate.slice(4, 6);
+	const day = stringifiedDate.slice(6, 8);
+	console.log(year, month, day);
+	return { year, month, day };
 }

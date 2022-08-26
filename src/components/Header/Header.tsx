@@ -42,28 +42,34 @@ export default function Header(): JSX.Element {
 		stylePosition: 'absolute' as const,
 	}
 
+	const dateFormats = {
+		yearFormat: 'YYYY', 
+		monthFormat: 'M', 
+		dayFormat: 'D',
+	}
+
 	const dateRangeSwitcher = () => {
 		const dateObj = dayjsObj({ ...selectedDate });
 		switch (calendarType) {
 			case 'day':
 				return {
-					chevronLeftHandler: () => setSelectedDate(getDateValues(dateObj.subtract(1, 'day'))),
-					chevronRightHandler: () => setSelectedDate(getDateValues(dateObj.add(1, 'day'))),
+					goPrev: () => setSelectedDate(getDateValues(dateObj.subtract(1, 'day'), dateFormats)),
+					goNext: () => setSelectedDate(getDateValues(dateObj.add(1, 'day'), dateFormats)),
 				};
 			case 'week':
 				return {
-					chevronLeftHandler: () => setSelectedDate(getDateValues(dateObj.subtract(7, 'day'))),
-					chevronRightHandler: () => setSelectedDate(getDateValues(dateObj.add(7, 'day'))),
+					goPrev: () => setSelectedDate(getDateValues(dateObj.subtract(7, 'day'), dateFormats)),
+					goNext: () => setSelectedDate(getDateValues(dateObj.add(7, 'day'), dateFormats)),
 				};
 			case 'fourDays':
 				return {
-					chevronLeftHandler: () => setSelectedDate(getDateValues(dateObj.subtract(4, 'day'))),
-					chevronRightHandler: () => setSelectedDate(getDateValues(dateObj.add(4, 'day'))),
+					goPrev: () => setSelectedDate(getDateValues(dateObj.subtract(4, 'day'), dateFormats)),
+					goNext: () => setSelectedDate(getDateValues(dateObj.add(4, 'day'), dateFormats)),
 				};
 			default:
 				return {
-					chevronLeftHandler: () => setSelectedDate(getDateValues(dateObj.subtract(1, 'month'))),
-					chevronRightHandler: () => setSelectedDate(getDateValues(dateObj.add(1, 'month'))),
+					goPrev: () => setSelectedDate(getDateValues(dateObj.subtract(1, 'month'), dateFormats)),
+					goNext: () => setSelectedDate(getDateValues(dateObj.add(1, 'month'), dateFormats)),
 				};
 		}
 	}
