@@ -40,7 +40,8 @@
 }
 
 .initial-dialog-transition {
-	transition: all 1s;
+	transition: 0.5s, opacity 0s;
+	-webkit-transition: 0.5s, opacity 0s;
 }
 
 .handle-wrapper{

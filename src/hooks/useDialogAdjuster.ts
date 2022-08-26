@@ -86,11 +86,6 @@ export default function useDialogAdjuster(
 
 		// adjust the position of the dialog depending
 		// on the location of the cursor positions
-
-		// left: initCursorPos.x * -1,
-		// top: initCursorPos.y * -1,
-		// right: windowDim.width - initCursorPos.x - dialogDim.width,
-		// bottom: windowDim.height - initCursorPos.y - dialogDim.height,
 		if(left && top) {
 			setBounds(bounds => ({
 				...bounds,

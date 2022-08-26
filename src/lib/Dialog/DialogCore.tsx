@@ -1,4 +1,9 @@
-import React, { MutableRefObject, useContext, useEffect, useMemo, useState } from 'react';
+import React, {
+	MutableRefObject,
+	useContext,
+	useEffect,
+	useState,
+} from 'react';
 import Draggable from 'react-draggable';
 import { forwardRef } from 'react';
 import { WrappedDialogProps } from './index.model';
@@ -10,7 +15,10 @@ import GlobalContextInterface from '../../context/global/index.model';
 import useDialogAdjuster from '../../hooks/useDialogAdjuster';
 
 const CloseBtn = ({ eventHandler }: { eventHandler: () => void }) => (
-	<button className='clear-btn--no-effects close-btn' onClick={eventHandler}>
+	<button
+		className='clear-btn--no-effects close-btn'
+		onClick={eventHandler}
+	>
 		<img className='icon--small' src={MultiplyIcon} />
 	</button>
 );
@@ -58,19 +66,8 @@ const DialogCore = forwardRef<HTMLDivElement, WrappedDialogProps>(
 				windowDim,
 			);
 
-		// class name that applies transition to component
-		const conditionalTransition = () => {
-			if (isSelfAdjustable) {
-				if (!isPosAdjusted) {
-					return 'initial-dialog-transition';
-				}
-				return '';
-			}
-			return '';
-		}
-
 		const componentClassNames = `dialog-inner--${stylePosition} 
-		${conditionalTransition()}`;
+		initial-dialog-transition`;
 
 		// auto update window width and height by resize update
 		useEffect(() => {
@@ -95,18 +92,16 @@ const DialogCore = forwardRef<HTMLDivElement, WrappedDialogProps>(
 			}
 		}, [(ref as MutableRefObject<HTMLDivElement>).current]);
 
+		// remove the specified class name of the component
+		// when a certain flag value became positive
 		useEffect(() => {
-			const classRemover = (e) => {
-				event.target.classList.remove('initial-dialog-transition');
-			};
-
-			const tableToWatch = document.querySelector('#watch-this-table');
-			tableToWatch.addEventListener('animationend', classRemover);
-
-			return () => {
-				tableToWatch.removeEventListener('animationend', classRemover);
-			};
-		}, []);
+			if (isSelfAdjustable && isPosAdjusted) {
+				setTimeout(() => {
+					(ref as MutableRefObject<HTMLDivElement>)
+						.current.classList.remove('initial-dialog-transition');
+				}, 1000);
+			}
+		}, [isPosAdjusted]);
 
 		return (
 			<Draggable
@@ -135,5 +130,4 @@ const DialogCore = forwardRef<HTMLDivElement, WrappedDialogProps>(
 	})
 
 DialogCore.displayName = 'DialogCore';
-
 export default DialogCore;
