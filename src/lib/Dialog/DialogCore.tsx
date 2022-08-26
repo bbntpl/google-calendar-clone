@@ -1,15 +1,13 @@
-import React, { MutableRefObject, useContext, useEffect, useState } from 'react';
+import React, { MutableRefObject, useContext, useEffect, useMemo, useState } from 'react';
 import Draggable from 'react-draggable';
 import { forwardRef } from 'react';
 import { WrappedDialogProps } from './index.model';
 import './styles.scss';
 
 import MultiplyIcon from '../../assets/icons/multiply.png';
-// import GlobalContext from '../../context/global/GlobalContext';
-// import GlobalContextInterface from '../../context/global/index.model';
-import usePositionDialog from '../../hooks/usePositionDialog';
 import GlobalContext from '../../context/global/GlobalContext';
 import GlobalContextInterface from '../../context/global/index.model';
+import useDialogAdjuster from '../../hooks/useDialogAdjuster';
 
 const CloseBtn = ({ eventHandler }: { eventHandler: () => void }) => (
 	<button className='clear-btn--no-effects close-btn' onClick={eventHandler}>
@@ -19,7 +17,6 @@ const CloseBtn = ({ eventHandler }: { eventHandler: () => void }) => (
 
 const DialogCore = forwardRef<HTMLDivElement, WrappedDialogProps>(
 	({ Component, props }, ref) => {
-
 		// eslint-disable-next-line react/display-name
 		const { componentProps, dialogProps } = props;
 		const {
@@ -36,46 +33,92 @@ const DialogCore = forwardRef<HTMLDivElement, WrappedDialogProps>(
 			isSelfAdjustable,
 		} = flags;
 		const { handle } = draggableProps;
-		const {
-			position,
-		} = useContext(GlobalContext) as GlobalContextInterface;
+		const { position: cursorPosition }
+			= useContext(GlobalContext) as GlobalContextInterface;
 
-		// state container for dom rect
+		// state container for dom rect obj
 		const [rect, setRect] = useState<DOMRect | null>(null);
+		const [windowDim, setWindowDim] = useState({
+			width: window.innerWidth,
+			height: window.innerHeight,
+		});
 
-		// const newPosition = {
-		// 	x: rect ? rect.x : 0,
-		// 	y: rect ? rect.y : 0,
-		// };
-
+		// size of the referenced component
 		const componentRefSize = {
-			width: rect ? rect.width : 0,
-			height: rect ? rect.height : 0,
+			width: rect?.width || 0,
+			height: rect?.height || 0,
 		};
 
-		// auto adjust the position of the component
-		// in order to avoid being positioned outside the viewport screen
-		const autoAdjustPosition = usePositionDialog(
-			componentRefSize,
-			position,
-			delta,
-		);
+		// custom hooks that adjust the position or behavior of the dialog
+		const { adjustedDialogPos, bounds, isPosAdjusted }
+			= useDialogAdjuster(
+				componentRefSize,
+				cursorPosition,
+				delta,
+				windowDim,
+			);
 
+		// class name that applies transition to component
+		const conditionalTransition = () => {
+			if (isSelfAdjustable) {
+				if (!isPosAdjusted) {
+					return 'initial-dialog-transition';
+				}
+				return '';
+			}
+			return '';
+		}
+
+		const componentClassNames = `dialog-inner--${stylePosition} 
+		${conditionalTransition()}`;
+
+		// auto update window width and height by resize update
+		useEffect(() => {
+			const resizeWatcher = () => {
+				const { innerWidth, innerHeight } = window;
+				setWindowDim({
+					width: innerWidth,
+					height: innerHeight,
+				});
+			};
+			window.addEventListener('resize', resizeWatcher);
+			return () => {
+				window.removeEventListener('resize', resizeWatcher);
+			};
+		}, []);
+
+		// check whether ref contains a dom node in current
 		useEffect(() => {
 			const refCurrent = (ref as MutableRefObject<HTMLDivElement>).current;
 			if (refCurrent && !rect) {
 				setRect(refCurrent.getBoundingClientRect());
 			}
-		}, [(ref as MutableRefObject<HTMLDivElement>).current])
+		}, [(ref as MutableRefObject<HTMLDivElement>).current]);
+
+		useEffect(() => {
+			const classRemover = (e) => {
+				event.target.classList.remove('initial-dialog-transition');
+			};
+
+			const tableToWatch = document.querySelector('#watch-this-table');
+			tableToWatch.addEventListener('animationend', classRemover);
+
+			return () => {
+				tableToWatch.removeEventListener('animationend', classRemover);
+			};
+		}, []);
 
 		return (
 			<Draggable
 				{...draggableProps}
 				positionOffset={
-					isSelfAdjustable ? autoAdjustPosition : draggableProps.positionOffset
+					isSelfAdjustable
+						? adjustedDialogPos
+						: draggableProps.positionOffset
 				}
+				bounds={bounds}
 			>
-				<div ref={ref} className={`dialog-inner--${stylePosition}`}>
+				<div ref={ref} className={componentClassNames}>
 					{
 						(isDraggable || isCloseable) &&
 						<div className='row middle-xs handle-wrapper'>

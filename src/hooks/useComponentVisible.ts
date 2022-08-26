@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 
-// a custom hook that controls the visibility of a component using
-// the written events
-export default function useComponentVisible(initialIsVisible: boolean) {
+type ElementsToRef = HTMLDivElement | HTMLElement | HTMLButtonElement;
+
+// a custom hook that controls the visibility 
+// of the referenced component
+function useComponentVisible(initialIsVisible: boolean) {
 	const [isComponentVisible, setIsComponentVisible] = useState(initialIsVisible);
 	const linkRef = useRef<HTMLButtonElement | null>(null);
 	const componentRef = useRef<HTMLDivElement | null>(null);
@@ -11,20 +13,22 @@ export default function useComponentVisible(initialIsVisible: boolean) {
 		if (e.key !== 'Escape') return;
 		setIsComponentVisible(false);
 	};
-	type TargetElements = HTMLDivElement | HTMLElement | HTMLButtonElement | null;
+	
 	const handleCurrentTarget = (
-		ref: React.MutableRefObject<TargetElements>,
+		ref: React.MutableRefObject<ElementsToRef | null>,
 		{ target }: MouseEvent,
 	) => {
 		if (ref.current != null) {
 			return (!ref.current.contains(target as Node))
 		}
 	}
+
 	const handleClickOutside = (event: MouseEvent) => {
 		if (
 			componentRef.current &&
 			handleCurrentTarget(componentRef, event) &&
-			handleCurrentTarget(linkRef, event)) {
+			// when somewhat loses the ref to link, allow to untoggle component anyway
+			(linkRef.current === null || handleCurrentTarget(linkRef, event))) {
 			setIsComponentVisible(false);
 		}
 	};
@@ -45,3 +49,5 @@ export default function useComponentVisible(initialIsVisible: boolean) {
 		linkRef,
 	] as const;
 }
+
+export default useComponentVisible;
