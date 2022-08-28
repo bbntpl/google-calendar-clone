@@ -1,51 +1,27 @@
 @import '../../styles/variables';
 
-%hover-effect {
-	color: $color-royal-blue;
+.calendar-schedule__event {
+	& > div {
+		margin: 1rem 0;
+	}
 }
 
-.schedule-type-selector {
-	display: flex;
-	gap: 0 12px;
+/*** BUTTONS TO OPEN SCHEDUEL DIALOG***/
+.schedule__create-btn-wrapper {
+	position: relative;
 }
 
-[class^=schedule-type] {
-	border: 0;
-	padding: 8px 4px;
-	background-color: transparent;
-	font-weight: 500;
-	@include child-attribute('--active') {
-		@extend %hover-effect;
-		background-color: #e8f0fe;
-	}
-	:hover {
-		@extend %hover-effect;
-	}
+/*** SCHEDULE DIALOG ***/
+.schedule-dialog {
+	color: $primary-color-font;
+}
+.schedule-dialog__options {
+	color: $primary-color-font;
 }
 
 .schedule-block {
 	width: 100%;
 	margin: 1.5rem 2rem;
-}
-
-.input-division {
-	position: relative;
-	display: flex;
-	gap: 0 1rem;
-}
-
-.schedule-input__title {
-	height: 35px;
-	font-size: 1.2rem;
-	padding: 0 2px;
-	border: none;
-	border-bottom: 1px solid rgba(0,0,0,0.6);
-}
-
-.calendar-schedule__event {
-	& > div {
-		margin: 1rem 0;
-	}
 }
 
 .schedule-input-list {
@@ -69,6 +45,60 @@
 	}
 }
 
-.schedule__create-btn-wrapper {
+%hover-effect {
+	color: $color-royal-blue;
+}
+
+.schedule-type-selector {
+	display: flex;
+	gap: 0 12px;
+}
+
+[class^=schedule-type] {
+	border: 0;
+	padding: 8px 4px;
+	background-color: transparent;
+	font-weight: 500;
+	@include child-attribute('--active') {
+		@extend %hover-effect;
+		background-color: #e8f0fe;
+	}
+	:hover {
+		@extend %hover-effect;
+	}
+}
+
+/*** SCHEDULE INPUTS ***/
+[class^=schedule-input] {
+	color: $primary-color-font;
+}
+.schedule-input__title {
+	height: 35px;
+	font-size: 1.2rem;
+	padding: 0 2px;
+	border: none;
+	border-bottom: 1px solid rgb(204, 204, 204);
+}
+
+.schedule-input__date-time {
 	position: relative;
+	display: flex;
+	gap: .3rem 1rem;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.schedule-input__textarea {
+	height: 100px;
+	width: 300px;
+	resize: none;
+	border: 1px solid rgb(204, 204, 204);
+	padding: 10px;
+}
+
+.schedule-input__text {
+	width: 200px;
+	height: 20px;
+	padding: 0 5px;
+	border: 1px solid rgb(204, 204, 204);
 }

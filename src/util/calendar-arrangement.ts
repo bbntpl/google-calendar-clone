@@ -1,11 +1,16 @@
 import dayjs, { Dayjs } from 'dayjs';
-import { CalendarType, COLORS, NonOptionalKeys, SelectedDate } from '../context/global/index.model';
-import { objKeysToArr } from './reusable-funcs';
+import {
+	CalendarType,
+	COLORS,
+	DateUnits,
+} from '../context/global/index.model';
+import { hasOnlyDigits, objKeysToArr } from './reusable-funcs';
 
+// array that contains three or more elements
 type ArrayThreeOrMore<T> = [T, T, ...T[]]
 type AvailableMinutes = '00' | '15' | '30' | '45';
 interface DayjsObjByDay {
-	date: SelectedDate | undefined,
+	date: DateUnits | undefined,
 	calendarType: CalendarType,
 	index: number,
 }
@@ -32,13 +37,13 @@ export function convertTZ(date: Date, tzString: string) {
 		.toLocaleString('en-US', { timeZone: tzString }));
 }
 
-export const dateToday = {
+export const dateToday: DateUnits = {
 	year: dayjs().year(),
 	month: Number(dayjs().format('MM')),
 	day: Number(dayjs().format('DD')),
 };
 
-export const dayjsObj = ({ year, month, day }: SelectedDate) => {
+export const dayjsObj = ({ year, month, day }: DateUnits) => {
 	return dayjs(`${year.toString()}-${month.toString()}-${day.toString()}`);
 }
 
@@ -70,19 +75,28 @@ export function getYear(year = dayjs().year()) {
 	})
 }
 
-export function getDateValues(dateObj: Dayjs, dateFormats: DateFormatting) {
+export function getDateValues(dateObj: Dayjs, dateFormats: DateFormatting)
+	: DateUnits {
 	const { yearFormat, monthFormat, dayFormat } = dateFormats;
 	const year = Number(dateObj.format(yearFormat));
-	const month = Number(dateObj.format(monthFormat));
-	const day = Number(dateObj.format(dayFormat));
+	const month = dateObj.format(monthFormat);
+	const day = dateObj.format(dayFormat);
+	const numericalYear = Number(dateObj.format(yearFormat));
+	const numericalMonth = Number(dateObj.format(monthFormat));
+	const numericalDay = Number(dateObj.format(dayFormat));
+
 	// props based on date codes, not zero-indexed
-	return { year, month, day };
+	return {
+		year: hasOnlyDigits(year) ? numericalYear : year,
+		month: hasOnlyDigits(month) ? numericalMonth : month,
+		day: hasOnlyDigits(day) ? numericalDay : day,
+	};
 }
 
 export function getShortDate(dateObj: Dayjs) {
-	const { year, month, day} = getDateValues(dateObj, {
-		yearFormat: 'YYYY', 
-		monthFormat: 'MMM', 
+	const { year, month, day } = getDateValues(dateObj, {
+		yearFormat: 'YYYY',
+		monthFormat: 'MMM',
 		dayFormat: 'DD',
 	});
 	return `${month} ${day}, ${year}`
@@ -113,10 +127,11 @@ export function getScheduleTimeOptions() {
 }
 
 // excluding seconds "ss"
-export function stringifyDate(args: Record<NonOptionalKeys<SelectedDate>, number>) {
+export function stringifyDate(args: DateUnits) {
 	// convert month code to zero-indexed 0-11
-	const monthIndex = args.month - 1;
-	const datePropsToArr: ArrayThreeOrMore<number> = objKeysToArr({ ...args, month: monthIndex }) as ArrayThreeOrMore<number>;
+	const monthIndex = (args.month as number) - 1;
+	const datePropsToArr: ArrayThreeOrMore<number>
+		= objKeysToArr({ ...args, month: monthIndex }) as ArrayThreeOrMore<number>;
 	return (new Date(...datePropsToArr))
 		.toISOString()
 		.replace(/[^0-9]/g, '')
@@ -125,8 +140,7 @@ export function stringifyDate(args: Record<NonOptionalKeys<SelectedDate>, number
 
 export function stringifiedDateToObj(stringifiedDate: string) {
 	const year = stringifiedDate.slice(0, 4);
-	const month = stringifiedDate.slice(4, 6);
-	const day = stringifiedDate.slice(6, 8);
-	console.log(year, month, day);
+	const month = Number(stringifiedDate.slice(4, 6));
+	const day = Number(stringifiedDate.slice(6, 8));
 	return { year, month, day };
 }

@@ -6,8 +6,7 @@ import dayjs from 'dayjs';
 import Switcher from '../../lib/switcher';
 import GlobalContext from '../../context/global/GlobalContext';
 import GlobalContextInterface, {
-	NonOptionalKeys,
-	SelectedDate,
+	DateUnits,
 } from '../../context/global/index.model';
 
 type RootElementModifier = 'static' | 'by-content';
@@ -16,7 +15,7 @@ interface MiniCalendarProps {
 }
 interface SelectCalendarDayProps {
 	numericalMonth: number,
-	numericalDate: SelectedDate,
+	numericalDate: DateUnits,
 }
 
 export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
@@ -35,22 +34,22 @@ export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
 	}, [currentMonthIndex]);
 
 	useEffect(() => {
-		const yearIndex = selectedDate.year - dayjs().year();
+		const yearIndex = (selectedDate.year as number) - dayjs().year();
 		const newMonthIndex = yearIndex === 0
-			? selectedDate.month - 1
-			: (yearIndex * 12) + (selectedDate.month - 1);
+			? (selectedDate.month as number) - 1
+			: (yearIndex * 12) + ((selectedDate.month as number) - 1);
 		setCurrentMonthIndex(newMonthIndex);
 	}, [selectedDate])
 
 	const decrementMonthIndex = () => setCurrentMonthIndex(index => index - 1);
 	const incrementMonthIndex = () => setCurrentMonthIndex(index => index + 1);
 
-	const handleSelectedDay = (date: Record<NonOptionalKeys<SelectedDate>, number>) => {
+	const handleSelectedDay = (date: DateUnits) => {
 		setSelectedDate(date);
 	}
 
 	// onclick handler when clicking the day in calendar
-	const handleClick = (numericalDate: SelectedDate) => {
+	const handleClick = (numericalDate: DateUnits) => {
 		handleSelectedDay(numericalDate);
 	}
 
@@ -63,8 +62,7 @@ export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
 	}
 
 	// it results in a styling modifier depending on the met conditions
-	const numericalDateModifier = ({ year, month, day }:
-		Record<NonOptionalKeys<SelectedDate>, number>) => {
+	const numericalDateModifier = ({ year, month, day }: DateUnits) => {
 		const isReceivedDateToday =
 			stringifyDate(dateToday) === stringifyDate({ year, month, day });
 		const isSelectedMonth = month === Number(currentMonth[2][1].format('M'));

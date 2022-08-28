@@ -1,20 +1,29 @@
 import { useContext, useState } from 'react';
 import '../styles.scss';
 import GlobalContext from '../../../context/global/GlobalContext';
-import GlobalContextInterface from '../../../context/global/index.model';
+import GlobalContextInterface, {
+	UserActionType,
+	SetState,
+} from '../../../context/global/index.model';
 
 import { uniqueID } from '../../../util/reusable-funcs';
 import ScheduleMainContent from './ScheduleMainContent';
 import TaskBlock from '../Task/TaskBlock';
 import EventBlock from '../Event/EventBlock';
 
-export default function ScheduleDialog() {
+interface ScheduleDialogProps {
+	setIsScheduleDialogVisible: SetState<boolean>;
+}
+export default function ScheduleDialog(props: ScheduleDialogProps) {
+	const { setIsScheduleDialogVisible } = props;
 	const {
 		selectedScheduleType,
 		calendarList,
 		defaultDateTime,
+		dispatchSchedules,
 	} = useContext(GlobalContext) as GlobalContextInterface;
-	const [scheduleProps, setScheduleProps] = useState({
+
+	const defaultScheduleState = {
 		calendarId: calendarList[0].id,
 		color: calendarList[0].color,
 		completed: false,
@@ -32,12 +41,27 @@ export default function ScheduleDialog() {
 		location: '',
 		title: '',
 		type: selectedScheduleType,
+	}
+
+	const [scheduleProps, setScheduleProps] = useState({
+		...defaultScheduleState,
 	});
+
 	const setTitle = (title: string) => {
 		setScheduleProps(setScheduleProps => ({ ...setScheduleProps, title }));
 	}
+
+	const addSchedule = () => {
+		dispatchSchedules({
+			type: UserActionType.ADD,
+			payload: scheduleProps,
+		});
+		setScheduleProps({ ...defaultScheduleState });
+		setIsScheduleDialogVisible(visible => !visible);
+	}
+
 	return (
-		<div className='max-content'>
+		<div className='schedule-dialog'>
 			<ScheduleMainContent
 				title={scheduleProps.title}
 				setTitle={setTitle}
@@ -63,8 +87,8 @@ export default function ScheduleDialog() {
 				// 	setScheduleProps={setScheduleProps}
 				// />
 			}
-			<div>
-				<button>
+			<div className='schedule-dialog__options'>
+				<button onClick={addSchedule}>
 					Save
 				</button>
 			</div>

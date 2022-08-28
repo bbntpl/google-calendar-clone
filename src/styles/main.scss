@@ -79,6 +79,9 @@ button:hover > [class^=icon]{
 	&:hover {
 		background-color: $bg-color--hover;
 	}
+	@include child-attribute('--no-border') {
+		border-radius: 0;
+	}
 }
 
 .clear-btn--no-effects:hover {

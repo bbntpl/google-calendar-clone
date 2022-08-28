@@ -1,60 +1,83 @@
 import { Dispatch, MutableRefObject, SetStateAction } from 'react';
 
-export type CalendarType = 'day' | 'week' | 'month' | 'fourDays';
-export type ScheduleNames = 'task' | 'event';
-export type COLORS = 'black' | 'basil' | 'blueberry' | 'citron' | 'raddichio' | 'tangerine' | 'grafito';
+// reusable types
 export type NonOptionalKeys<T> = {
 	[k in keyof T]-?: undefined extends T[k] ? never : k
 }[keyof T];
+export declare type SetState<T> = Dispatch<SetStateAction<T>>; 
+export interface Position {
+	x: number;
+	y: number;
+}
+export interface BooleansOnlyObj {
+	[key: string]: boolean
+}
 
+// unions that are required on multiple files
+export type CalendarType = 'day' | 'week' | 'month' | 'fourDays';
+
+/*** DATE & TIME ***/
+type DateUnitKeys = 'year' | 'month' | 'day';
+type TimeUnitKeys = 'hours' | 'minutes' | 'timezone';
+type FullDateComponentKeys = DateUnitKeys | TimeUnitKeys;
+export interface DateUnits {
+	year: number;
+	month: number | string;
+	day: number | string
+}
+export type FullDateUnits = { [key in FullDateComponentKeys]: number | string }
 interface TimeSetting {
-	start: number
-	end: number | never
+	start: number;
+	end: number | never;
 }
-
-export interface DateTimeInputInterface {
-	allDay: boolean,
-	once: boolean,
-	date: string, //YYYYMMDD format
-	time: TimeSetting,
-	timezone?: string | never,
+export interface DateTimeInputs extends DefaultDateTime {
+	allDay: boolean;
+	once: boolean;
+	timezone?: string | never;
 }
-
 export interface DefaultDateTime {
-	date: string, //YYYYMMDD format
-	time: TimeSetting,
+	date: string; //YYYYMMDD format
+	time: TimeSetting;
 }
 
+/*** SCHEDULE ***/
+
+// available colors for schedule/calendar input
+export type COLORS = 'black' | 'basil' | 'blueberry' | 'citron' | 'raddichio' | 'tangerine' | 'grafito';
+
+// remove calendar id and date components
 type OmitScheduleProps
 	= Omit<TaskInterface | EventInterface, 'dateTime' | 'calendarId'>;
 
+export type ScheduleNames = 'task' | 'event';
+export type ScheduleTypes = EventInterface | TaskInterface;
+export type SchedulePayload = EditEvent | EditTask;
+export type ScheduleTypesOnArray = Array<EventInterface> | Array<TaskInterface>
 export interface Schedule {
-	id: number,
-	title: string,
-	description: string,
-	calendarId: number,
-	dateTime: DateTimeInputInterface,
-	type: ScheduleNames,
+	id: number;
+	title: string;
+	description: string;
+	calendarId: number;
+	dateTime: DateTimeInputs;
+	type: ScheduleNames;
 }
-
 export interface EventInterface extends Schedule {
-	location: string,
-	color: COLORS,
+	location: string;
+	color: COLORS;
 }
-
-export interface EditEvent extends OmitScheduleProps {
-	dateTime?: DateTimeInputInterface,
-	calendarId?: string,
-}
-
 export interface TaskInterface extends Schedule {
-	completed: boolean,
+	completed: boolean;
+}
+export interface EditEvent extends OmitScheduleProps {
+	dateTime?: DateTimeInputs;
+	calendarId?: string;
+}
+export interface EditTask extends OmitScheduleProps {
+	dateTime?: DateTimeInputs;
+	calendarId?: string;
 }
 
-export interface EditTask extends OmitScheduleProps {
-	dateTime?: DateTimeInputInterface,
-	calendarId?: string,
-}
+/*** CALENDAR ***/
 export interface CalendarLabelType {
 	id: number,
 	name: string,
@@ -63,36 +86,18 @@ export interface CalendarLabelType {
 	color: COLORS
 }
 
-export interface SelectedDate {
-	year: number,
-	month: number,
-	day: number,
-	hours?: number,
-	minutes?: number,
-}
-
-export interface Position {
-	x: number,
-	y: number,
-}
-
 export interface Notification {
 	minute: number,
 	scheduleId: number,
 }
 
-export type ScheduleTypes = EventInterface | TaskInterface;
-export type SchedulePayload = EditEvent | EditTask;
-export type ArrOfScheduleTypes = Array<EventInterface> | Array<TaskInterface>
+/*** USER ACTIONS ***/
 
+// enumerated action types
 export enum UserActionType {
 	ADD = 'ADD',
 	EDIT = 'EDIT',
 	REMOVE = 'REMOVE'
-}
-
-export interface BooleansOnlyObj {
-	[key: string]: boolean
 }
 
 // dispatch action types
@@ -100,13 +105,12 @@ export type ScheduleActionTypes =
 	| { type: UserActionType.ADD, payload: ScheduleTypes }
 	| { type: UserActionType.EDIT, payload: SchedulePayload | Partial<ScheduleTypes> }
 	| { type: UserActionType.REMOVE, payload: number };
-
 export type CalendarListActionTypes =
 	| { type: UserActionType.ADD, payload: CalendarLabelType }
 	| { type: UserActionType.EDIT, payload: CalendarLabelType | Partial<CalendarLabelType> }
 	| { type: UserActionType.REMOVE, payload: number };
 
-export interface GlobalContextInterface {
+export default interface GlobalContextInterface {
 	calendarType: CalendarType,
 	setCalendarType: Dispatch<SetStateAction<CalendarType>>,
 	savedSchedules: Array<ScheduleTypes> | [],
@@ -117,8 +121,8 @@ export interface GlobalContextInterface {
 	setNotifications?: () => Dispatch<SetStateAction<Notification>>,
 	filteredSchedules: Array<ScheduleTypes> | [],
 	selectedSchedule?: ScheduleTypes,
-	selectedDate: SelectedDate, // timestamp,
-	setSelectedDate: Dispatch<SetStateAction<SelectedDate>>, // returning timestamp
+	selectedDate: DateUnits, // collection of date values broken into components,
+	setSelectedDate: Dispatch<SetStateAction<DateUnits>>,
 	visibilities: BooleansOnlyObj,
 	setVisibilities: Dispatch<SetStateAction<BooleansOnlyObj>>,
 	position: Position,
@@ -131,5 +135,3 @@ export interface GlobalContextInterface {
 	selectedScheduleType: ScheduleNames,
 	setSelectedScheduleType: Dispatch<SetStateAction<ScheduleNames>>
 }
-
-export default GlobalContextInterface;

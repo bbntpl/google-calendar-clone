@@ -1,17 +1,22 @@
 import { Dispatch, SetStateAction } from 'react';
-import { 
-	DateTimeInputInterface, 
-	EventInterface, 
-	TaskInterface, 
+import {
+	DateTimeInputs,
+	EventInterface,
+	TaskInterface,
 } from '../../context/global/index.model';
 
 export interface ScheduleStates extends EventInterface, TaskInterface { }
 export interface ScheduleEventProps {
-	evtProps: Omit<EventInterface, 'id' | 'type' | 'title'>,
-	setScheduleProps: Dispatch<SetStateAction<ScheduleStates>>,
+	evtProps: Omit<EventInterface, 'id' | 'type' | 'title'>;
+	setScheduleProps: Dispatch<SetStateAction<ScheduleStates>>;
 }
 
-export interface DateTimeInputsProps {
-	dateTime: DateTimeInputInterface,
-	setScheduleProps: Dispatch<SetStateAction<ScheduleStates>>
+export interface DateTimeBlockProps {
+	dateTime: DateTimeInputs;
+	setScheduleProps: Dispatch<SetStateAction<ScheduleStates>>;
+}
+
+export interface SelectOption {
+	label: string;
+	id: number;
 }

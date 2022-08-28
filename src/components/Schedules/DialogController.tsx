@@ -16,7 +16,11 @@ export default function DialogController() {
 		setIsScheduleDialogVisible,
 	} = useContext(GlobalContext) as GlobalContextInterface;
 
-	const scheduleTypeProps = { componentProps: {} };
+	const scheduleTypeProps = {
+		componentProps: {
+			setIsScheduleDialogVisible,
+		},
+	};
 
 	const scheduleDialogProps: DialogProps = Object.assign({
 		Component: ScheduleDialog,

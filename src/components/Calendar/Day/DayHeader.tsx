@@ -3,7 +3,7 @@ import '../styles.scss';
 
 import TimeRow from '../Time/TimeRow';
 import { dateToday, getDateValues } from '../../../util/calendar-arrangement';
-import { SelectedDate } from '../../../context/global/index.model';
+import { DateUnits } from '../../../context/global/index.model';
 import GlobalContext from '../../../context/global/GlobalContext';
 import { useContext } from 'react';
 import GlobalContextInterface from '../../../context/global/index.model';
@@ -23,7 +23,7 @@ export default function DayHeader(props: DayHeaderProps) {
 	} = useContext(GlobalContext) as GlobalContextInterface;
 	const { dateObj, dayIndex, isCentered = true } = props;
 
-	const areDatesEqual = (dateObjToCompare: SelectedDate) => {
+	const areDatesEqual = (dateObjToCompare: DateUnits) => {
 		const { year, month, day } = dateObjToCompare;
 		const numericalYear = Number(dateObj.format('YYYY'));
 		const numericalMonth = Number(dateObj.format('M'));
@@ -44,7 +44,7 @@ export default function DayHeader(props: DayHeaderProps) {
 		const year = Number(dateObj.format('YYYY'));
 		const month = Number(dateObj.format('M'));
 		const day = Number(dateObj.format('D'));
-		setSelectedDate(date => ({ ...date, year, month, day }));
+		setSelectedDate({ year, month, day });
 	}
 
 	const switchDateAndCalendarType = () => {

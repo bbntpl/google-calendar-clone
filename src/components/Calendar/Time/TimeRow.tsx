@@ -1,6 +1,8 @@
 import { useContext } from 'react';
 import GlobalContext from '../../../context/global/GlobalContext';
-import GlobalContextInterface, { SelectedDate } from '../../../context/global/index.model';
+import GlobalContextInterface, { 
+	DateUnits,
+} from '../../../context/global/index.model';
 import { stringifyDate } from '../../../util/calendar-arrangement';
 import '../styles.scss';
 
@@ -8,7 +10,7 @@ interface TimeRowProps {
 	dayIndex: number,
 	time?: string,
 	hourIndex?: number,
-	dateValues: SelectedDate
+	dateValues: DateUnits
 }
 
 export default function TimeRow(props: TimeRowProps) {
