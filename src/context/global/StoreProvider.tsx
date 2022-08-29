@@ -1,10 +1,12 @@
-import { 
-	ReactNode, 
-	useEffect, 
-	useMemo, 
-	useReducer, 
-	useState, 
+import {
+	ReactNode,
+	useEffect,
+	useMemo,
+	useReducer,
+	useState,
 } from 'react';
+import useCursorPosition from '../../hooks/useCursorPosition';
+import useComponentVisible from '../../hooks/useComponentVisible';
 import GlobalContext from './GlobalContext';
 import GlobalContextInterface, {
 	BooleansOnlyObj,
@@ -16,31 +18,45 @@ import GlobalContextInterface, {
 	UserActionType,
 } from './index.model';
 import { uniqueID } from '../../util/reusable-funcs';
-
-import useCursorPosition from '../../hooks/useCursorPosition';
-import useComponentVisible from '../../hooks/useComponentVisible';
 import { dateToday, stringifyDate } from '../../util/calendar-arrangement';
 import { ScheduleNames } from './index.model';
 import { defaultColorOption } from '../../docs/data';
+import {
+	updateLocalStorage,
+	deleteLocalStorage,
+	getItemFromLocal,
+} from '../../util/local-storage';
 
 function actionTypes<
 	StateType extends ScheduleTypes | CalendarLabelType,
 	ActionType extends CalendarListActionTypes | ScheduleActionTypes
->(state: StateType[] | [], action: ActionType, actionTypeAdd: StateType[]) {
+>(
+	state: StateType[] | [],
+	action: ActionType,
+	accumulatedArr: StateType[],
+	stateName: string,
+) {
 	switch (action.type) {
 		case UserActionType.ADD:
-			return actionTypeAdd;
+			updateLocalStorage(stateName, accumulatedArr);
+			return accumulatedArr;
 		case UserActionType.EDIT:
-			return [...state.map((obj: StateType) => {
+			const editedArr = [...state.map((obj: StateType) => {
 				if (obj.id === action.payload.id) {
 					return Object.assign({}, obj, action.payload);
 				}
 				return obj;
 			})];
+			updateLocalStorage(stateName, editedArr);
+			return editedArr;
 		case UserActionType.REMOVE: // action receives id as its payload prop
-			return [...state.filter((obj: StateType) => {
+			const reducedArr = [...state.filter((obj: StateType) => {
 				return obj.id !== action.payload;
 			})];
+			reducedArr.length
+				? updateLocalStorage(stateName, reducedArr)
+				: deleteLocalStorage(stateName);
+			return reducedArr;
 		default:
 			throw new Error();
 	}
@@ -50,32 +66,42 @@ const scheduleReducer = (
 	state: Array<ScheduleTypes> | [],
 	action: ScheduleActionTypes,
 ) => {
-	const actionTypeAdd = [...state, action.payload as ScheduleTypes];
+	const accumulatedArr = [...state, action.payload as ScheduleTypes];
+	const stateName = 'savedSchedules';
 	return actionTypes<ScheduleTypes, ScheduleActionTypes>
-		(state, action, actionTypeAdd);
+		(state, action, accumulatedArr, stateName);
 }
 
 const calendarListReducer = (
 	state: Array<CalendarLabelType> | [],
 	action: CalendarListActionTypes) => {
-	const actionTypeAdd = state.length < 10
+	const accumulatedArr = state.length < 10
 		? [...state, action.payload as CalendarLabelType]
 		: state;
+	const stateName = 'calendarList';
 	return actionTypes<CalendarLabelType, CalendarListActionTypes>
-		(state, action, actionTypeAdd);
+		(state, action, accumulatedArr, stateName);
 }
 
-const initialCalendarList: Array<CalendarLabelType> = [{
-	id: uniqueID(),
-	name: 'Your Calendar',
-	colorOption: defaultColorOption,
-	selected: true,
-	removable: false,
-}];
+const initialCalendarList: Array<CalendarLabelType>
+	= getItemFromLocal('calendarList').length
+		? getItemFromLocal('calendarList')
+		: [{
+			id: uniqueID(),
+			name: 'Your Calendar',
+			colorOption: defaultColorOption,
+			selected: true,
+			removable: false,
+		}];
 
 export default function StoreProvider({ children }: { children: ReactNode }) {
 	const [calendarType, setCalendarType] = useState<CalendarType>('day');
-	const [savedSchedules, dispatchSchedules] = useReducer(scheduleReducer, []);
+	const [savedSchedules, dispatchSchedules] = useReducer(
+		scheduleReducer,
+		getItemFromLocal('savedSchedules').length
+			? getItemFromLocal('savedSchedules')
+			: [],
+	);
 	const [selectedDate, setSelectedDate] = useState(dateToday);
 	const [selectedScheduleType, setSelectedScheduleType] = useState<ScheduleNames>('event');
 	const { position, recordPos } = useCursorPosition();
@@ -116,7 +142,7 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
 
 	useEffect(() => {
 		setDefaultDateTime(defaultDateTime => ({
-			...defaultDateTime, 
+			...defaultDateTime,
 			date: stringifyDate(selectedDate),
 		}));
 	}, [selectedDate]);

@@ -1,5 +1,9 @@
-const updateLocalStorage = (name, array) => localStorage.setItem(name, JSON.stringify(array));
-const getItemFromLocal = (name: string) => JSON.parse(localStorage.getItem(name) || '{}');
-const deleteLocalStorage = (name) => localStorage.removeItem(name);
+function updateLocalStorage<T>(name: string, array: Array<T>) {
+	return localStorage.setItem(name, JSON.stringify(array))
+}
+function getItemFromLocal(name: string) {
+	return JSON.parse(localStorage.getItem(name) || '{}');
+}
+const deleteLocalStorage =(name: string) => localStorage.removeItem(name);
 
 export { updateLocalStorage, getItemFromLocal, deleteLocalStorage }
