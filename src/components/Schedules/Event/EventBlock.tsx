@@ -3,7 +3,6 @@ import {
 	ScheduleStates, 
 	Option, 
 } from '../index.model';
-import { COLORS } from '../../../context/global/index.model';
 
 import '../styles.scss';
 import CalendarIcon from '../../../assets/icons/calendar.png';
@@ -14,13 +13,14 @@ import CalendarSelection from '../Dialog/CalendarSelection';
 import ColorSelection from './ColorSelection';
 import DescInputBlock from '../Dialog/DescInputBlock';
 import CustomInput from '../Dialog/CustomInputs/CustomInput';
+import { ColorOption } from '../../../docs/data';
 
 export default function EventBlock(props: ScheduleEventProps): JSX.Element {
 	const { evtProps, setScheduleProps } = props;
 	const {
 		location,
 		description,
-		color,
+		colorOption,
 		calendarId,
 		dateTime,
 	} = evtProps;
@@ -70,12 +70,11 @@ export default function EventBlock(props: ScheduleEventProps): JSX.Element {
 		}));
 	}
 
-		const handleColorChange = (option: Option | null) => {
+		const handleColorChange = (option: ColorOption | null) => {
 		if (!option) return;
-		const { label } = option;
 		setScheduleProps((scheduleProps: ScheduleStates) => ({
 			...scheduleProps,
-			color: label as COLORS,
+			colorOption: option,
 		}));
 	}
 
@@ -105,7 +104,7 @@ export default function EventBlock(props: ScheduleEventProps): JSX.Element {
 						handleChange={handleCalendarChange}
 					/>
 					<ColorSelection
-						color={color}
+						colorOption={colorOption}
 						handleChange={handleColorChange}
 					/>
 				</div>

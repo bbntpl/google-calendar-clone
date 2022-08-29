@@ -1,21 +1,18 @@
-import { COLORS } from '../../../context/global/index.model';
-import { COLOR_NAMES } from '../../../util/calendar-arrangement';
-import { Option } from '../index.model';
-
 import CustomSelect from '../Dialog/CustomInputs/CustomSelect';
 import { StylesConfig } from 'react-select';
+import { colorOptions, ColorOption } from '../../../docs/data';
 
 interface ColorSelectionProps {
-	color: COLORS;
-	handleChange: (option: Option | null) => void;
+	colorOption: ColorOption;
+	handleChange: (option: ColorOption | null) => void;
 }
 
-const block = (color = 'transparent') => ({
+const block = (colorValue = 'transparent') => ({
 	alignItems: 'center',
 	display: 'flex',
 	':before': {
-		backgroundColor: color,
-		color: color,
+		backgroundColor: colorValue,
+		color: colorValue,
 		content: '" "',
 		marginRight: 8,
 		height: 8,
@@ -23,42 +20,40 @@ const block = (color = 'transparent') => ({
 	},
 });
 
-const customStyles: StylesConfig<Option> = {
+const customStyles: StylesConfig<ColorOption, false> = {
   control: (styles) => ({
     ...styles,
     backgroundColor: 'white',
-    maxWidth: '250px',
+    maxWidth: '150px',
   }),
   option: (styles, { data }) => {
-    const { label } = data;
+    const { value } = data;
     return {
       ...styles,
+			...block(value),
       backgroundColor: '#fff',
-			class: `color-${label}`,
+			color: value,
       cursor: 'default',
-			maxWidth: '250px',
+			maxWidth: '150px',
     };
   },
 	input: (styles) => ({ ...styles, ...block() }),
-	singleValue: (styles, { data }) => ({ ...styles, ...block(data.label) }),
+	singleValue: (styles, { data }) => ({ ...styles, ...block(data.value) }),
 };
 
-
 export default function ColorSelection(props: ColorSelectionProps) {
-	const { color, handleChange } = props;
+	const { colorOption, handleChange } = props;
 
-	const colorOptions = COLOR_NAMES.map((color, cIndex) => ({
-		label: color,
-		value: cIndex,
-	}));
+	const options = colorOptions.map((colorOption: ColorOption) => (colorOption));
 
-	const colorOption = colorOptions.filter(c => c.label === color);
+	const option = colorOptions.find(option => option.color === colorOption.color);
 
 	return (
 		<CustomSelect
-			options={colorOptions}
-			value={colorOption}
+			options={options}
+			value={option}
 			styles={customStyles}
+			onChange={handleChange}
 		/>
 	)
 }

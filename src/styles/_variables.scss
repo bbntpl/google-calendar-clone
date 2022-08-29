@@ -4,26 +4,17 @@ $bg-color--hover: rgba(60,64,67,.08);
 $dialog-item--hover: rgb(234,234,234);
 
 // colors
-$color-basil: #0B8043;
 $color-black: #000;
-$color-blueberry: #3F51B5;
-$color-citron: #E4C441;
-$color-raddichio: #AD1457;
 $color-royal-blue: #1A73E8;
 $color-rolling-stone: #70757A;
-$color-tangerine: #F4511E;
 $color-grafito: #616161;
 
 // filtered colors
 $filtered-color-white: invert(100%) sepia(0%) saturate(7500%) hue-rotate(119deg) brightness(101%) contrast(103%);
 $filtered-color-light: invert(41%) sepia(9%) saturate(280%) hue-rotate(174deg) brightness(89%) contrast(89%);
 $filtered-color-dark: invert(10%) sepia(2%) saturate(2072%) hue-rotate(187deg) brightness(93%) contrast(92%);
-$filtered-color-basil: invert(28%) sepia(89%) saturate(1254%) hue-rotate(124deg) brightness(94%) contrast(91%);
 $filtered-color-black: invert(0%) sepia(95%) saturate(0%) hue-rotate(256deg) brightness(93%) contrast(101%);
-$filtered-color-blueberry: invert(24%) sepia(79%) saturate(1892%) hue-rotate(220deg) brightness(89%) contrast(81%);;
-$filtered-color-citron: invert(68%) sepia(65%) saturate(432%) hue-rotate(8deg) brightness(103%) contrast(89%);;
-$filtered-color-raddichio: invert(17%) sepia(33%) saturate(6444%) hue-rotate(316deg) brightness(94%) contrast(101%);;
-$filtered-color-tangerine: invert(47%) sepia(98%) saturate(3999%) hue-rotate(350deg) brightness(98%) contrast(95%);;
+$filtered-color-raddichio: invert(17%) sepia(33%) saturate(6444%) hue-rotate(316deg) brightness(94%) contrast(101%);
 $filtered-color-grafito: invert(37%) sepia(13%) saturate(0%) hue-rotate(248deg) brightness(92%) contrast(79%);
 
 @mixin isometric-dim($size) {

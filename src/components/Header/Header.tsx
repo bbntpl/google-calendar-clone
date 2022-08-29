@@ -31,25 +31,25 @@ export default function Header(): JSX.Element {
 		const dateObj = dayjsObj({ ...selectedDate });
 		switch (calendarType) {
 			case 'day':
-				const prevDayValues = getDateValues(dateObj.subtract(1, 'day'), dateFormats);
-				const nextDayValues = getDateValues(dateObj.add(1, 'day'), dateFormats);
+				const prevDayValues: DateUnits = getDateValues(dateObj.subtract(1, 'day'), dateFormats);
+				const nextDayValues: DateUnits = getDateValues(dateObj.add(1, 'day'), dateFormats);
 				return {
-					goPrev: () => setSelectedDate(prevDayValues as DateUnits),
-					goNext: () => setSelectedDate(nextDayValues as DateUnits),
+					goPrev: () => setSelectedDate(prevDayValues),
+					goNext: () => setSelectedDate(nextDayValues),
 				};
 			case 'week':
 				const prevWeekValues = getDateValues(dateObj.subtract(7, 'day'), dateFormats);
 				const nextWeekValues = getDateValues(dateObj.add(7, 'day'), dateFormats);
 				return {
-					goPrev: () => setSelectedDate(prevWeekValues as DateUnits),
-					goNext: () => setSelectedDate(nextWeekValues as DateUnits),
+					goPrev: () => setSelectedDate(prevWeekValues),
+					goNext: () => setSelectedDate(nextWeekValues),
 				};
 			case 'fourDays':
 				const prevFourDaysValues = getDateValues(dateObj.subtract(4, 'day'), dateFormats);
 				const nextFourDaysValues = getDateValues(dateObj.add(4, 'day'), dateFormats);
 				return {
-					goPrev: () => setSelectedDate(prevFourDaysValues as DateUnits),
-					goNext: () => setSelectedDate(nextFourDaysValues as DateUnits),
+					goPrev: () => setSelectedDate(prevFourDaysValues),
+					goNext: () => setSelectedDate(nextFourDaysValues),
 				};
 			default:
 				const prevMonthValues = getDateValues(dateObj.subtract(1, 'month'), dateFormats);

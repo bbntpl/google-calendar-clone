@@ -90,8 +90,7 @@ export default function DateTimeBlock(props: DateTimeBlockProps) {
 							&& selectHoursEl(options[start], 'start')
 						}
 						{
-							(start >= 0 && selectedScheduleType === 'task')
-							&& selectHoursEl(options[end], 'end')
+							start >= 0 && selectHoursEl(options[end], 'end')
 						}
 					</div>
 					<Dialog ref={miniCalendarRef} {...miniCalendarProps} />

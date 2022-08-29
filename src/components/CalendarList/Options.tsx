@@ -1,9 +1,9 @@
-import { COLORS, UserActionType } from '../../context/global/index.model';
+import { UserActionType } from '../../context/global/index.model';
 import { EventHandlers, WrappedComponentProps } from './index.model';
-import { COLOR_NAMES } from '../../util/calendar-arrangement';
 
 import './styles.scss';
 import CheckIcon from '../../assets/icons/check.png';
+import { ColorOption, colorOptions } from '../../docs/data';
 
 export default function Options(props: WrappedComponentProps) {
 	const {
@@ -16,17 +16,17 @@ export default function Options(props: WrappedComponentProps) {
 	const { options, colors } = flags;
 	const { calendarList, dispatchCalendarList } = globalContextProps;
 
-	const handleChange = (color: COLORS) => {
+	const handleChange = (colorOption: ColorOption) => {
 		// update the context if the received calendar props has id
 		if (calendarProps.id && Object.keys(eventHandlers).length === 0) {
 			dispatchCalendarList({
 				type: UserActionType.EDIT,
-				payload: { id: calendarProps.id, color },
+				payload: { id: calendarProps.id, colorOption },
 			});
 			return;
 		}
 		// changing the color prop from the state of the parent
-		eventHandlers.handleColorChange?.(color);
+		eventHandlers.handleColorChange?.(colorOption);
 	}
 
 	const unselectAllExceptMatchedId = () => {
@@ -62,14 +62,17 @@ export default function Options(props: WrappedComponentProps) {
 			{
 				colors ?
 					<div className='o-wrapper color-selection'>
-						{COLOR_NAMES.map((color, index) => {
-							const { color: selectedColor } = calendarProps;
+						{colorOptions.map((colorOption) => {
+							const { color, value } = colorOption;
+							const { colorOption: selectedColorOption } = calendarProps;
+							const { color: selectedColor } = selectedColorOption
+							console.log(colorOption, calendarProps)
 							return (
 								<button
-									className={`${color} rounded-color clear-btn`}
-									key={`color-${index}`}
-									color={calendarProps.color}
-									onClick={() => handleChange(color)}
+									className='rounded-color clear-btn'
+									key={`color-${color}`}
+									onClick={() => handleChange(colorOption)}
+									style={{ backgroundColor: value }}
 								>
 									{
 										color === selectedColor

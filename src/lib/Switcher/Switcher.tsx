@@ -20,7 +20,7 @@ const containerStyles = {
 export default function Switcher(props: SwitcherProps): JSX.Element {
 	const { goPrev, goNext } = props;
 	return (
-		<div style={containerStyles as React.CSSProperties}>
+		<div style={containerStyles}>
 			<button className='clear-btn' onClick={goPrev}>
 				<img src={ChevronLeft} />
 			</button>

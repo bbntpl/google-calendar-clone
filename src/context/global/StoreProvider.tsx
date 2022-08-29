@@ -1,4 +1,10 @@
-import { ReactNode, useEffect, useMemo, useReducer, useState } from 'react';
+import { 
+	ReactNode, 
+	useEffect, 
+	useMemo, 
+	useReducer, 
+	useState, 
+} from 'react';
 import GlobalContext from './GlobalContext';
 import GlobalContextInterface, {
 	BooleansOnlyObj,
@@ -15,6 +21,7 @@ import useCursorPosition from '../../hooks/useCursorPosition';
 import useComponentVisible from '../../hooks/useComponentVisible';
 import { dateToday, stringifyDate } from '../../util/calendar-arrangement';
 import { ScheduleNames } from './index.model';
+import { defaultColorOption } from '../../docs/data';
 
 function actionTypes<
 	StateType extends ScheduleTypes | CalendarLabelType,
@@ -58,11 +65,10 @@ const calendarListReducer = (
 		(state, action, actionTypeAdd);
 }
 
-// initial states
 const initialCalendarList: Array<CalendarLabelType> = [{
 	id: uniqueID(),
 	name: 'Your Calendar',
-	color: 'black',
+	colorOption: defaultColorOption,
 	selected: true,
 	removable: false,
 }];
@@ -140,7 +146,6 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
 		selectedScheduleType,
 		setSelectedScheduleType,
 	}
-
 	return (
 		<GlobalContext.Provider value={contextValues}>
 			{children}

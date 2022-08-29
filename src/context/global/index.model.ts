@@ -1,4 +1,5 @@
 import { Dispatch, MutableRefObject, SetStateAction } from 'react';
+import { ColorOption } from '../../docs/data';
 
 // reusable types
 export type NonOptionalKeys<T> = {
@@ -41,10 +42,6 @@ export interface DefaultDateTime {
 }
 
 /*** SCHEDULE ***/
-
-// available colors for schedule/calendar input
-export type COLORS = 'black' | 'basil' | 'blueberry' | 'citron' | 'raddichio' | 'tangerine' | 'grafito';
-
 // remove calendar id and date components
 type OmitScheduleProps
 	= Omit<TaskInterface | EventInterface, 'dateTime' | 'calendarId'>;
@@ -63,7 +60,7 @@ export interface Schedule {
 }
 export interface EventInterface extends Schedule {
 	location: string;
-	color: COLORS;
+	colorOption: ColorOption;
 }
 export interface TaskInterface extends Schedule {
 	completed: boolean;
@@ -79,16 +76,16 @@ export interface EditTask extends OmitScheduleProps {
 
 /*** CALENDAR ***/
 export interface CalendarLabelType {
-	id: number,
-	name: string,
-	selected: boolean,
-	removable: boolean,
-	color: COLORS
+	id: number;
+	name: string;
+	selected: boolean;
+	removable: boolean;
+	colorOption: ColorOption;
 }
 
 export interface Notification {
-	minute: number,
-	scheduleId: number,
+	minute: number;
+	scheduleId: number;
 }
 
 /*** USER ACTIONS ***/
@@ -111,27 +108,27 @@ export type CalendarListActionTypes =
 	| { type: UserActionType.REMOVE, payload: number };
 
 export default interface GlobalContextInterface {
-	calendarType: CalendarType,
-	setCalendarType: Dispatch<SetStateAction<CalendarType>>,
-	savedSchedules: Array<ScheduleTypes> | [],
-	dispatchSchedules: Dispatch<ScheduleActionTypes>,
-	calendarList: Array<CalendarLabelType> | [],
-	dispatchCalendarList: Dispatch<CalendarListActionTypes>,
-	notifications?: Array<Notification> | [],
-	setNotifications?: () => Dispatch<SetStateAction<Notification>>,
-	filteredSchedules: Array<ScheduleTypes> | [],
-	selectedSchedule?: ScheduleTypes,
-	selectedDate: DateUnits, // collection of date values broken into components,
-	setSelectedDate: Dispatch<SetStateAction<DateUnits>>,
-	visibilities: BooleansOnlyObj,
-	setVisibilities: Dispatch<SetStateAction<BooleansOnlyObj>>,
-	position: Position,
-	recordPos: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void,
-	defaultDateTime: DefaultDateTime,
-	setDefaultDateTime: Dispatch<SetStateAction<DefaultDateTime>>,
-	scheduleDialogRef: MutableRefObject<HTMLDivElement | null>,
-	isScheduleDialogVisible: boolean,
-	setIsScheduleDialogVisible: Dispatch<SetStateAction<boolean>>,
-	selectedScheduleType: ScheduleNames,
-	setSelectedScheduleType: Dispatch<SetStateAction<ScheduleNames>>
+	calendarType: CalendarType;
+	setCalendarType: Dispatch<SetStateAction<CalendarType>>;
+	savedSchedules: Array<ScheduleTypes> | [];
+	dispatchSchedules: Dispatch<ScheduleActionTypes>;
+	calendarList: Array<CalendarLabelType> | [];
+	dispatchCalendarList: Dispatch<CalendarListActionTypes>;
+	notifications?: Array<Notification> | [];
+	setNotifications?: () => Dispatch<SetStateAction<Notification>>;
+	filteredSchedules: Array<ScheduleTypes> | [];
+	selectedSchedule?: ScheduleTypes;
+	selectedDate: DateUnits;
+	setSelectedDate: Dispatch<SetStateAction<DateUnits>>;
+	visibilities: BooleansOnlyObj;
+	setVisibilities: Dispatch<SetStateAction<BooleansOnlyObj>>;
+	position: Position;
+	recordPos: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+	defaultDateTime: DefaultDateTime;
+	setDefaultDateTime: Dispatch<SetStateAction<DefaultDateTime>>;
+	scheduleDialogRef: MutableRefObject<HTMLDivElement | null>;
+	isScheduleDialogVisible: boolean;
+	setIsScheduleDialogVisible: Dispatch<SetStateAction<boolean>>;
+	selectedScheduleType: ScheduleNames;
+	setSelectedScheduleType: Dispatch<SetStateAction<ScheduleNames>>;
 }

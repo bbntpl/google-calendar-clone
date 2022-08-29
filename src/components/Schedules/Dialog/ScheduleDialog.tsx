@@ -25,7 +25,7 @@ export default function ScheduleDialog(props: ScheduleDialogProps) {
 
 	const defaultScheduleState = {
 		calendarId: calendarList[0].id,
-		color: calendarList[0].color,
+		colorOption: calendarList[0].colorOption,
 		completed: false,
 		dateTime: {
 			allDay: false,
@@ -71,7 +71,7 @@ export default function ScheduleDialog(props: ScheduleDialogProps) {
 					? <EventBlock
 						evtProps={{
 							calendarId: scheduleProps.calendarId,
-							color: scheduleProps.color,
+							colorOption: scheduleProps.colorOption,
 							dateTime: scheduleProps.dateTime,
 							description: scheduleProps.description,
 							location: scheduleProps.location,

@@ -3,11 +3,10 @@ import Select, {
 	Props,
 } from 'react-select';
 
-import { Option } from '../../index.model';
-
 export default function CustomSelect<
-  IsMulti extends boolean = false,
-  Group extends GroupBase<Option> = GroupBase<Option>
+	Option,
+	IsMulti extends boolean = false,
+	Group extends GroupBase<Option> = GroupBase<Option>
 >(props: Props<Option, IsMulti, Group>) {
 	const {
 		isClearable = false,

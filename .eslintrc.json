@@ -23,7 +23,7 @@
 		"max-lines": [
 			"error",
 			{
-				"max": 150
+				"max": 180
 			}
 		],
 		"max-lines-per-function": [

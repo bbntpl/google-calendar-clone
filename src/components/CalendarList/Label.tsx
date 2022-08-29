@@ -17,7 +17,7 @@ export default function Label(props: LabelProps): JSX.Element {
 	const { recordPos } = useContext(GlobalContext) as GlobalContextInterface;
 	const { calendarProps, globalContextProps } = props;
 	const { dispatchCalendarList } = globalContextProps;
-	const { id, selected, color, name, removable } = calendarProps;
+	const { id, selected, colorOption, name, removable } = calendarProps;
 
 	const [showOptions, setShowOptions] = useState(false);
 	const [
@@ -74,7 +74,7 @@ export default function Label(props: LabelProps): JSX.Element {
 				<span>
 					<input
 						type='checkbox'
-						className={`filter-${color}`}
+						style={{accentColor: colorOption.value}}
 						checked={selected}
 						onChange={handleToggleCbox}
 					/>

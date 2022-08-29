@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
 	UserActionType,
 	CalendarLabelType,
-	COLORS,
 } from '../../context/global/index.model';
 import useComponentVisible from '../../hooks/useComponentVisible';
 import { uniqueID } from '../../util/reusable-funcs';
@@ -12,10 +11,11 @@ import './styles.scss';
 
 import Dialog from '../../lib/Dialog';
 import Options from './Options';
+import { ColorOption, defaultColorOption } from '../../docs/data';
 
 const initCalendarLblProps: InitCalendarLblProps = {
 	name: '',
-	color: 'black',
+	colorOption: defaultColorOption,
 	selected: false,
 	removable: true,
 }
@@ -30,8 +30,8 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 
 	const [newCalendar, setNewCalendar] = useState(initCalendarLblProps);
 	const [
-		dialogRef, 
-		isDialogVisible, 
+		dialogRef,
+		isDialogVisible,
 		setIsDialogVisible,
 		dialogLinkRef,
 	] = useComponentVisible(false);
@@ -58,8 +58,8 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 		setNewCalendar({ ...newCalendar, name: e.target.value });
 	}
 
-	const handleColorChange = (color: COLORS) => {
-		setNewCalendar({ ...newCalendar, color });
+	const handleColorChange = (colorOption: ColorOption) => {
+		setNewCalendar({ ...newCalendar, colorOption });
 	}
 
 	// props to be passed on the reusable dialog component
@@ -96,7 +96,8 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 				<div style={{ position: 'relative' }}>
 					<button
 						ref={dialogLinkRef}
-						className={`${newCalendar.color} rounded-color`}
+						className='rounded-color'
+						style={{ backgroundColor: newCalendar.colorOption.value }}
 						onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
 							recordPos(e);
 							setIsDialogVisible(visible => !visible);

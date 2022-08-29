@@ -1,7 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 import {
 	CalendarType,
-	COLORS,
 	DateUnits,
 } from '../context/global/index.model';
 import { hasOnlyDigits, objKeysToArr } from './reusable-funcs';
@@ -28,9 +27,6 @@ interface DateFormatting {
 	monthFormat: string,
 	dayFormat: string,
 }
-
-export const COLOR_NAMES: Array<COLORS>
-	= ['raddichio', 'tangerine', 'citron', 'basil', 'blueberry', 'black', 'grafito'];
 
 export function convertTZ(date: Date, tzString: string) {
 	return new Date((typeof date === 'string' ? new Date(date) : date)

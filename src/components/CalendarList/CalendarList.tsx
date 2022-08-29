@@ -8,13 +8,13 @@ import PlusIcon from '../../assets/icons/plus.png';
 import GlobalContextInterface, {
 	UserActionType,
 	CalendarLabelType,
-	COLORS,
 } from '../../context/global/index.model';
 import GlobalContext from '../../context/global/GlobalContext';
 import { uniqueID } from '../../util/reusable-funcs';
 
 import NewCalendar from './NewCalendar';
 import LabelList from './LabelList';
+import { defaultColorOption } from '../../docs/data';
 
 export default function CalendarList(): JSX.Element {
 	const { 
@@ -43,10 +43,10 @@ export default function CalendarList(): JSX.Element {
 		type InitialCalendarLabelProps = Omit<CalendarLabelType, 'name'>;
 		const calendarLblProps: InitialCalendarLabelProps = {
 			id: uniqueID(),
-			color: 'black' as COLORS,
+			colorOption: defaultColorOption,
 			removable: false,
 			selected: false,
-		}
+		};
 		if (!areThereTasks && taskCalendar.length) {
 			dispatchCalendarList({ type: UserActionType.REMOVE, payload: taskCalendar[0].id });
 		} else if (!areThereEvents && evtCalendar.length) {
