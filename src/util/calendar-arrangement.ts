@@ -7,7 +7,7 @@ import {
 import { hasOnlyDigits, objKeysToArr } from './reusable-funcs';
 
 // array that contains three or more elements
-type ArrayThreeOrMore<T> = [T, T, ...T[]]
+type ArrayThreeOrMore<T> = [T, T, ...T[]];
 type AvailableMinutes = '00' | '15' | '30' | '45';
 interface DayjsObjByDay {
 	date: DateUnits | undefined,

@@ -1,29 +1,15 @@
-import React, { Dispatch, SetStateAction } from 'react';
-import { ScheduleStates } from '../index.model';
+import React from 'react';
 
 import '../styles.scss';
 import DescIcon from '../../../assets/icons/desc.png';
 
 interface DescriptionTextProps {
 	description: string;
-	setScheduleProps: Dispatch<SetStateAction<ScheduleStates>>
+	handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
 export default function DescInputBlock(props: DescriptionTextProps) {
-	const {
-		description,
-		setScheduleProps,
-	} = props;
-
-	const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-		const newValue = e.target.value;
-
-		// update desc prop values on change
-		setScheduleProps((scheduleProps: ScheduleStates) => ({
-			...scheduleProps,
-			description: newValue,
-		}));
-	}
+	const { description, handleChange } = props;
 
 	return (
 		<div className='schedule-input-list'>
@@ -38,6 +24,5 @@ export default function DescInputBlock(props: DescriptionTextProps) {
 				value={description}
 			/>
 		</div>
-
 	)
 }

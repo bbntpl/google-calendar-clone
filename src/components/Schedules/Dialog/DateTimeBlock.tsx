@@ -1,7 +1,8 @@
 import { useContext } from 'react';
-import { DateTimeBlockProps, ScheduleStates } from '../index.model';
 import GlobalContext from '../../../context/global/GlobalContext';
-import GlobalContextInterface from '../../../context/global/index.model';
+import GlobalContextInterface, {
+	DateTimeInputs,
+} from '../../../context/global/index.model';
 import {
 	dayjsObj,
 	getScheduleTimeOptions,
@@ -14,18 +15,22 @@ import SortDownIcon from '../../../assets/icons/sort-down.png';
 
 import MiniCalendar from '../../MiniCalendar';
 import Dialog from '../../../lib/Dialog';
-import CustomSelect from '../Dialog/CustomInputs/CustomSelect';
+import CustomSelect from './CustomInputs/CustomSelect';
+import { Option } from '../index.model';
 
-interface TimeOption {
-	label: string;
-	id: number;
+export interface DateTimeBlockProps {
+	dateTime: DateTimeInputs;
+	handleChange: (option: Option | null, propName: string) => void;
 }
 
 export default function DateTimeBlock(props: DateTimeBlockProps) {
-	const { dateTime, setScheduleProps } = props;
-	const { selectedDate } = useContext(GlobalContext) as GlobalContextInterface;
+	const { dateTime, handleChange } = props;
+	const {
+		selectedDate,
+		selectedScheduleType,
+	} = useContext(GlobalContext) as GlobalContextInterface;
 	const { start, end } = dateTime.time;
-	const timeOptions = getScheduleTimeOptions();
+	const scheduleTimeOptions = getScheduleTimeOptions();
 
 	const [
 		miniCalendarRef,
@@ -48,31 +53,14 @@ export default function DateTimeBlock(props: DateTimeBlockProps) {
 		return getShortDate(dayjsObj(selectedDate));
 	}
 
-	const options = timeOptions.map(({ time }, hourIndex) => {
-		return { label: time, id: hourIndex };
+	const options = scheduleTimeOptions.map(({ time }, hourIndex) => {
+		return { label: time, value: hourIndex };
 	});
 
-	const selectHoursEl = (option: TimeOption, propName: string) => {
-		const handleChange = (option: TimeOption | null) => {
-			if (option) {
-				const { id } = option;
-				// update time prop values on change
-				setScheduleProps((scheduleProps: ScheduleStates) => ({
-					...scheduleProps,
-					dateTime: {
-						...scheduleProps.dateTime,
-						time: {
-							...scheduleProps.dateTime.time,
-							[propName]: id,
-						},
-					},
-				}));
-			}
-
-		};
+	const selectHoursEl = (option: Option, propName: string) => {
 		return <CustomSelect
 			value={option}
-			onChange={handleChange}
+			onChange={(e) => handleChange(e, propName)}
 			options={options}
 			isSearchable={true}
 		/>
@@ -96,9 +84,15 @@ export default function DateTimeBlock(props: DateTimeBlockProps) {
 							style={{ width: '10px', height: '10px' }}
 						/>
 					</div>
-					<div style={{ display: 'flex', gap: '.5rem'}}>
-						{selectHoursEl(options[start], 'start')}
-						{selectHoursEl(options[end], 'end')}
+					<div style={{ display: 'flex', gap: '.5rem' }}>
+						{
+							(start >= 0 && selectedScheduleType === 'event')
+							&& selectHoursEl(options[start], 'start')
+						}
+						{
+							(start >= 0 && selectedScheduleType === 'task')
+							&& selectHoursEl(options[end], 'end')
+						}
 					</div>
 					<Dialog ref={miniCalendarRef} {...miniCalendarProps} />
 				</span>

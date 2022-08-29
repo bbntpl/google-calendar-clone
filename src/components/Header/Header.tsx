@@ -9,7 +9,7 @@ import GlobalContext from '../../context/global/GlobalContext';
 
 import './styles.scss';
 
-import Switcher from '../../lib/switcher/index';
+import Switcher from '../../lib/Switcher';
 import { HamburgerLogo } from './HamburgerLogo';
 import CalendarTypeOptions from './CalendarTypeOptions';
 import { CalendarDate } from './CalendarDate';

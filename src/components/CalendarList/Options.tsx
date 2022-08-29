@@ -6,12 +6,12 @@ import './styles.scss';
 import CheckIcon from '../../assets/icons/check.png';
 
 export default function Options(props: WrappedComponentProps) {
-	const { 
-		flags, 
-		calendarProps, 
-		globalContextProps, 
-		setIsDialogVisible, 
-		eventHandlers = {} as EventHandlers, 
+	const {
+		flags,
+		calendarProps,
+		globalContextProps,
+		setIsDialogVisible,
+		eventHandlers = {} as EventHandlers,
 	} = props;
 	const { options, colors } = flags;
 	const { calendarList, dispatchCalendarList } = globalContextProps;
@@ -73,10 +73,9 @@ export default function Options(props: WrappedComponentProps) {
 								>
 									{
 										color === selectedColor
-											? <div>
-												<img className='status--checked' src={CheckIcon} />
-											</div>
-											: null
+										&& <div>
+											<img className='status--checked' src={CheckIcon} />
+										</div>
 									}
 								</button>)
 						})}

@@ -78,17 +78,21 @@ export default function ScheduleDialog(props: ScheduleDialogProps) {
 						}}
 						setScheduleProps={setScheduleProps}
 					/>
-					: <div></div>
-				// <TaskBlock
-				// 	calendarId={scheduleProps.calendarId}
-				//  completed={scheduleProps.completed}
-				// 	dateTime={scheduleProps.dateTime}
-				// 	description={scheduleProps.description}
-				// 	setScheduleProps={setScheduleProps}
-				// />
+					: <TaskBlock
+						evtProps={{
+							calendarId: scheduleProps.calendarId,
+							completed: scheduleProps.completed,
+							dateTime: scheduleProps.dateTime,
+							description: scheduleProps.description,
+						}}
+						setScheduleProps={setScheduleProps}
+					/>
 			}
 			<div className='schedule-dialog__options'>
-				<button onClick={addSchedule}>
+				<button
+					id='save-schedule'
+					onClick={addSchedule}
+				>
 					Save
 				</button>
 			</div>

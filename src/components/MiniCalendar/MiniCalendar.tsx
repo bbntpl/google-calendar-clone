@@ -3,7 +3,7 @@ import { getMonth, stringifyDate, dateToday } from '../../util/calendar-arrangem
 import './styles.scss';
 import dayjs from 'dayjs';
 
-import Switcher from '../../lib/switcher';
+import Switcher from '../../lib/Switcher';
 import GlobalContext from '../../context/global/GlobalContext';
 import GlobalContextInterface, {
 	DateUnits,

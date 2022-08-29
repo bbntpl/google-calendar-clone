@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
 import {
-	DateTimeInputs,
 	EventInterface,
 	TaskInterface,
 } from '../../context/global/index.model';
@@ -11,12 +10,12 @@ export interface ScheduleEventProps {
 	setScheduleProps: Dispatch<SetStateAction<ScheduleStates>>;
 }
 
-export interface DateTimeBlockProps {
-	dateTime: DateTimeInputs;
+export interface ScheduleTaskProps {
+	evtProps: Omit<TaskInterface, 'id' | 'type' | 'title'>;
 	setScheduleProps: Dispatch<SetStateAction<ScheduleStates>>;
 }
 
-export interface SelectOption {
+export interface Option {
 	label: string;
-	id: number;
+	value: number;
 }
