@@ -44,6 +44,7 @@ const DialogCore = forwardRef<HTMLDivElement, WrappedDialogProps>(
 			isCloseable,
 			isDraggable,
 			isSelfAdjustable,
+			hasInitTransition,
 		} = flags;
 		const { handle } = draggableProps;
 		const { position: cursorPosition }
@@ -57,7 +58,7 @@ const DialogCore = forwardRef<HTMLDivElement, WrappedDialogProps>(
 		});
 		const [classNames, setClassNames] = useState([
 			`dialog-inner--${stylePosition}`,
-			'initial-dialog-transition',
+			hasInitTransition ? 'initial-dialog-transition' : '',
 		]);
 
 		// size of the referenced component

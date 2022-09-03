@@ -15,6 +15,7 @@ const DialogOptions = forwardRef<ComponentToPassRef, DialogProps>(
 			isDraggable = true,
 			isDialogVisible,
 			isSelfAdjustable = false,
+			hasInitTransition = false,
 			positionOffset = null,
 			setIsDialogVisible,
 			stylePosition = 'fixed',
@@ -33,7 +34,12 @@ const DialogOptions = forwardRef<ComponentToPassRef, DialogProps>(
 					setIsDialogVisible((visible: boolean) => !visible)
 				},
 			},
-			flags: { isDraggable, isCloseable, isSelfAdjustable },
+			flags: { 
+				isDraggable, 
+				isCloseable, 
+				isSelfAdjustable,
+				hasInitTransition, 
+			},
 			stylePosition,
 		}
 

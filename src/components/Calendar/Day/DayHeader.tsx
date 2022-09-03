@@ -2,7 +2,7 @@ import { Dayjs } from 'dayjs';
 import '../styles.scss';
 
 import TimeRow from '../Time/TimeRow';
-import { dateToday, getDateValues } from '../../../util/calendar-arrangement';
+import { dateToday, getDateValues, stringifyDate } from '../../../util/calendar-arrangement';
 import { DateUnits } from '../../../context/global/index.model';
 import GlobalContext from '../../../context/global/GlobalContext';
 import { useContext } from 'react';
@@ -17,11 +17,20 @@ interface DayHeaderProps {
 
 export default function DayHeader(props: DayHeaderProps) {
 	const {
+		savedSchedules,
 		selectedDate,
 		setSelectedDate,
 		setCalendarType,
 	} = useContext(GlobalContext) as GlobalContextInterface;
 	const { dateObj, dayIndex, isCentered = true } = props;
+
+	const filteredSchedules = savedSchedules.filter(sch => {
+		return sch.dateTime.date === stringifyDate(getDateValues(dateObj, {
+			yearFormat: 'YYYY',
+			monthFormat: 'MM',
+			dayFormat: 'DD',
+		}));
+	});
 
 	const areDatesEqual = (dateObjToCompare: DateUnits) => {
 		const { year, month, day } = dateObjToCompare;
@@ -74,6 +83,7 @@ export default function DayHeader(props: DayHeaderProps) {
 			<TimeRow
 				dateValues={getDateValues(dateObj, dateFormats)}
 				dayIndex={dayIndex}
+				filteredSchedules={filteredSchedules}
 			/>
 		</div>
 	)

@@ -58,6 +58,7 @@ export default function Label(props: LabelProps): JSX.Element {
 		delta: { x: 20, y: 0 },
 		isSelfAdjustable: true,
 		isDialogVisible: isCalendarLblOptsVisible,
+		hasInitTransition: true,
 		setIsDialogVisible: setIsCalendarLblOptsVisible,
 		stylePosition: 'fixed',
 	}

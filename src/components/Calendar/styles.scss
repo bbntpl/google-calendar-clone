@@ -61,7 +61,7 @@
 }
 
 /*** CALENDAR TIME STYLING***/
-$time-row-height: 50px;
+$time-row-height: 52px;
 
 .calendar-time__row {
 	position: relative;
@@ -147,6 +147,16 @@ $time-label-width: 4rem;
 	margin-bottom: 1rem;
 }
 
+/*** CALENDAR SLOT ***/
+.calendar-slot {
+	color: #fff;
+}
+.calendar-slot__title {
+	font-size: 10px;
+}
+.calendar-slot__hours {
+	font-size: 9px;
+}
 /*** CALENDAR STYLING ***/
 .calendar-wrapper {
 	display: flex;

@@ -9,6 +9,7 @@ interface DialogFlags {
 	isDraggable: boolean,
 	isCloseable: boolean,
 	isSelfAdjustable: boolean,
+	hasInitTransition: boolean,
 }
 
 interface EventHandlers {

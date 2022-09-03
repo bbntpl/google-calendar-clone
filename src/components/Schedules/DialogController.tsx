@@ -27,6 +27,7 @@ export default function DialogController() {
 		isSelfAdjustable: true,
 		isDialogVisible: isScheduleDialogVisible,
 		setIsDialogVisible: setIsScheduleDialogVisible,
+		hasInitTransition: true,
 	}, scheduleTypeProps);
 
 	return <Dialog ref={scheduleDialogRef} {...scheduleDialogProps} />

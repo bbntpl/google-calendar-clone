@@ -23,9 +23,9 @@ interface DayTimeElement {
 }
 
 interface DateFormatting {
-	yearFormat: string,
-	monthFormat: string,
-	dayFormat: string,
+	yearFormat?: string,
+	monthFormat?: string,
+	dayFormat?: string,
 }
 
 export function convertTZ(date: Date, tzString: string) {
@@ -68,12 +68,16 @@ export function getYear(year = dayjs().year()) {
 	year = Math.floor(year);
 	return Array.from({ length: 12 }, (_, i) => {
 		return getMonth(i);
-	})
+	});
 }
 
 export function getDateValues(dateObj: Dayjs, dateFormats: DateFormatting)
 	: DateUnits {
-	const { yearFormat, monthFormat, dayFormat } = dateFormats;
+	const { 
+		yearFormat = 'YYYY', 
+		monthFormat = 'MM', 
+		dayFormat = 'DD', 
+	} = dateFormats;
 	const year = Number(dateObj.format(yearFormat));
 	const month = dateObj.format(monthFormat);
 	const day = dateObj.format(dayFormat);

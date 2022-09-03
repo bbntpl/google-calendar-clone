@@ -27,7 +27,7 @@ export interface DateUnits {
 	day: number | string
 }
 export type FullDateUnits = { [key in FullDateComponentKeys]: number | string }
-interface TimeSetting {
+export interface TimeSetting {
 	start: number;
 	end: number | never;
 }
