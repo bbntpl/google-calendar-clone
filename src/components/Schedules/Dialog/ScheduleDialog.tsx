@@ -61,18 +61,15 @@ export default function ScheduleDialog(props: ScheduleDialogProps) {
 					payload: eventProps,
 				});
 				break;
-			default:
+			case 'task':
 				// eslint-disable-next-line @typescript-eslint/no-unused-vars
 				const { location, colorOption, ...taskProps } = scheduleProps
 				dispatchSchedules({
 					type: UserActionType.ADD,
 					payload: taskProps,
 				});
+				break;
 		}
-		dispatchSchedules({
-			type: UserActionType.ADD,
-			payload: scheduleProps,
-		});
 		setScheduleProps({ ...defaultScheduleState });
 		setIsScheduleDialogVisible(visible => !visible);
 	}

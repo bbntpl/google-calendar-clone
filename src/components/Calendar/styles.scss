@@ -149,7 +149,12 @@ $time-label-width: 4rem;
 
 /*** CALENDAR SLOT ***/
 .calendar-slot {
+	position: absolute;
+	width: 100%;
 	color: #fff;
+	border: 1px solid #fff;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 .calendar-slot__title {
 	font-size: 10px;
@@ -157,6 +162,7 @@ $time-label-width: 4rem;
 .calendar-slot__hours {
 	font-size: 9px;
 }
+
 /*** CALENDAR STYLING ***/
 .calendar-wrapper {
 	display: flex;

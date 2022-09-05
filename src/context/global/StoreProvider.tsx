@@ -136,10 +136,10 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
 			.filter((calendar: { selected: boolean; }) => calendar.selected)
 			.map((calendar: { id: number; }) => calendar.id);
 		return savedSchedules.filter((schedule: ScheduleTypes) => {
-			return calendarIds.includes(schedule.id);
+			return calendarIds.includes(schedule.calendarId);
 		});
 	}, [savedSchedules, calendarList]);
-
+	
 	useEffect(() => {
 		setDefaultDateTime(defaultDateTime => ({
 			...defaultDateTime,

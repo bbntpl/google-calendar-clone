@@ -66,7 +66,6 @@ export default function Options(props: WrappedComponentProps) {
 							const { color, value } = colorOption;
 							const { colorOption: selectedColorOption } = calendarProps;
 							const { color: selectedColor } = selectedColorOption
-							console.log(colorOption, calendarProps)
 							return (
 								<button
 									className='rounded-color clear-btn'

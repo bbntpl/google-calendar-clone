@@ -12,7 +12,7 @@ interface TimeRowProps {
 	time?: string,
 	hourIndex?: number,
 	dateValues: DateUnits
-	filteredSchedules: ScheduleTypes[] | []
+	filteredSchedulesByTime: ScheduleTypes[] | []
 }
 
 export default function TimeRow(props: TimeRowProps) {
@@ -21,7 +21,7 @@ export default function TimeRow(props: TimeRowProps) {
 		hourIndex = -1,
 		dayIndex,
 		dateValues,
-		filteredSchedules,
+		filteredSchedulesByTime,
 	} = props;
 	const {
 		setIsScheduleDialogVisible,
@@ -49,9 +49,10 @@ export default function TimeRow(props: TimeRowProps) {
 				}}
 			>
 				{
-					filteredSchedules.map((schedule) => {
+					filteredSchedulesByTime.map((schedule) => {
 						return <Slot
 							key={`slot-${schedule.id}`}
+							stringifiedDate={stringifyDate(dateValues)}
 							{...schedule}
 						/>
 					})

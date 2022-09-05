@@ -17,21 +17,21 @@ interface DayHeaderProps {
 
 export default function DayHeader(props: DayHeaderProps) {
 	const {
-		savedSchedules,
+		filteredSchedules,
 		selectedDate,
 		setSelectedDate,
 		setCalendarType,
 	} = useContext(GlobalContext) as GlobalContextInterface;
 	const { dateObj, dayIndex, isCentered = true } = props;
 
-	const filteredSchedules = savedSchedules.filter(sch => {
+	const filteredSchedulesByDay = filteredSchedules.filter(sch => {
 		return sch.dateTime.date === stringifyDate(getDateValues(dateObj, {
 			yearFormat: 'YYYY',
 			monthFormat: 'MM',
 			dayFormat: 'DD',
-		}));
+		})) && sch.dateTime.time.start < 0;
 	});
-
+	console.log(filteredSchedulesByDay);
 	const areDatesEqual = (dateObjToCompare: DateUnits) => {
 		const { year, month, day } = dateObjToCompare;
 		const numericalYear = Number(dateObj.format('YYYY'));
@@ -83,7 +83,7 @@ export default function DayHeader(props: DayHeaderProps) {
 			<TimeRow
 				dateValues={getDateValues(dateObj, dateFormats)}
 				dayIndex={dayIndex}
-				filteredSchedules={filteredSchedules}
+				filteredSchedulesByTime={filteredSchedulesByDay}
 			/>
 		</div>
 	)
