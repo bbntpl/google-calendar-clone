@@ -12,23 +12,22 @@ import ScheduleDialog from './Dialog';
 export default function DialogController() {
 	const {
 		scheduleDialogRef,
+		selectedSchedule,
 		isScheduleDialogVisible,
 		setIsScheduleDialogVisible,
 	} = useContext(GlobalContext) as GlobalContextInterface;
 
-	const scheduleTypeProps = {
+	const scheduleDialogProps: DialogProps = {
 		componentProps: {
 			setIsScheduleDialogVisible,
+			selectedSchedule,
 		},
-	};
-
-	const scheduleDialogProps: DialogProps = Object.assign({
 		Component: ScheduleDialog,
 		isSelfAdjustable: true,
 		isDialogVisible: isScheduleDialogVisible,
 		setIsDialogVisible: setIsScheduleDialogVisible,
 		hasInitTransition: true,
-	}, scheduleTypeProps);
-
+	};
+	
 	return <Dialog ref={scheduleDialogRef} {...scheduleDialogProps} />
 }

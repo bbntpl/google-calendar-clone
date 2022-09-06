@@ -73,6 +73,7 @@ export interface EditTask extends OmitScheduleProps {
 	dateTime?: DateTimeInputs;
 	calendarId?: string;
 }
+export type SelectedSchedule = ScheduleTypes | null | undefined;
 
 /*** CALENDAR ***/
 export interface CalendarLabelType {
@@ -117,7 +118,8 @@ export default interface GlobalContextInterface {
 	notifications?: Array<Notification> | [];
 	setNotifications?: () => Dispatch<SetStateAction<Notification>>;
 	filteredSchedules: Array<ScheduleTypes> | [];
-	selectedSchedule?: ScheduleTypes;
+	selectedSchedule: SelectedSchedule;
+	setSelectedSchedule: Dispatch<SetStateAction<SelectedSchedule>>; 
 	selectedDate: DateUnits;
 	setSelectedDate: Dispatch<SetStateAction<DateUnits>>;
 	visibilities: BooleansOnlyObj;

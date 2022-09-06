@@ -75,7 +75,7 @@ export default function Label(props: LabelProps): JSX.Element {
 				<span>
 					<input
 						type='checkbox'
-						style={{accentColor: colorOption.value}}
+						style={{ accentColor: colorOption.value }}
 						checked={selected}
 						onChange={handleToggleCbox}
 					/>
@@ -112,15 +112,15 @@ export default function Label(props: LabelProps): JSX.Element {
 				<Dialog ref={dialogRef} {...calendarLblOptsProps} />
 			</li>
 			{
-				isAlertVisible
-					? <Alert
-						ref={alertRef}
-						name={`${name}'s Calendar`}
-						action={'remove'}
-						handleAction={removeCalendar}
-						handleHideComponent={() => setIsAlertVisible(false)}
-					/>
-					: null
+				<Alert
+					ref={alertRef}
+					name={`${name}'s `}
+					action='remove'
+					type='Calendar'
+					handleAction={removeCalendar}
+					handleHideComponent={() => setIsAlertVisible(false)}
+					isVisible={isAlertVisible}
+				/>
 			}
 		</>
 	)

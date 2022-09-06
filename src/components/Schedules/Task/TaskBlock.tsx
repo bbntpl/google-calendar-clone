@@ -11,13 +11,13 @@ import DateTimeBlock from '../Dialog/DateTimeBlock';
 import CalendarSelection from '../Dialog/CalendarSelection';
 import DescInputBlock from '../Dialog/DescInputBlock';
 
-export default function EventBlock(props: ScheduleTaskProps): JSX.Element {
-	const { evtProps, setScheduleProps } = props;
+export default function TaskBlock(props: ScheduleTaskProps): JSX.Element {
+	const { taskProps, setScheduleProps } = props;
 	const {
 		description,
 		calendarId,
 		dateTime,
-	} = evtProps;
+	} = taskProps;
 
 	const handleTimeChange = (option: Option | null, propName: string) => {
 		if (option) {

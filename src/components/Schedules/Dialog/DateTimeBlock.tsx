@@ -40,7 +40,6 @@ export default function DateTimeBlock(props: DateTimeBlockProps) {
 	] = useComponentVisible(false);
 
 	const miniCalendarProps = {
-		componentProps: {},
 		Component: MiniCalendar,
 		positionOffset: { x: 0, y: 30 },
 		isDraggable: false,
@@ -63,6 +62,16 @@ export default function DateTimeBlock(props: DateTimeBlockProps) {
 			onChange={(e) => handleChange(e, propName)}
 			options={options}
 			isSearchable={true}
+			styles={{
+				control: (styles) => ({
+					...styles,
+					maxWidth: '120px',
+				}),
+				option: (styles) => ({
+					...styles,
+					maxWidth: '120px',
+				}),
+			}}
 		/>
 	}
 

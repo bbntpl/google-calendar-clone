@@ -141,26 +141,37 @@ $time-label-width: 4rem;
 	height: max-content;
 	margin-top: 1rem;
 	margin-bottom: -8px;
+	z-index: 200;
 }
 
 .calendar-component-container:nth-child(2) {
+	z-index: 200;
 	margin-bottom: 1rem;
 }
 
 /*** CALENDAR SLOT ***/
 .calendar-slot {
-	position: absolute;
-	width: 100%;
-	color: #fff;
 	border: 1px solid #fff;
-	text-overflow: ellipsis;
+	border-radius: 6px;
+	color: #fff;
+	cursor: pointer;
+	display: auto;
+	margin-right: 10px;
 	overflow: hidden;
+	padding: .1rem .5rem;
+	position: absolute;
+	text-align: left;
+	text-overflow: ellipsis;
+	width: 98%;
 }
+
 .calendar-slot__title {
-	font-size: 10px;
+	font-size: .7rem;
+	margin-bottom: 5px;
 }
+
 .calendar-slot__hours {
-	font-size: 9px;
+	font-size: .7rem;
 }
 
 /*** CALENDAR STYLING ***/

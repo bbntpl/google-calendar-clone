@@ -37,6 +37,7 @@ export default function TimeRow(props: TimeRowProps) {
 			<div
 				className='calendar-time__block'
 				onClick={(e) => {
+					if (e.target !== e.currentTarget) return;
 					recordPos(e);
 					setDefaultDateTime({
 						date: stringifyDate(dateValues),
@@ -53,7 +54,7 @@ export default function TimeRow(props: TimeRowProps) {
 						return <Slot
 							key={`slot-${schedule.id}`}
 							stringifiedDate={stringifyDate(dateValues)}
-							{...schedule}
+							scheduleProps={schedule}
 						/>
 					})
 				}

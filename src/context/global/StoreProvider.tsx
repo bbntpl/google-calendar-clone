@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import {
 	ReactNode,
 	useEffect,
@@ -14,12 +15,13 @@ import GlobalContextInterface, {
 	CalendarListActionTypes,
 	CalendarType,
 	ScheduleActionTypes,
+	ScheduleNames,
 	ScheduleTypes,
+	SelectedSchedule,
 	UserActionType,
 } from './index.model';
 import { uniqueID } from '../../util/reusable-funcs';
 import { dateToday, stringifyDate } from '../../util/calendar-arrangement';
-import { ScheduleNames } from './index.model';
 import { defaultColorOption } from '../../docs/data';
 import {
 	updateLocalStorage,
@@ -102,6 +104,7 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
 			? getItemFromLocal('savedSchedules')
 			: [],
 	);
+	const [selectedSchedule, setSelectedSchedule] = useState<SelectedSchedule>(null);
 	const [selectedDate, setSelectedDate] = useState(dateToday);
 	const [selectedScheduleType, setSelectedScheduleType] = useState<ScheduleNames>('event');
 	const { position, recordPos } = useCursorPosition();
@@ -139,7 +142,7 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
 			return calendarIds.includes(schedule.calendarId);
 		});
 	}, [savedSchedules, calendarList]);
-	
+
 	useEffect(() => {
 		setDefaultDateTime(defaultDateTime => ({
 			...defaultDateTime,
@@ -159,7 +162,8 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
 		// notifications,
 		// setNotifications,
 		filteredSchedules,
-		// selectedSchedule,
+		selectedSchedule,
+		setSelectedSchedule,
 		selectedDate,
 		setSelectedDate,
 		position,

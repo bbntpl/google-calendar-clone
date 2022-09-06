@@ -6,12 +6,12 @@ import {
 
 export interface ScheduleStates extends EventInterface, TaskInterface { }
 export interface ScheduleEventProps {
-	evtProps: Omit<EventInterface, 'id' | 'type' | 'title'>;
+	eventProps: Omit<EventInterface, 'id' | 'type' | 'title'>;
 	setScheduleProps: Dispatch<SetStateAction<ScheduleStates>>;
 }
 
 export interface ScheduleTaskProps {
-	evtProps: Omit<TaskInterface, 'id' | 'type' | 'title'>;
+	taskProps: Omit<TaskInterface, 'id' | 'type' | 'title'>;
 	setScheduleProps: Dispatch<SetStateAction<ScheduleStates>>;
 }
 

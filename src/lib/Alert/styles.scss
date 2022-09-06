@@ -2,13 +2,15 @@
 
 .alert-wrapper{
 	position: fixed;
-	top: 0;
-	left: 0;
 	width: 100vw;
 	height: 100vh;
 	background: rgba(0, 0, 0, 0.4);
-	z-index: 10000;
+	z-index: 20000;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
 	.alert {
+		color: $color-grafito;
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;

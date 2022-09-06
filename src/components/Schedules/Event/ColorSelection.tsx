@@ -24,7 +24,7 @@ const customStyles: StylesConfig<ColorOption, false> = {
   control: (styles) => ({
     ...styles,
     backgroundColor: 'white',
-    maxWidth: '150px',
+    maxWidth: '170px',
   }),
   option: (styles, { data }) => {
     const { value } = data;
@@ -34,7 +34,7 @@ const customStyles: StylesConfig<ColorOption, false> = {
       backgroundColor: '#fff',
 			color: value,
       cursor: 'default',
-			maxWidth: '150px',
+			maxWidth: '170px',
     };
   },
 	input: (styles) => ({ ...styles, ...block() }),

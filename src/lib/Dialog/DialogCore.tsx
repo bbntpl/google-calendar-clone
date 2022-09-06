@@ -19,7 +19,10 @@ import {
 	removeMatchedTxtOnArr,
 } from '../../util/reusable-funcs';
 
-const CloseBtn = ({ eventHandler }: { eventHandler: () => void }) => (
+const CloseBtn = ({ eventHandler }:
+	{
+		eventHandler: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+	}) => (
 	<button
 		className='clear-btn--no-effects close-btn'
 		onClick={eventHandler}

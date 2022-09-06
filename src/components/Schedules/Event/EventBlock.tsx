@@ -16,14 +16,14 @@ import CustomInput from '../Dialog/CustomInputs/CustomInput';
 import { ColorOption } from '../../../docs/data';
 
 export default function EventBlock(props: ScheduleEventProps): JSX.Element {
-	const { evtProps, setScheduleProps } = props;
+	const { eventProps, setScheduleProps } = props;
 	const {
 		location,
 		description,
 		colorOption,
 		calendarId,
 		dateTime,
-	} = evtProps;
+	} = eventProps;
 
 	const locationInputProps = {
 		value: location,

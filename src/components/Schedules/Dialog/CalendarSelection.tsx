@@ -29,6 +29,16 @@ export default function CalendarSelection(props: CalendarSelectionProps) {
 			value={calendarOption}
 			onChange={handleChange}
 			isSearchable={true}
+			styles={{
+				control: (styles) => ({
+					...styles,
+					maxWidth: '150px',
+				}),
+				option: (styles) => ({
+					...styles,
+					maxWidth: '150px',
+				}),
+			}}
 		/>
 	)
 }

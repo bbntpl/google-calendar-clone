@@ -15,7 +15,10 @@ dayjs.extend(timezone);
 const timezoneGMT = dayjs().format('ZZ');
 
 export default function CalendarDays({ numOfDays }: { numOfDays: number }) {
-	const { selectedDate, calendarType } = useContext(GlobalContext) as GlobalContextInterface;
+	const { 
+		selectedDate, 
+		calendarType, 
+	} = useContext(GlobalContext) as GlobalContextInterface;
 
 	const dateObj = (index: number) => {
 		return dayjsObjByDay({

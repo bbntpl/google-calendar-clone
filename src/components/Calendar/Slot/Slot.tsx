@@ -1,24 +1,52 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import GlobalContextInterface, {
 	ScheduleTypes,
 } from '../../../context/global/index.model';
 import GlobalContext from '../../../context/global/GlobalContext';
 import { getScheduleTimeOptions } from '../../../util/calendar-arrangement';
+import useComponentVisible from '../../../hooks/useComponentVisible';
 
-type SlotProps = ScheduleTypes & {
+import { ScheduleView } from '../../Schedules/ScheduleView';
+import Dialog from '../../../lib/Dialog';
+
+type SlotProps =  {
+	scheduleProps: ScheduleTypes;
 	stringifiedDate: string;
 }
-export default function Slot(props: SlotProps) {
-	const { calendarId, stringifiedDate } = props;
-	const { time, date: scheduleDate } = props.dateTime;
+	export default function Slot(props: SlotProps) {
+		const { scheduleProps, stringifiedDate } = props;
+	const { calendarId, title } = scheduleProps;
+	const { time, date: scheduleDate } = scheduleProps.dateTime;
 	const { start, end } = time;
-	const { calendarList }
-		= useContext(GlobalContext) as GlobalContextInterface
+	const { 
+		calendarList,
+		recordPos, 
+	} = useContext(GlobalContext) as GlobalContextInterface
+	const [zIndex, setZIndex] = useState(1000);
+	const [
+		scheduleViewRef,
+		isScheduleViewVisible,
+		setIsScheduleViewVisible,
+		linkRef,
+	] = useComponentVisible(false);
+
+	const scheduleViewProps = {
+		isDraggable: false,
+		isSelfAdjustable: true,
+		componentProps: {
+			scheduleProps,
+			setIsDialogVisible: setIsScheduleViewVisible,
+		},
+		Component: ScheduleView,
+		hasInitTransition: true,
+		isDialogVisible: isScheduleViewVisible,
+		setIsDialogVisible: setIsScheduleViewVisible,
+	}
 
 	const timeOptions = getScheduleTimeOptions();
 
 	const timeRange = () => {
-		if(start < 0) return '';
+		if (start < 0) return '';
 		const startTime = timeOptions[start].time || '';
 		const endTime = timeOptions[end].time || '';
 		if (startTime && endTime) {
@@ -31,12 +59,12 @@ export default function Slot(props: SlotProps) {
 
 	const slotHeight = () => {
 		const defaultHeight = 13;
-		if(start < 0) {
+		if (start < 0) {
 			return defaultHeight * 3;
 		} else if (stringifiedDate !== scheduleDate) {
 			return end * defaultHeight;
 		} else if (end > start) {
-			return (calendarList.length - end) * defaultHeight;
+			return (end - start) * defaultHeight;
 		} else if (start > end) {
 			return (timeOptions.length - start) * defaultHeight;
 		}
@@ -45,39 +73,43 @@ export default function Slot(props: SlotProps) {
 
 	const topPosition = () => {
 		const initTime = start || end;
-		if(initTime < 0 || stringifiedDate !== scheduleDate) return 0;
+		if (initTime < 0 || stringifiedDate !== scheduleDate) return 0;
 		return (initTime % 4) * 13;
 	}
 
 	const associatedCalendar = calendarList.find(obj => obj.id === calendarId);
-	const bgColor = 'colorOption' in props
-		? props.colorOption.value || associatedCalendar?.colorOption.value
+	const bgColor = 'colorOption' in scheduleProps
+		? scheduleProps.colorOption.value || associatedCalendar?.colorOption.value
 		: associatedCalendar?.colorOption.value
 
 	const slotStyles = {
 		backgroundColor: bgColor,
 		borderLeft: `5px solid ${associatedCalendar?.colorOption.value}`,
-		borderRadius: '6px',
 		height: `${slotHeight()}px`,
-		marginRight: '10px',
-		padding: '.1rem .5rem',
 		top: `${topPosition()}px`,
-		zIndex: 10000,
+		zIndex,
 	};
-	
+
 	return (
-		<div
-			style={slotStyles}
-			className='calendar-slot'
-			onMouseOver={() => {
-				Object.assign(slotStyles, { zIndex: 20000 });
-			}}
-			onMouseOut={() => {
-				Object.assign(slotStyles, { zIndex: 10000 });
-			}}
-		>
-			<p className='calendar-slot__title'>{props.title}</p>
-			<p className='calendar-slot__hours'>{timeRange()}</p>
-		</div>
+		<>
+			<button
+				style={slotStyles}
+				className='calendar-slot'
+				onMouseOver={() => setZIndex(2000)}
+				onMouseOut={() => setZIndex(1000)}
+				onClick={(e) => {
+					recordPos(e);
+					setIsScheduleViewVisible(visible => !visible)
+				}}
+				ref={linkRef}
+			>
+				<p className='calendar-slot__title'>{title}</p>
+				<p className='calendar-slot__hours'>{timeRange()}</p>
+			</button>
+			<Dialog
+				ref={scheduleViewRef}
+				{...scheduleViewProps}
+			/>
+		</>
 	)
 }

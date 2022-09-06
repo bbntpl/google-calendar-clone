@@ -1,6 +1,7 @@
 @import '../../styles/variables';
 
-.calendar-schedule__event {
+.calendar-schedule__event, 
+.schedule-view-block {
 	& > div {
 		margin: 1rem 0;
 	}
@@ -49,7 +50,7 @@
 		width: 44px;
 		img {
 			display: flex;
-			align-self: center;
+			align-self: flex-start;
 			width: 22px;
 			filter: $filtered-color-grafito;
 		}
@@ -115,4 +116,36 @@
 	height: 20px;
 	padding: 0 5px;
 	border: 1px solid rgb(204, 204, 204);
+}
+
+/*** SCHEDULE VIEW ***/
+.calendar-schedule__view {
+	display: flex;
+	justify-content: space-between;
+	margin: 0 10px 1rem 2rem;
+}
+
+.schedule-view-block {
+	width: 500px;
+	max-width: 90%;
+}
+
+.schedule-btn-list {
+	display: flex;
+	flex-direction: column;
+	gap: 5px 0;
+	button {
+		border: 1px solid transparent;
+		background-color: transparent;
+		padding: 2px;
+		img {
+			display: flex;
+			align-self: center;
+			width: 22px;
+			filter: $filtered-color-grafito;
+		}
+	}
+	button:hover {
+		border: 1px solid $color-grafito;
+	}
 }

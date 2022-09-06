@@ -23,7 +23,6 @@ export function CalendarDate() {
 	] = useComponentVisible(false);
 	
 	const miniCalendarProps = {
-		componentProps: {},
 		Component: MiniCalendar,
 		positionOffset: { x: 0, y: 40 },
 		isDraggable: false,

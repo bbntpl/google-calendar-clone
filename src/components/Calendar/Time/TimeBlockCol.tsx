@@ -1,6 +1,5 @@
 import TimeRow from './TimeRow'
 import {
-	dayjsObj,
 	dayjsObjByDay,
 	getDateValues,
 	getScheduleTimeOptions,
@@ -28,20 +27,26 @@ export default function TimeBlockCol(props: TimeBlockColProps) {
 		filteredSchedules,
 	} = useContext(GlobalContext) as GlobalContextInterface;
 
+	const defaultDateFormat = {
+		yearFormat: 'YYYY',
+		monthFormat: 'MM',
+		dayFormat: 'DD',
+	}
+	const stringifiedDate = stringifyDate(getDateValues(dateObj, defaultDateFormat));
 	// filter the available schedules by day index
 	const filteredSchedulesByDay = filteredSchedules.filter(sch => {
-		const prevDayButEndsNextDay = stringifyDate(getDateValues(dayjsObjByDay({
-			date: 
-		}), {
-			yearFormat: 'YYYY',
-			monthFormat: 'MM',
-			dayFormat: 'DD',
-		}));
-		return sch.dateTime.date === stringifyDate(getDateValues(dateObj, {
-			yearFormat: 'YYYY',
-			monthFormat: 'MM',
-			dayFormat: 'DD',
-		}));
+		const { start, end } = sch.dateTime.time;
+		const stringifiedPrevDate = stringifyDate(getDateValues(dayjsObjByDay({
+			date: getDateValues(dateObj, defaultDateFormat),
+			calendarType: 'day',
+			index: -1,
+		}), defaultDateFormat));
+		const matchedDate = sch.dateTime.date === stringifiedDate;
+		const prevDateIncludesNextDay = (
+			sch.dateTime.date === stringifiedPrevDate
+			&& (start > end)
+			&& sch.type === 'event')
+		return (matchedDate || prevDateIncludesNextDay);
 	});
 
 	return <>
@@ -53,8 +58,17 @@ export default function TimeBlockCol(props: TimeBlockColProps) {
 				const filteredSchedulesByTime = filteredSchedulesByDay.filter(sch => {
 					const { start, end } = sch.dateTime.time;
 					const timeIndex = !start ? end : start;
-					return timeIndex >= Math.floor(hourIndex)
+					const isScheduleSetFromPrevDay = sch.dateTime.date
+					!== stringifyDate(getDateValues(dateObj, defaultDateFormat));
+					const isIndexZero = hourIndex === 0;
+					const matchedHourRange =
+						!isScheduleSetFromPrevDay
+						&& timeIndex >= Math.floor(hourIndex)
 						&& timeIndex < Math.floor(hourIndex + 4);
+
+					// scheduled event set from previous day that includes hour range 
+					// from next day
+					return (isScheduleSetFromPrevDay && isIndexZero) || matchedHourRange;
 				});
 
 				return <TimeRow

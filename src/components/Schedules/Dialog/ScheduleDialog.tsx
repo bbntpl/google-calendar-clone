@@ -1,26 +1,33 @@
-import { useContext, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useContext, useEffect, useState } from 'react';
 import '../styles.scss';
 import GlobalContext from '../../../context/global/GlobalContext';
 import GlobalContextInterface, {
 	UserActionType,
 	SetState,
+	SelectedSchedule,
 } from '../../../context/global/index.model';
-
 import { uniqueID } from '../../../util/reusable-funcs';
+
 import ScheduleMainContent from './ScheduleMainContent';
 import TaskBlock from '../Task/TaskBlock';
 import EventBlock from '../Event/EventBlock';
+import { ScheduleStates } from '../index.model';
 
 interface ScheduleDialogProps {
 	setIsScheduleDialogVisible: SetState<boolean>;
+	selectedSchedule: SelectedSchedule;
 }
+
 export default function ScheduleDialog(props: ScheduleDialogProps) {
-	const { setIsScheduleDialogVisible } = props;
+	const { setIsScheduleDialogVisible, selectedSchedule } = props;
 	const {
 		selectedScheduleType,
 		calendarList,
 		defaultDateTime,
+		savedSchedules,
 		dispatchSchedules,
+		setSelectedSchedule,
 	} = useContext(GlobalContext) as GlobalContextInterface;
 
 	const defaultScheduleState = {
@@ -43,34 +50,51 @@ export default function ScheduleDialog(props: ScheduleDialogProps) {
 		type: selectedScheduleType,
 	}
 
-	const [scheduleProps, setScheduleProps] = useState({
-		...defaultScheduleState,
-	});
+	const initScheduleProps = (): ScheduleStates => {
+		if (selectedSchedule !== null) {
+			return Object.assign(defaultScheduleState, selectedSchedule);
+		} else {
+			return defaultScheduleState;
+		}
+	}
+
+	const [scheduleProps, setScheduleProps] = useState(initScheduleProps());
+	const { completed, ...eventProps } = scheduleProps;
+	const { location, colorOption, ...taskProps } = scheduleProps;
+
+	useEffect(() => {
+		if (selectedSchedule === null) return;
+
+		// selected schedule becomes null after the component unmounts
+		return () => {
+			setSelectedSchedule(null);
+		}
+	}, []);
 
 	const setTitle = (title: string) => {
 		setScheduleProps(setScheduleProps => ({ ...setScheduleProps, title }));
 	}
 
+	const isIdExists = savedSchedules.find(sch => sch.id === scheduleProps.id);
+
+	const editSchedule = () => {
+		dispatchSchedules({
+			type: UserActionType.EDIT,
+			payload: selectedScheduleType === 'event'
+				? eventProps : taskProps,
+		});
+	}
+
 	const addSchedule = () => {
-		switch (selectedScheduleType) {
-			case 'event':
-				// eslint-disable-next-line @typescript-eslint/no-unused-vars
-				const { completed, ...eventProps } = scheduleProps;
-				dispatchSchedules({
-					type: UserActionType.ADD,
-					payload: eventProps,
-				});
-				break;
-			case 'task':
-				// eslint-disable-next-line @typescript-eslint/no-unused-vars
-				const { location, colorOption, ...taskProps } = scheduleProps
-				dispatchSchedules({
-					type: UserActionType.ADD,
-					payload: taskProps,
-				});
-				break;
-		}
-		setScheduleProps({ ...defaultScheduleState });
+		dispatchSchedules({
+			type: UserActionType.ADD,
+			payload: selectedScheduleType === 'event'
+				? eventProps : taskProps,
+		});
+	}
+
+	const scheduleAction = () => {
+		isIdExists ? editSchedule() : addSchedule();
 		setIsScheduleDialogVisible(visible => !visible);
 	}
 
@@ -83,29 +107,18 @@ export default function ScheduleDialog(props: ScheduleDialogProps) {
 			{
 				selectedScheduleType === 'event'
 					? <EventBlock
-						evtProps={{
-							calendarId: scheduleProps.calendarId,
-							colorOption: scheduleProps.colorOption,
-							dateTime: scheduleProps.dateTime,
-							description: scheduleProps.description,
-							location: scheduleProps.location,
-						}}
+						eventProps={eventProps}
 						setScheduleProps={setScheduleProps}
 					/>
 					: <TaskBlock
-						evtProps={{
-							calendarId: scheduleProps.calendarId,
-							completed: scheduleProps.completed,
-							dateTime: scheduleProps.dateTime,
-							description: scheduleProps.description,
-						}}
+						taskProps={taskProps}
 						setScheduleProps={setScheduleProps}
 					/>
 			}
 			<div className='schedule-dialog__options'>
 				<button
 					id='save-schedule'
-					onClick={addSchedule}
+					onClick={scheduleAction}
 				>
 					Save
 				</button>

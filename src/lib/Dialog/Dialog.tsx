@@ -8,7 +8,7 @@ const DialogOptions = forwardRef<ComponentToPassRef, DialogProps>(
 	(props, ref) => {
 		const {
 			isCloseable = true,
-			componentProps,
+			componentProps = {},
 			Component,
 			// represents change in x or/and y
 			delta = { x: 0, y: 0 },

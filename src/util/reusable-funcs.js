@@ -20,5 +20,13 @@ export const removeMatchedTxtOnArr = (arr, text) => {
 	return arr.filter(el => text !== el);
 }
 
+export const truncateString = (string, limit) => {
+  if (string.length > limit) {
+    return string.substring(0, limit) + '...';
+  } else {
+    return string
+  }
+}
+
 export const uniqueID = () =>
 	Math.floor(Math.random() * Math.floor(Math.random() * Date.now()));

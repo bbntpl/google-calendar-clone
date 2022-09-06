@@ -31,7 +31,7 @@ export default function DayHeader(props: DayHeaderProps) {
 			dayFormat: 'DD',
 		})) && sch.dateTime.time.start < 0;
 	});
-	console.log(filteredSchedulesByDay);
+	
 	const areDatesEqual = (dateObjToCompare: DateUnits) => {
 		const { year, month, day } = dateObjToCompare;
 		const numericalYear = Number(dateObj.format('YYYY'));
