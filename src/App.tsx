@@ -20,7 +20,7 @@ function App(): JSX.Element {
 	} = useContext(GlobalContext) as GlobalContextInterface;
 
 	return (
-		<div className='App container'>
+		<div className='app'>
 			<Header />
 			<main className='main'>
 				{

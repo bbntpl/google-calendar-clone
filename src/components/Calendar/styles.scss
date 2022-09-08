@@ -141,7 +141,7 @@ $time-label-width: 4rem;
 	height: max-content;
 	margin-top: 1rem;
 	margin-bottom: -8px;
-	z-index: 200;
+	z-index: 300;
 }
 
 .calendar-component-container:nth-child(2) {
@@ -155,7 +155,8 @@ $time-label-width: 4rem;
 	border-radius: 6px;
 	color: #fff;
 	cursor: pointer;
-	display: auto;
+	display: flex;
+	flex-direction: column;
 	margin-right: 10px;
 	overflow: hidden;
 	padding: .1rem .5rem;

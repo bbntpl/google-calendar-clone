@@ -13,6 +13,7 @@ import Dialog from '../../lib/Dialog';
 import Options from './Options';
 import { ColorOption, defaultColorOption } from '../../docs/data';
 
+type NewCalendar = InitCalendarLblProps | CalendarLabelType;
 const initCalendarLblProps: InitCalendarLblProps = {
 	name: '',
 	colorOption: defaultColorOption,
@@ -28,7 +29,7 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 		recordPos,
 	} = props;
 
-	const [newCalendar, setNewCalendar] = useState(initCalendarLblProps);
+	const [newCalendar, setNewCalendar] = useState<NewCalendar>(initCalendarLblProps);
 	const [
 		dialogRef,
 		isDialogVisible,
@@ -65,7 +66,7 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 	// props to be passed on the reusable dialog component
 	const componentProps = {
 		flags: { options: false, colors: true },
-		calendarProps: newCalendar as CalendarLabelType,
+		calendarProps: newCalendar,
 		globalContextProps: {
 			calendarList,
 			dispatchCalendarList,

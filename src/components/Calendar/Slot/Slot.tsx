@@ -6,22 +6,23 @@ import GlobalContext from '../../../context/global/GlobalContext';
 import { getScheduleTimeOptions } from '../../../util/calendar-arrangement';
 import useComponentVisible from '../../../hooks/useComponentVisible';
 
-import { ScheduleView } from '../../Schedules/ScheduleView';
+import { ScheduleView } from '../../Schedules/View/ScheduleView';
 import Dialog from '../../../lib/Dialog';
 
-type SlotProps =  {
+type SlotProps = {
 	scheduleProps: ScheduleTypes;
 	stringifiedDate: string;
 }
-	export default function Slot(props: SlotProps) {
-		const { scheduleProps, stringifiedDate } = props;
+
+export default function Slot(props: SlotProps) {
+	const { scheduleProps, stringifiedDate } = props;
 	const { calendarId, title } = scheduleProps;
 	const { time, date: scheduleDate } = scheduleProps.dateTime;
 	const { start, end } = time;
-	const { 
+	const {
 		calendarList,
-		recordPos, 
-	} = useContext(GlobalContext) as GlobalContextInterface
+		recordPos,
+	} = useContext(GlobalContext) as GlobalContextInterface;
 	const [zIndex, setZIndex] = useState(1000);
 	const [
 		scheduleViewRef,
@@ -29,13 +30,12 @@ type SlotProps =  {
 		setIsScheduleViewVisible,
 		linkRef,
 	] = useComponentVisible(false);
-
 	const scheduleViewProps = {
 		isDraggable: false,
 		isSelfAdjustable: true,
 		componentProps: {
 			scheduleProps,
-			setIsDialogVisible: setIsScheduleViewVisible,
+			setIsScheduleViewVisible,
 		},
 		Component: ScheduleView,
 		hasInitTransition: true,
@@ -59,7 +59,9 @@ type SlotProps =  {
 
 	const slotHeight = () => {
 		const defaultHeight = 13;
-		if (start < 0) {
+		if(scheduleProps.type === 'task') {
+			return defaultHeight * 2;
+		} else if (start < 0) {
 			return defaultHeight * 3;
 		} else if (stringifiedDate !== scheduleDate) {
 			return end * defaultHeight;
@@ -68,7 +70,6 @@ type SlotProps =  {
 		} else if (start > end) {
 			return (timeOptions.length - start) * defaultHeight;
 		}
-		return defaultHeight;
 	}
 
 	const topPosition = () => {
@@ -90,6 +91,16 @@ type SlotProps =  {
 		zIndex,
 	};
 
+	function slotTitle() {
+		const placeholder = title || '(No title)';
+		if('completed' in scheduleProps) {
+			if(scheduleProps.completed) {
+				return <s>{placeholder}</s>
+			}
+		}
+		return placeholder;
+	}
+
 	return (
 		<>
 			<button
@@ -103,13 +114,10 @@ type SlotProps =  {
 				}}
 				ref={linkRef}
 			>
-				<p className='calendar-slot__title'>{title}</p>
+				<p className='calendar-slot__title'>{slotTitle()}</p>
 				<p className='calendar-slot__hours'>{timeRange()}</p>
 			</button>
-			<Dialog
-				ref={scheduleViewRef}
-				{...scheduleViewProps}
-			/>
+			<Dialog ref={scheduleViewRef} {...scheduleViewProps} />
 		</>
 	)
 }

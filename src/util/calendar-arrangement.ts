@@ -73,10 +73,10 @@ export function getYear(year = dayjs().year()) {
 
 export function getDateValues(dateObj: Dayjs, dateFormats: DateFormatting)
 	: DateUnits {
-	const { 
-		yearFormat = 'YYYY', 
-		monthFormat = 'MM', 
-		dayFormat = 'DD', 
+	const {
+		yearFormat = 'YYYY',
+		monthFormat = 'MM',
+		dayFormat = 'DD',
 	} = dateFormats;
 	const year = Number(dateObj.format(yearFormat));
 	const month = dateObj.format(monthFormat);
@@ -104,19 +104,21 @@ export function getShortDate(dateObj: Dayjs) {
 
 export function getScheduleTimeOptions() {
 	const minutes = ['00', '15', '30', '45'];
-	const dayTime: DayTimeElement[] = new Array(96).fill([]).map((_, i) => {
-		const hourCount = Math.floor(i / minutes.length) + 1;
-		const hours = (hourCount % 12) === 0 ? 12 : hourCount % 12;
-		const ampm = hourCount < 12 || hourCount === 24 ? 'AM' : 'PM';
-		return {
-			dayPortion: ampm,
-			hour: hours,
-			hourIndex: hourCount - 1,
-			minute: minutes[i % minutes.length] as AvailableMinutes,
-			time: `${hours}:${minutes[i % minutes.length]} ${ampm}`,
-			timeWithoutMinutes: `${hours} ${ampm}`,
-		}
-	});
+	const dayTime: DayTimeElement[] = new Array(96)
+		.fill([])
+		.map((_, i) => {
+			const hourCount = Math.floor(i / minutes.length) + 1;
+			const hours = (hourCount % 12) === 0 ? 12 : hourCount % 12;
+			const ampm = hourCount < 12 || hourCount === 24 ? 'AM' : 'PM';
+			return {
+				dayPortion: ampm,
+				hour: hours,
+				hourIndex: hourCount - 1,
+				minute: minutes[i % minutes.length] as AvailableMinutes,
+				time: `${hours}:${minutes[i % minutes.length]} ${ampm}`,
+				timeWithoutMinutes: `${hours} ${ampm}`,
+			}
+		});
 
 	// move the last group of items(12AM) in front 
 	const lastElementIndex = dayTime.length - 1;

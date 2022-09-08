@@ -19,12 +19,12 @@ button {
 	cursor: pointer;
 }
 
-.App {
+.app {
 	display: grid;
 	grid-template-rows: minmax(min-content, max-content) auto;
 	width: 100vw;
 	max-width: 100%;
-	height: 100vh;
+	min-height: 100vh;
 	font-family: 'Noto Sans SC', Helvetica, Arial, sans-serif;
 }
 

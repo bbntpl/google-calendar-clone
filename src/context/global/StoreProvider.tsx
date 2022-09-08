@@ -77,7 +77,7 @@ const scheduleReducer = (
 const calendarListReducer = (
 	state: Array<CalendarLabelType> | [],
 	action: CalendarListActionTypes) => {
-	const accumulatedArr = state.length < 10
+	const accumulatedArr: CalendarLabelType[] = state.length < 10
 		? [...state, action.payload as CalendarLabelType]
 		: state;
 	const stateName = 'calendarList';
