@@ -7,10 +7,11 @@ import GlobalContextInterface, {
 	UserActionType,
 } from '../../../context/global/index.model';
 import { truncateString } from '../../../util/reusable-funcs';
-import { 
+import {
 	dayjsObj,
-	getScheduleTimeOptions, 
-	getShortDate, 
+	getScheduleTimeOptions,
+	getShortDate,
+	stringifiedDateToObj,
 } from '../../../util/calendar-arrangement';
 import useComponentVisible from '../../../hooks/useComponentVisible';
 
@@ -24,38 +25,57 @@ import LocationIcon from '../../../assets/icons/location.png';
 
 import Alert from '../../../lib/Alert/Alert';
 import DataItem from './DataItem';
+import { ScheduleNames, DateTimeInputs } from '../../../context/global/index.model';
 
 interface ScheduleViewProps {
-	scheduleProps: ScheduleTypes;
+	readonly scheduleProps: ScheduleTypes;
 	setIsScheduleViewVisible: Dispatch<SetStateAction<boolean>>;
+}
+
+interface HoursRangeProps {
+	readonly dateTime: DateTimeInputs;
+	readonly type: ScheduleNames;
+}
+
+function HoursRange(props: HoursRangeProps) {
+	const { dateTime, type } = props;
+	const { start, end } = dateTime.time;
+	const timeOptions = getScheduleTimeOptions();
+	return <span>
+		{(start >= 0 && type === 'event') && `${timeOptions[start].time}-`}
+		{start >= 0 && timeOptions[end].time}
+	</span>
+
+}
+
+function ScheduleTime(props: HoursRangeProps) {
+	const { dateTime } = props;
+	const dateValues = stringifiedDateToObj(dateTime.date);
+	const shortDate = getShortDate(dayjsObj(dateValues));
+	return <>
+		<div>{shortDate}</div>
+		<HoursRange {...props} />
+	</>
 }
 
 export function ScheduleView(props: ScheduleViewProps) {
 	const { scheduleProps, setIsScheduleViewVisible } = props;
-	const {
-		calendarId,
-		description,
-		title,
-		type,
-		...rest
-	} = scheduleProps;
+	const { calendarId, description, title, type, ...rest } = scheduleProps;
 	const {
 		calendarList,
-		selectedDate,
 		setSelectedSchedule,
 		dispatchSchedules,
 		setIsScheduleDialogVisible,
 	} = useContext(GlobalContext) as GlobalContextInterface;
 	const [alertRef, isAlertVisible, setIsAlertVisible] = useComponentVisible(false);
 
-	const associateCalendar = calendarList.find(cal => cal.id === calendarId);
+	const associatedCalendar = calendarList.find(cal => cal.id === calendarId);
 
 	useEffect(() => {
 		// set the received schedule props as a selected schedule
 		setSelectedSchedule((sch: ScheduleTypes | null | undefined) => {
 			return sch === null ? scheduleProps : { ...sch, ...scheduleProps };
 		});
-
 		// selected schedule becomes null after the component unmounts
 		return () => setSelectedSchedule(null);
 	}, []);
@@ -63,6 +83,18 @@ export function ScheduleView(props: ScheduleViewProps) {
 	const editSchedule = () => {
 		setIsScheduleViewVisible(visible => !visible);
 		setIsScheduleDialogVisible(visible => !visible);
+	}
+
+	const toggleTaskCompletion = () => {
+		if ('completed' in rest) {
+			dispatchSchedules({
+				type: UserActionType.EDIT,
+				payload: {
+					...scheduleProps,
+					completed: !rest.completed,
+				},
+			})
+		}
 	}
 
 	const deleteSchedule = () => {
@@ -73,22 +105,6 @@ export function ScheduleView(props: ScheduleViewProps) {
 		setIsScheduleViewVisible(visible => !visible);
 	}
 
-	const DisplayHoursRange = () => {
-		const { start, end } = rest.dateTime.time;
-		const timeOptions = getScheduleTimeOptions();
-		return (<span>
-			{(start >= 0 && type === 'event') && `${timeOptions[start].time}-`}
-			{start >= 0 && timeOptions[end].time}
-		</span>)
-	}
-
-	const DisplayScheduleTime = () => {
-		return (<>
-			<div>{getShortDate(dayjsObj(selectedDate))}</div>
-			<DisplayHoursRange />
-		</>)
-	}
-
 	return (<>
 		<div className='calendar-schedule__view'>
 			<div className='schedule-view-block'>
@@ -96,18 +112,23 @@ export function ScheduleView(props: ScheduleViewProps) {
 					<span>
 						<div style={{
 							borderRadius: '3px',
-							backgroundColor: associateCalendar?.colorOption.value,
+							backgroundColor: associatedCalendar?.colorOption.value,
 							width: '22px',
 							height: '22px',
 						}} />
 					</span>
-					<div>{title}</div>
+					<div>{title || '(No title)'}</div>
 				</div>
 				<DataItem
 					condition={!!('dateTime' in rest && (rest.dateTime.time.start && rest.dateTime.time.end))}
 					icon={ClockIcon}
 					DataElement={() => (
-						<div><DisplayScheduleTime /></div>
+						<div>
+							<ScheduleTime
+								dateTime={rest.dateTime}
+								type={type}
+							/>
+						</div>
 					)}
 				/>
 				<DataItem
@@ -124,9 +145,18 @@ export function ScheduleView(props: ScheduleViewProps) {
 					condition={!!calendarId}
 					icon={CalendarIcon}
 					DataElement={() => {
-						return <div>{(associateCalendar as CalendarLabelType).name}</div>
+						return <div>{(associatedCalendar as CalendarLabelType).name}</div>
 					}}
 				/>
+				<div className='schedule-view-block'>{
+					'completed' in rest
+					&& <button onClick={toggleTaskCompletion}>
+						{
+							`${rest.completed ? 'Not c' : 'C'}ompleted`
+						}
+					</button>
+				}
+				</div>
 			</div>
 			<div className='schedule-btn-list'>
 				<button onClick={editSchedule}>

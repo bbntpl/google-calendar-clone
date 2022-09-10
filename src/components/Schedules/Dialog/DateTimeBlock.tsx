@@ -1,7 +1,7 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import GlobalContext from '../../../context/global/GlobalContext';
 import GlobalContextInterface, {
-	DateTimeInputs,
+	DateTimeInputs, DateUnits,
 } from '../../../context/global/index.model';
 import {
 	dayjsObj,
@@ -20,11 +20,16 @@ import { Option } from '../index.model';
 
 export interface DateTimeBlockProps {
 	dateTime: DateTimeInputs;
-	handleChange: (option: Option | null, propName: string) => void;
+	handleDateChange: (selectedDate: DateUnits) => void;
+	handleTimeChange: (option: Option | null, propName: string) => void;
 }
 
 export default function DateTimeBlock(props: DateTimeBlockProps) {
-	const { dateTime, handleChange } = props;
+	const { 
+		dateTime, 
+		handleDateChange, 
+		handleTimeChange,
+	 } = props;
 	const {
 		selectedDate,
 		selectedScheduleType,
@@ -39,6 +44,9 @@ export default function DateTimeBlock(props: DateTimeBlockProps) {
 		linkRef,
 	] = useComponentVisible(false);
 
+	useEffect(() => {
+		handleDateChange(selectedDate);
+	}, [selectedDate])
 	const miniCalendarProps = {
 		Component: MiniCalendar,
 		positionOffset: { x: 0, y: 30 },
@@ -59,7 +67,7 @@ export default function DateTimeBlock(props: DateTimeBlockProps) {
 	const selectHoursEl = (option: Option, propName: string) => {
 		return <CustomSelect
 			value={option}
-			onChange={(e) => handleChange(e, propName)}
+			onChange={(e) => handleTimeChange(e, propName)}
 			options={options}
 			isSearchable={true}
 			styles={{
@@ -95,11 +103,11 @@ export default function DateTimeBlock(props: DateTimeBlockProps) {
 					</div>
 					<div style={{ display: 'flex', gap: '.5rem' }}>
 						{
-							(start >= 0 && selectedScheduleType === 'event')
+							(start >= 0 && end >= 0 && selectedScheduleType === 'event')
 							&& selectHoursEl(options[start], 'start')
 						}
 						{
-							start >= 0 && selectHoursEl(options[end], 'end')
+							(start >= 0 && end >= 0) && selectHoursEl(options[end], 'end')
 						}
 					</div>
 					<Dialog ref={miniCalendarRef} {...miniCalendarProps} />

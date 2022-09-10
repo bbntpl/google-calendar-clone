@@ -51,13 +51,14 @@ export default function TimeBlockCol(props: TimeBlockColProps) {
 
 	return <>
 		{
-			getScheduleTimeOptions().map(({ hour, timeWithoutMinutes }, hourIndex) => {
+			getScheduleTimeOptions().map(({ timeWithoutMinutes }, hourIndex) => {
 				if (hourIndex % 4 !== 0) return;
 
 				// filter the available schedules by hour index
 				const filteredSchedulesByTime = filteredSchedulesByDay.filter(sch => {
+					const { type } = sch;
 					const { start, end } = sch.dateTime.time;
-					const timeIndex = !start ? end : start;
+					const timeIndex = type === 'task' ? end : start;
 					const isScheduleSetFromPrevDay = sch.dateTime.date
 					!== stringifyDate(getDateValues(dateObj, defaultDateFormat));
 					const isIndexZero = hourIndex === 0;
@@ -72,7 +73,7 @@ export default function TimeBlockCol(props: TimeBlockColProps) {
 				});
 
 				return <TimeRow
-					key={`${hour}-${hourIndex}`}
+					key={`time-row-${hourIndex /4}`}
 					dateValues={getDateValues(dateObj, dateFormats)}
 					time={timeWithoutMinutes}
 					hourIndex={hourIndex}

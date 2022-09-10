@@ -4,10 +4,10 @@ import TimeLabel from './TimeLabel';
 export default function TimeLabelCol() {
 	return <>
 		{
-			getScheduleTimeOptions().map(({ time, timeWithoutMinutes }, index) => {
+			getScheduleTimeOptions().map(({ timeWithoutMinutes }, index) => {
 				if (index % 4 !== 0) return;
 				return <TimeLabel
-					key={`${time}-${index}`}
+					key={`time-label-${index / 4}`}
 					time={timeWithoutMinutes}
 				/>
 			})

@@ -21,13 +21,15 @@ interface ScheduleDialogProps {
 
 export default function ScheduleDialog(props: ScheduleDialogProps) {
 	const { setIsScheduleDialogVisible, selectedSchedule } = props;
+
 	const {
-		selectedScheduleType,
 		calendarList,
 		defaultDateTime,
 		savedSchedules,
 		dispatchSchedules,
 		setSelectedSchedule,
+		selectedScheduleType,
+		setSelectedScheduleType,
 	} = useContext(GlobalContext) as GlobalContextInterface;
 
 	const defaultScheduleState = {
@@ -57,18 +59,19 @@ export default function ScheduleDialog(props: ScheduleDialogProps) {
 			return defaultScheduleState;
 		}
 	}
-
 	const [scheduleProps, setScheduleProps] = useState(initScheduleProps());
 	const { completed, ...eventProps } = scheduleProps;
 	const { location, colorOption, ...taskProps } = scheduleProps;
 
 	useEffect(() => {
-		if (selectedSchedule === null) return;
-
-		// selected schedule becomes null after the component unmounts
-		return () => {
-			setSelectedSchedule(null);
+		// manually set selected schedule type derived from the received
+		// selected schedule only if it is not null
+		if (selectedSchedule) {
+			setSelectedScheduleType(selectedSchedule.type);
 		}
+		if (selectedSchedule === null) return;
+		// selected schedule becomes null after the component unmounts
+		return () => setSelectedSchedule(null);
 	}, []);
 
 	const setTitle = (title: string) => {
@@ -81,7 +84,8 @@ export default function ScheduleDialog(props: ScheduleDialogProps) {
 		dispatchSchedules({
 			type: UserActionType.EDIT,
 			payload: selectedScheduleType === 'event'
-				? eventProps : taskProps,
+				? { ...eventProps, type: 'event' }
+				: { ...taskProps, type: 'task' },
 		});
 	}
 
@@ -103,6 +107,7 @@ export default function ScheduleDialog(props: ScheduleDialogProps) {
 			<ScheduleMainContent
 				title={scheduleProps.title}
 				setTitle={setTitle}
+				scheduleType={selectedScheduleType}
 			/>
 			{
 				selectedScheduleType === 'event'
@@ -116,12 +121,7 @@ export default function ScheduleDialog(props: ScheduleDialogProps) {
 					/>
 			}
 			<div className='schedule-dialog__options'>
-				<button
-					id='save-schedule'
-					onClick={scheduleAction}
-				>
-					Save
-				</button>
+				<button id='save-schedule' onClick={scheduleAction}>Save</button>
 			</div>
 		</div>
 	)

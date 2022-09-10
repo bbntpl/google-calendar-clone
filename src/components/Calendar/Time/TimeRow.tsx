@@ -24,6 +24,7 @@ export default function TimeRow(props: TimeRowProps) {
 		filteredSchedulesByTime,
 	} = props;
 	const {
+		setSelectedDate,
 		setIsScheduleDialogVisible,
 		setDefaultDateTime,
 		recordPos,
@@ -39,6 +40,7 @@ export default function TimeRow(props: TimeRowProps) {
 				onClick={(e) => {
 					if (e.target !== e.currentTarget) return;
 					recordPos(e);
+					setSelectedDate(dateValues);
 					setDefaultDateTime({
 						date: stringifyDate(dateValues),
 						time: {

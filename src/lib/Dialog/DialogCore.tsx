@@ -49,7 +49,7 @@ const DialogCore = forwardRef<HTMLDivElement, WrappedDialogProps>(
 			isSelfAdjustable,
 			hasInitTransition,
 		} = flags;
-		const { handle } = draggableProps;
+		const { handle, positionOffset } = draggableProps;
 		const { position: cursorPosition }
 			= useContext(GlobalContext) as GlobalContextInterface;
 
@@ -69,12 +69,12 @@ const DialogCore = forwardRef<HTMLDivElement, WrappedDialogProps>(
 			width: rect?.width || 0,
 			height: rect?.height || 0,
 		};
-
+		
 		// custom hooks that adjust the position or behavior of the dialog
 		const { adjustedDialogPos, bounds, isPosAdjusted }
 			= useDialogAdjuster(
 				componentRefSize,
-				cursorPosition,
+				(positionOffset || cursorPosition),
 				delta,
 				windowDim,
 			);
@@ -120,7 +120,7 @@ const DialogCore = forwardRef<HTMLDivElement, WrappedDialogProps>(
 				positionOffset={
 					isSelfAdjustable
 						? adjustedDialogPos
-						: draggableProps.positionOffset
+						: positionOffset
 				}
 				bounds={bounds}
 			>
@@ -132,9 +132,7 @@ const DialogCore = forwardRef<HTMLDivElement, WrappedDialogProps>(
 							{isCloseable && <CloseBtn eventHandler={toggleDialog} />}
 						</div>
 					}
-					<div>
-						<Component {...componentProps} />
-					</div>
+					<Component {...componentProps} />
 				</div>
 			</Draggable>
 		)

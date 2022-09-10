@@ -141,7 +141,7 @@ export function stringifyDate(args: DateUnits) {
 }
 
 export function stringifiedDateToObj(stringifiedDate: string) {
-	const year = stringifiedDate.slice(0, 4);
+	const year = Number(stringifiedDate.slice(0, 4));
 	const month = Number(stringifiedDate.slice(4, 6));
 	const day = Number(stringifiedDate.slice(6, 8));
 	return { year, month, day };

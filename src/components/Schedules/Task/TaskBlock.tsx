@@ -10,6 +10,8 @@ import CalendarIcon from '../../../assets/icons/calendar.png';
 import DateTimeBlock from '../Dialog/DateTimeBlock';
 import CalendarSelection from '../Dialog/CalendarSelection';
 import DescInputBlock from '../Dialog/DescInputBlock';
+import { stringifyDate } from '../../../util/calendar-arrangement';
+import { DateUnits } from '../../../context/global/index.model';
 
 export default function TaskBlock(props: ScheduleTaskProps): JSX.Element {
 	const { taskProps, setScheduleProps } = props;
@@ -36,6 +38,17 @@ export default function TaskBlock(props: ScheduleTaskProps): JSX.Element {
 		}
 	};
 
+	const handleDateChange = (selectedDate: DateUnits) => {
+		// update time prop values on change
+		setScheduleProps((scheduleProps: ScheduleStates) => ({
+			...scheduleProps,
+			dateTime: {
+				...scheduleProps.dateTime,
+				date: stringifyDate(selectedDate),
+			},
+		}));
+	};
+
 	const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
 		const newValue = e.target.value;
 		setScheduleProps((scheduleProps: ScheduleStates) => ({
@@ -57,7 +70,8 @@ export default function TaskBlock(props: ScheduleTaskProps): JSX.Element {
 		<div className='calendar-schedule__event schedule-block'>
 			<DateTimeBlock
 				dateTime={dateTime}
-				handleChange={handleTimeChange}
+				handleTimeChange={handleTimeChange}
+				handleDateChange={handleDateChange}
 			/>
 			<DescInputBlock
 				description={description}

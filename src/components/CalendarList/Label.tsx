@@ -38,7 +38,10 @@ export default function Label(props: LabelProps): JSX.Element {
 		e.stopPropagation();
 		dispatchCalendarList({
 			type: UserActionType.EDIT,
-			payload: { id, selected: e.target.checked },
+			payload: {
+				...calendarProps,
+				selected: e.target.checked, 
+			},
 		})
 	};
 

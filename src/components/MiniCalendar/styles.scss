@@ -1,13 +1,11 @@
 @import '../../styles/variables';
 
 .calendar-container {
-	position: relative;
 	&--static { width: 230px;}
 	&--by-content { width: 100%; }
 }
 .calendar-month--mini {
 	width: 100%;
-	position: relative;
 }
 
 .calendar__week-grid--mini {
@@ -18,7 +16,7 @@
 	font-size: 10px;
 	font-weight: 500;
 	& > * {
-		flex: 0 1 12%;
+		flex: 1 0 12%;
     height: 26px;
 		margin: 2px;
 	}

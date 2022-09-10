@@ -21,7 +21,7 @@ export default function Options(props: WrappedComponentProps) {
 		if (calendarProps.id && Object.keys(eventHandlers).length === 0) {
 			dispatchCalendarList({
 				type: UserActionType.EDIT,
-				payload: { id: calendarProps.id, colorOption },
+				payload: { ...calendarProps, colorOption },
 			});
 			return;
 		}
@@ -35,6 +35,7 @@ export default function Options(props: WrappedComponentProps) {
 			dispatchCalendarList({
 				type: UserActionType.EDIT,
 				payload: {
+					...calendarProps,
 					id: calendarId,
 					selected: calendarId === calendarProps.id,
 				},

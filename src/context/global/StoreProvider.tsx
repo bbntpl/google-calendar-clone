@@ -45,7 +45,7 @@ function actionTypes<
 		case UserActionType.EDIT:
 			const editedArr = [...state.map((obj: StateType) => {
 				if (obj.id === action.payload.id) {
-					return Object.assign({}, obj, action.payload);
+					return Object.assign(action.payload);
 				}
 				return obj;
 			})];

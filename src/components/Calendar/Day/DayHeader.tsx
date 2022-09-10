@@ -1,12 +1,12 @@
 import { Dayjs } from 'dayjs';
 import '../styles.scss';
 
-import TimeRow from '../Time/TimeRow';
 import { dateToday, getDateValues, stringifyDate } from '../../../util/calendar-arrangement';
 import { DateUnits } from '../../../context/global/index.model';
 import GlobalContext from '../../../context/global/GlobalContext';
 import { useContext } from 'react';
 import GlobalContextInterface from '../../../context/global/index.model';
+import TimeRowUnset from '../Time/TimeRowUnset';
 
 interface DayHeaderProps {
 	dateObj: Dayjs,
@@ -29,7 +29,7 @@ export default function DayHeader(props: DayHeaderProps) {
 			yearFormat: 'YYYY',
 			monthFormat: 'MM',
 			dayFormat: 'DD',
-		})) && sch.dateTime.time.start < 0;
+		})) && (sch.dateTime.time.start < 0 && sch.dateTime.time.end < 0 );
 	});
 	
 	const areDatesEqual = (dateObjToCompare: DateUnits) => {
@@ -80,7 +80,7 @@ export default function DayHeader(props: DayHeaderProps) {
 					{dateObj.format('D')}
 				</div>
 			</div>
-			<TimeRow
+			<TimeRowUnset
 				dateValues={getDateValues(dateObj, dateFormats)}
 				dayIndex={dayIndex}
 				filteredSchedulesByTime={filteredSchedulesByDay}

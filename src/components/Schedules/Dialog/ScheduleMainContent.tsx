@@ -1,12 +1,18 @@
+import { ScheduleNames } from '../../../context/global/index.model';
 import ScheduleTypeSelector from './ScheduleTypeSelector';
 
 interface MainContentProps {
-	title: string,
-	setTitle: (title: string) => void
+	title: string;
+	setTitle: (title: string) => void;
+	scheduleType: ScheduleNames | null;
 }
 
 export default function ScheduleMainContent(props: MainContentProps) {
-	const { title, setTitle } = props;
+	const { 
+		title, 
+		setTitle, 
+		scheduleType, 
+	} = props;
 	return (
 		<div className='schedule-block'>
 			<div className='schedule-input-list'>
@@ -24,7 +30,9 @@ export default function ScheduleMainContent(props: MainContentProps) {
 			<div className='schedule-input-list'>
 				<span></span>
 				<div>
-					<ScheduleTypeSelector />
+					<ScheduleTypeSelector
+						scheduleType={scheduleType}
+					/>
 				</div>
 			</div>
 		</div>

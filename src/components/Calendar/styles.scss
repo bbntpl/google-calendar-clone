@@ -166,13 +166,36 @@ $time-label-width: 4rem;
 	width: 98%;
 }
 
-.calendar-slot__title {
+.calendar-slot__text {
 	font-size: .7rem;
 	margin-bottom: 5px;
 }
 
-.calendar-slot__hours {
-	font-size: .7rem;
+.slot-list {
+	height: 400px;
+	max-height: 90%;
+	width: calc(120px - 10px);
+	margin: 0 5px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	& > button {
+		position: static;
+	}
+}
+.schedule-tasks-counter {
+	position: absolute;
+	height: 13px;
+	font-size: 10px;
+	bottom: 1px;
+	color: $color-grafito;
+	cursor: pointer;
+	padding: 0 10px;
+	border: none;
+	background-color: transparent;
+}
+
+.schedule-tasks-counter:hover {
+	color: #010;
 }
 
 /*** CALENDAR STYLING ***/

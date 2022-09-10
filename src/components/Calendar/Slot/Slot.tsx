@@ -8,15 +8,21 @@ import useComponentVisible from '../../../hooks/useComponentVisible';
 
 import { ScheduleView } from '../../Schedules/View/ScheduleView';
 import Dialog from '../../../lib/Dialog';
+import { DialogProps } from '../../../lib/Dialog/index.model';
 
 type SlotProps = {
 	scheduleProps: ScheduleTypes;
 	stringifiedDate: string;
+	scheduleViewPosition?: DialogProps['stylePosition'];
 }
 
 export default function Slot(props: SlotProps) {
-	const { scheduleProps, stringifiedDate } = props;
-	const { calendarId, title } = scheduleProps;
+	const {
+		scheduleProps,
+		stringifiedDate,
+		scheduleViewPosition = 'fixed' as const,
+	} = props;
+	const { calendarId, title, type } = scheduleProps;
 	const { time, date: scheduleDate } = scheduleProps.dateTime;
 	const { start, end } = time;
 	const {
@@ -37,29 +43,29 @@ export default function Slot(props: SlotProps) {
 			scheduleProps,
 			setIsScheduleViewVisible,
 		},
+		positionOffset: { x: 0, y: 0 },
 		Component: ScheduleView,
 		hasInitTransition: true,
 		isDialogVisible: isScheduleViewVisible,
 		setIsDialogVisible: setIsScheduleViewVisible,
+		stylePosition: 'absolute' as const,
 	}
 
 	const timeOptions = getScheduleTimeOptions();
-
 	const timeRange = () => {
-		if (start < 0) return '';
-		const startTime = timeOptions[start].time || '';
+		if (end < 0 && start < 0) return '';
 		const endTime = timeOptions[end].time || '';
-		if (startTime && endTime) {
+		const startTime = timeOptions[start].time || '';
+		if (type === 'task') {
+			return endTime;
+		} else {
 			return `${startTime}-${endTime}`;
-		} else if (startTime || endTime) {
-			return startTime || endTime;
 		}
-		return '';
 	}
 
 	const slotHeight = () => {
 		const defaultHeight = 13;
-		if(scheduleProps.type === 'task') {
+		if (scheduleProps.type === 'task') {
 			return defaultHeight * 2;
 		} else if (start < 0) {
 			return defaultHeight * 3;
@@ -93,8 +99,8 @@ export default function Slot(props: SlotProps) {
 
 	function slotTitle() {
 		const placeholder = title || '(No title)';
-		if('completed' in scheduleProps) {
-			if(scheduleProps.completed) {
+		if ('completed' in scheduleProps) {
+			if (scheduleProps.completed) {
 				return <s>{placeholder}</s>
 			}
 		}
@@ -114,8 +120,17 @@ export default function Slot(props: SlotProps) {
 				}}
 				ref={linkRef}
 			>
-				<p className='calendar-slot__title'>{slotTitle()}</p>
-				<p className='calendar-slot__hours'>{timeRange()}</p>
+				{
+					scheduleProps.type === 'event'
+						? <>
+							<div className='calendar-slot__text'>{slotTitle()}</div>
+							<div className='calendar-slot__text'>{timeRange()}</div>
+						</>
+						: <div className='calendar-slot__text'>
+							{`${slotTitle()}, ${timeRange()}`}
+						</div>
+				}
+
 			</button>
 			<Dialog ref={scheduleViewRef} {...scheduleViewProps} />
 		</>

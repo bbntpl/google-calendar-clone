@@ -124,17 +124,30 @@
 	display: flex;
 	justify-content: space-between;
 	margin: 0 10px 1rem 2rem;
+	width: max-content;
 }
 
 .schedule-view-block {
-	width: 500px;
-	max-width: 90%;
+	min-width: calc(100% - 30px);
+	width: 400px;
+	button {
+		border: none;
+		color: #3c4043;
+		font-weight: bold;
+		font-size: calc(1rem - 2px);
+		padding: 4px 8px;
+		background: none;
+	}
+	button:hover {
+		background: $bg-color--hover;
+	}
 }
 
 .schedule-btn-list {
 	display: flex;
 	flex-direction: column;
 	gap: 5px 0;
+	width: 50px;
 	button {
 		border: 1px solid transparent;
 		background-color: transparent;

@@ -1,7 +1,7 @@
-import { 
-	ScheduleEventProps, 
-	ScheduleStates, 
-	Option, 
+import {
+	ScheduleEventProps,
+	ScheduleStates,
+	Option,
 } from '../index.model';
 
 import '../styles.scss';
@@ -14,6 +14,8 @@ import ColorSelection from './ColorSelection';
 import DescInputBlock from '../Dialog/DescInputBlock';
 import CustomInput from '../Dialog/CustomInputs/CustomInput';
 import { ColorOption } from '../../../docs/data';
+import { stringifyDate } from '../../../util/calendar-arrangement';
+import { DateUnits } from '../../../context/global/index.model';
 
 export default function EventBlock(props: ScheduleEventProps): JSX.Element {
 	const { eventProps, setScheduleProps } = props;
@@ -53,6 +55,17 @@ export default function EventBlock(props: ScheduleEventProps): JSX.Element {
 		}
 	};
 
+	const handleDateChange = (selectedDate: DateUnits) => {
+		// update time prop values on change
+		setScheduleProps((scheduleProps: ScheduleStates) => ({
+			...scheduleProps,
+			dateTime: {
+				...scheduleProps.dateTime,
+				date: stringifyDate(selectedDate),
+			},
+		}));
+	};
+
 	const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
 		const newValue = e.target.value;
 		setScheduleProps((scheduleProps: ScheduleStates) => ({
@@ -70,7 +83,7 @@ export default function EventBlock(props: ScheduleEventProps): JSX.Element {
 		}));
 	}
 
-		const handleColorChange = (option: ColorOption | null) => {
+	const handleColorChange = (option: ColorOption | null) => {
 		if (!option) return;
 		setScheduleProps((scheduleProps: ScheduleStates) => ({
 			...scheduleProps,
@@ -82,7 +95,8 @@ export default function EventBlock(props: ScheduleEventProps): JSX.Element {
 		<div className='calendar-schedule__event schedule-block'>
 			<DateTimeBlock
 				dateTime={dateTime}
-				handleChange={handleTimeChange}
+				handleTimeChange={handleTimeChange}
+				handleDateChange={handleDateChange}
 			/>
 			<div className='schedule-input-list'>
 				<span>
