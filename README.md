@@ -1,5 +1,5 @@
 # Google Calendar Clone
-Built with React + TypeScript
+Built with React + TypeScript (yet to be finished)
 
 ## Available features
 - CRUD using Firebase
