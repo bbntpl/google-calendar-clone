@@ -1,23 +1,30 @@
 @import '../../styles/variables';
 
 .calendar-container {
-	&--static { width: 230px;}
-	&--by-content { width: 100%; }
-}
-.calendar-month--mini {
-	width: 100%;
+	&--static { 
+		width: 230px;
+		& > .calendar-month--mini {
+			width: 100%
+		}
+	}
+	&--by-content {
+		width: 100%;
+		& > .calendar-month--mini {
+			width: 100%;
+		}
+	 }
+	padding-bottom: 10px;
 }
 
 .calendar__week-grid--mini {
-	display: flex;
-	flex-wrap: wrap;
+	display: grid;
+	grid-template-columns: repeat(7, 30px);
 	width: 100%;
 	text-align: center;
 	font-size: 10px;
 	font-weight: 500;
 	& > * {
-		flex: 1 0 12%;
-    height: 26px;
+    	height: 26px;
 		margin: 2px;
 	}
 	[class$=day-type] {

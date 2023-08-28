@@ -2,38 +2,41 @@ import { useEffect, useState } from 'react';
 import { Position } from '../context/global/index.model';
 
 interface Dimension {
-	width: number,
-	height: number,
-}
-
-interface PositionOffset {
-	x: number | string,
-	y: number | string
+	width: number
+	height: number
 }
 
 interface QuadrantConfirmation {
-	left: boolean,
-	right: boolean,
-	bottom: boolean,
-	top: boolean,
+	left: boolean
+	right: boolean
+	bottom: boolean
+	top: boolean
 }
 
-export default function useDialogAdjuster(
-	dialogDim: Dimension,
-	initCursorPos: PositionOffset,
-	delta: Position,
-	windowDim: Dimension,
-) {
+interface UseDialogAdjusterProps {
+	dialogDim: Dimension
+	initCursorPos: Position
+	delta: Position
+	windowDim: Dimension
+}
+
+export default function useDialogAdjuster({
+	dialogDim,
+	initCursorPos,
+	delta,
+	windowDim,
+}: UseDialogAdjusterProps) {
 	const { height, width } = dialogDim;
 	const { width: innerWidth, height: innerHeight } = windowDim;
 
-	const [adjustedDialogPos, setAdjustedDialogPos] = useState<PositionOffset>({
+	const [adjustedDialogPos, setAdjustedDialogPos] = useState<Position>({
 		x: initCursorPos.x + delta.x,
 		y: initCursorPos.y + delta.y,
 	});
+
 	const [isPosAdjusted, setIsPosAdjusted] = useState(false);
 
-	//specifies movement boundaries
+	// defines movement boundaries of the dialog element
 	const [bounds, setBounds] = useState({
 		// these properties are default left-top cursor position except
 		// for right/bottom as the dialog dim obj won't be update 'til later
@@ -43,7 +46,7 @@ export default function useDialogAdjuster(
 		bottom: windowDim.height - initCursorPos.y - dialogDim.height,
 	})
 
-	// specifies the quadrant site of the cursor position
+	// defines the quadrant site of the cursor position
 	const positionedTo = ({ x, y }: Position) => ({
 		left: Math.round(x / innerWidth) * 100 < Math.round(innerWidth / 2) / 100,
 		right: Math.round(x / innerWidth) * 100 > Math.round(innerWidth / 2) / 100,
@@ -51,16 +54,13 @@ export default function useDialogAdjuster(
 		bottom: Math.round(y / innerHeight) * 100 > Math.round(innerHeight / 2) / 100,
 	});
 
-	const convertPosStrToNum = (pos: PositionOffset) => {
-		return 
-	}
 	// adjust the position of the dialog relative to 
 	// which four quadrants it belongs to
 	function adjustDialogPosition(positionedTo: QuadrantConfirmation) {
 		const { left, right, top, bottom } = positionedTo;
 		const { x, y } = adjustedDialogPos;
 		if (!x && !y) return;
-		
+
 		// the gap between edge of the screen and 
 		// boundary of the viewport dimension;
 		const safeGap = 20;

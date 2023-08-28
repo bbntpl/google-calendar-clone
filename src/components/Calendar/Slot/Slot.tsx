@@ -11,9 +11,23 @@ import Dialog from '../../../lib/Dialog';
 import { DialogProps } from '../../../lib/Dialog/index.model';
 
 type SlotProps = {
-	scheduleProps: ScheduleTypes;
-	stringifiedDate: string;
-	scheduleViewPosition?: DialogProps['stylePosition'];
+	scheduleProps: ScheduleTypes
+	stringifiedDate: string
+	scheduleViewPosition?: DialogProps['stylePosition']
+}
+
+type SlotTitleProps = {
+	scheduleProps: ScheduleTypes
+	title: string
+	isHovered: boolean
+}
+
+function SlotTitle({ scheduleProps, title, isHovered }: SlotTitleProps) {
+	const placeholder = title || '(No title)';
+	if ('completed' in scheduleProps && scheduleProps.completed) {
+		return <s>{placeholder}</s>
+	}
+	return isHovered ? <b>{placeholder}</b> : <>{placeholder}</>;
 }
 
 export default function Slot(props: SlotProps) {
@@ -30,6 +44,7 @@ export default function Slot(props: SlotProps) {
 		recordPos,
 	} = useContext(GlobalContext) as GlobalContextInterface;
 	const [zIndex, setZIndex] = useState(1000);
+	const [isHovered, setIsHovered] = useState(false);
 	const [
 		scheduleViewRef,
 		isScheduleViewVisible,
@@ -52,7 +67,7 @@ export default function Slot(props: SlotProps) {
 	}
 
 	const timeOptions = getScheduleTimeOptions();
-	const timeRange = () => {
+	const formatTimeRange = () => {
 		if (end < 0 && start < 0) return '';
 		const endTime = timeOptions[end].time || '';
 		const startTime = timeOptions[start].time || '';
@@ -97,14 +112,13 @@ export default function Slot(props: SlotProps) {
 		zIndex,
 	};
 
-	function slotTitle() {
-		const placeholder = title || '(No title)';
-		if ('completed' in scheduleProps) {
-			if (scheduleProps.completed) {
-				return <s>{placeholder}</s>
-			}
-		}
-		return placeholder;
+	const handleMouseOut = () => {
+		setZIndex(1000);
+		setIsHovered(false);
+	}
+	const handleMouseOver = () => {
+		setZIndex(2000);
+		setIsHovered(true);
 	}
 
 	return (
@@ -112,8 +126,8 @@ export default function Slot(props: SlotProps) {
 			<button
 				style={slotStyles}
 				className='calendar-slot'
-				onMouseOver={() => setZIndex(2000)}
-				onMouseOut={() => setZIndex(1000)}
+				onMouseOver={handleMouseOver}
+				onMouseOut={handleMouseOut}
 				onClick={(e) => {
 					recordPos(e);
 					setIsScheduleViewVisible(visible => !visible)
@@ -121,16 +135,13 @@ export default function Slot(props: SlotProps) {
 				ref={linkRef}
 			>
 				{
-					scheduleProps.type === 'event'
-						? <>
-							<div className='calendar-slot__text'>{slotTitle()}</div>
-							<div className='calendar-slot__text'>{timeRange()}</div>
+					<div className='calendar-slot__text'>
+						<>
+							<SlotTitle scheduleProps={scheduleProps} title={title} isHovered={isHovered} />
+							{` ${formatTimeRange()}`}
 						</>
-						: <div className='calendar-slot__text'>
-							{`${slotTitle()}, ${timeRange()}`}
-						</div>
+					</div>
 				}
-
 			</button>
 			<Dialog ref={scheduleViewRef} {...scheduleViewProps} />
 		</>

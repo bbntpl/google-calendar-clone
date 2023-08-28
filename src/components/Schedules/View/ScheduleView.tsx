@@ -45,7 +45,6 @@ function HoursRange(props: HoursRangeProps) {
 		{(start >= 0 && type === 'event') && `${timeOptions[start].time}-`}
 		{start >= 0 && timeOptions[end].time}
 	</span>
-
 }
 
 function ScheduleTime(props: HoursRangeProps) {

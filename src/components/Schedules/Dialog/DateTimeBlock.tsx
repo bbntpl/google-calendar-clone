@@ -25,11 +25,11 @@ export interface DateTimeBlockProps {
 }
 
 export default function DateTimeBlock(props: DateTimeBlockProps) {
-	const { 
-		dateTime, 
-		handleDateChange, 
+	const {
+		dateTime,
+		handleDateChange,
 		handleTimeChange,
-	 } = props;
+	} = props;
 	const {
 		selectedDate,
 		selectedScheduleType,

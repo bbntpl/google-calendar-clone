@@ -4,18 +4,18 @@ import React, {
 	useEffect,
 	useState,
 	forwardRef,
+	useRef,
 } from 'react';
 import Draggable from 'react-draggable';
 import { WrappedDialogProps } from './index.model';
 import GlobalContext from '../../context/global/GlobalContext';
-import GlobalContextInterface from '../../context/global/index.model';
+import GlobalContextInterface, { Position } from '../../context/global/index.model';
 import useDialogAdjuster from '../../hooks/useDialogAdjuster';
 
 import './styles.scss';
 import MultiplyIcon from '../../assets/icons/multiply.png';
 
 import {
-	arrayElsToString,
 	removeMatchedTxtOnArr,
 } from '../../util/reusable-funcs';
 
@@ -35,6 +35,7 @@ const DialogCore = forwardRef<HTMLDivElement, WrappedDialogProps>(
 	({ Component, props }, ref) => {
 		// eslint-disable-next-line react/display-name
 		const { componentProps, dialogProps } = props;
+		const nodeRef = useRef(null);
 		const {
 			delta,
 			flags,
@@ -53,6 +54,16 @@ const DialogCore = forwardRef<HTMLDivElement, WrappedDialogProps>(
 		const { position: cursorPosition }
 			= useContext(GlobalContext) as GlobalContextInterface;
 
+
+		// If x and y in positionOffset are string then they it should be
+		// converted to number
+		if (positionOffset !== undefined && typeof positionOffset.x !== 'number') {
+			positionOffset.x = Number(positionOffset.x) || 0;
+		}
+		if (positionOffset !== undefined && typeof positionOffset.y !== 'number') {
+			positionOffset.y = Number(positionOffset.y) || 0;
+		}
+
 		// state container for dom rect obj
 		const [rect, setRect] = useState<DOMRect | null>(null);
 		const [windowDim, setWindowDim] = useState({
@@ -69,15 +80,15 @@ const DialogCore = forwardRef<HTMLDivElement, WrappedDialogProps>(
 			width: rect?.width || 0,
 			height: rect?.height || 0,
 		};
-		
+
 		// custom hooks that adjust the position or behavior of the dialog
 		const { adjustedDialogPos, bounds, isPosAdjusted }
-			= useDialogAdjuster(
-				componentRefSize,
-				(positionOffset || cursorPosition),
+			= useDialogAdjuster({
+				dialogDim: componentRefSize,
+				initCursorPos: (positionOffset as Position || cursorPosition),
 				delta,
 				windowDim,
-			);
+			});
 
 		// auto update window width and height by resize update
 		useEffect(() => {
@@ -124,7 +135,7 @@ const DialogCore = forwardRef<HTMLDivElement, WrappedDialogProps>(
 				}
 				bounds={bounds}
 			>
-				<div ref={ref} className={arrayElsToString(classNames)}>
+				<div ref={ref} className={classNames.join(' ')}>
 					{
 						(isDraggable || isCloseable) &&
 						<div className='row middle-xs handle-wrapper'>

@@ -31,6 +31,7 @@
 
 #save-schedule {
 	color: #fff;
+	font-size: 15px;
 	background-color: $color-royal-blue;
 }
 
@@ -45,7 +46,7 @@
 	align-items: center;
 	width: 100%;
 	flex-direction: row;
-
+	font-size: 13px;
 	span:first-of-type {
 		width: 22px;
 		margin-right: 22px;
@@ -110,6 +111,7 @@
 	resize: none;
 	border: 1px solid rgb(204, 204, 204);
 	padding: 10px;
+	font-size: 12px;
 }
 
 .schedule-input__text {
