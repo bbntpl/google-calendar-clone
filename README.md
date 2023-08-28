@@ -2,14 +2,23 @@
 Built with React, TypeScript and Sass
 
 ## Available Features
-[ ] CRUD w/ Firebase
-[ ] Google sign-in
-[X] Calendar List
-[X] Mini Calendar
-[X] Schedule types: Event and Task
-[X] Calendar types: Day, Week, and last 4 days
-[X] Draggable dialog w/ position readjustment
-[ ] Holiday API integration to caledar by default
+- [X] Calendar List
+- [X] Mini Calendar
+- [X] Schedule types: Event and Task
+- [X] Calendar types: Day, Week, and last 4 days
+- [ ] CRUD w/ Firebase
+- [ ] Google sign-in
+- [X] Draggable dialog w/ position readjustment
+- [ ] Holiday API integration to caledar by default
+
+### Tools/Technologies/Libraries used
+- React (Main UI Library)
+- React Draggable
+- React Select (UI library)
+- Firebase (BaaS)
+- Dayjs (Date and time API)
+- Typescript (A superset lang of JS)
+
 
 ### Credits
 - Thanks to [drewbot](https://github.com/drewbot/sass-flexbox-grid) for the sass flexbox grid stylesheet 
