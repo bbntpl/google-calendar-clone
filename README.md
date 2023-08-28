@@ -7,9 +7,10 @@ Built with React, TypeScript and Sass
 - [X] Schedule types: Event and Task
 - [X] Calendar types: Day, Week, and last 4 days
 - [ ] CRUD w/ Firebase
-- [ ] Google sign-in
+- [ ] Firebase Authentication with Google account
 - [X] Draggable dialog w/ position readjustment
-- [ ] Holiday API integration to caledar by default
+- [ ] Integrating Holiday API to default list of calendars
+- [ ] Time Indication with a red line style
 
 ### Tools/Technologies/Libraries used
 - React (Main UI Library)
