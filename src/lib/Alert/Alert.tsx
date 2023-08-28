@@ -19,6 +19,7 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>((props, ref) => {
 		name,
 		isVisible,
 	} = props;
+
 	return (
 		isVisible
 			? <div className='alert-wrapper flex-centered'>
@@ -45,5 +46,4 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>((props, ref) => {
 })
 
 Alert.displayName = 'Alert';
-
 export default Alert;

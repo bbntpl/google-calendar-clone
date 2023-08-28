@@ -1,11 +1,10 @@
-import React from 'react';
-
 import { useContext } from 'react';
-import { DialogProps } from '../../lib/Dialog/index.model';
 
-import Dialog from '../../lib/Dialog/index';
 import GlobalContext from '../../context/global/GlobalContext';
 import GlobalContextInterface from '../../context/global/index.model';
+
+import { DialogProps } from '../../lib/Dialog/index.model';
+import Dialog from '../../lib/Dialog/index';
 import ScheduleDialog from './Dialog';
 
 // It controls the visibility of the schedule dialog

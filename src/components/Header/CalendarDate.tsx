@@ -31,7 +31,7 @@ export function CalendarDate() {
 		stylePosition: 'absolute' as const,
 	}
 
-	// display the date on the header relative to the current type
+	// Display the date on the header relative to the current type
 	const displayRelevantDate = () => {
 		const dateObj = dayjsObj(selectedDate);
 		let day = '';
@@ -43,7 +43,7 @@ export function CalendarDate() {
 			const firstDayOfTheWeek = dateObj.day(0);
 			const lastDayOfTheWeek = dateObj.day(6);
 
-			// check whether both days falls under the same month
+			// Check whether both days falls under the same month
 			firstDayOfTheWeek.format('M') === lastDayOfTheWeek.format('M')
 				? month = dateObj.format('MMMM')
 				: month = `${firstDayOfTheWeek.format('MMMM')} - ${lastDayOfTheWeek.format('MMMM')}`;
@@ -51,7 +51,7 @@ export function CalendarDate() {
 			const firstDay = dateObj.add(0, 'day');
 			const lastDay = dateObj.add(3, 'day');
 
-			// check whether both days falls under the same month
+			// Check whether both days falls under the same month
 			firstDay.format('M') === lastDay.format('M')
 				? month = dateObj.format('MMMM')
 				: month = `${firstDay.format('MMMM')} - ${lastDay.format('MMMM')}`;

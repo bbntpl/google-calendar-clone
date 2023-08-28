@@ -1,12 +1,14 @@
+import { useContext } from 'react';
 import { Dayjs } from 'dayjs';
-import '../styles.scss';
 
 import { dateToday, getDateValues, stringifyDate } from '../../../util/calendar-arrangement';
 import { DateUnits } from '../../../context/global/index.model';
 import GlobalContext from '../../../context/global/GlobalContext';
-import { useContext } from 'react';
 import GlobalContextInterface from '../../../context/global/index.model';
+
 import TimeRowUnset from '../Time/TimeRowUnset';
+
+import '../styles.scss';
 
 interface DayHeaderProps {
 	dateObj: Dayjs,
@@ -24,7 +26,7 @@ export default function DayHeader(props: DayHeaderProps) {
 	} = useContext(GlobalContext) as GlobalContextInterface;
 	const { dateObj, dayIndex, isCentered = true } = props;
 
-	const filteredSchedulesByDay = filteredSchedules.filter(sch => {
+	const filteredSchedulesByDayAndTime = filteredSchedules.filter(sch => {
 		return sch.dateTime.date === stringifyDate(getDateValues(dateObj, {
 			yearFormat: 'YYYY',
 			monthFormat: 'MM',
@@ -40,7 +42,7 @@ export default function DayHeader(props: DayHeaderProps) {
 		return year === numericalYear && month === numericalMonth && day === numericalDay;
 	}
 
-	const dateInfoModifierName = () => {
+	const generateDateModifier = () => {
 		if (areDatesEqual(dateToday)) {
 			return '--today';
 		} else if (areDatesEqual(selectedDate)) {
@@ -70,11 +72,11 @@ export default function DayHeader(props: DayHeaderProps) {
 	return (
 		<div className='calendar-day__header'>
 			<div className={`calendar-day__info--${!isCentered ? 'not-' : ''}centered flex-centered`}>
-				<h6 className={`calendar-day__ddd-format${dateInfoModifierName()}`}>
+				<h6 className={`calendar-day__ddd-format${generateDateModifier()}`}>
 					{dateObj.format('ddd')}
 				</h6>
 				<div
-					className={`calendar-day__num-format${dateInfoModifierName()} flex-centered`}
+					className={`calendar-day__num-format${generateDateModifier()} flex-centered`}
 					onClick={switchDateAndCalendarType}
 				>
 					{dateObj.format('D')}
@@ -83,7 +85,7 @@ export default function DayHeader(props: DayHeaderProps) {
 			<TimeRowUnset
 				dateValues={getDateValues(dateObj, dateFormats)}
 				dayIndex={dayIndex}
-				filteredSchedulesByTime={filteredSchedulesByDay}
+				filteredSchedulesByTime={filteredSchedulesByDayAndTime}
 			/>
 		</div>
 	)

@@ -36,9 +36,9 @@ export default function useDialogAdjuster({
 
 	const [isPosAdjusted, setIsPosAdjusted] = useState(false);
 
-	// defines movement boundaries of the dialog element
+	// The movement boundaries of the dialog element
 	const [bounds, setBounds] = useState({
-		// these properties are default left-top cursor position except
+		// These properties are default left-top cursor position except
 		// for right/bottom as the dialog dim obj won't be update 'til later
 		left: initCursorPos.x * -1,
 		top: initCursorPos.y * -1,
@@ -54,14 +54,14 @@ export default function useDialogAdjuster({
 		bottom: Math.round(y / innerHeight) * 100 > Math.round(innerHeight / 2) / 100,
 	});
 
-	// adjust the position of the dialog relative to 
+	// Adjust the position of the dialog relative to 
 	// which four quadrants it belongs to
 	function adjustDialogPosition(positionedTo: QuadrantConfirmation) {
 		const { left, right, top, bottom } = positionedTo;
 		const { x, y } = adjustedDialogPos;
 		if (!x && !y) return;
 
-		// the gap between edge of the screen and 
+		// The gap between edge of the screen and 
 		// boundary of the viewport dimension;
 		const safeGap = 20;
 		const newX = initCursorPos.x - width
@@ -92,8 +92,8 @@ export default function useDialogAdjuster({
 	function adjustBounds(positionedTo: QuadrantConfirmation) {
 		const { left, right, top, bottom } = positionedTo;
 
-		// adjust the position of the dialog depending
-		// on the location of the cursor positions
+		// Adjust the position of the dialog relative
+		// to the location of the cursor positions
 		if (left && top) {
 			setBounds(bounds => ({
 				...bounds,

@@ -3,6 +3,8 @@ import {
 	ScheduleTaskProps,
 	Option,
 } from '../index.model';
+import { stringifyDate } from '../../../util/calendar-arrangement';
+import { DateUnits } from '../../../context/global/index.model';
 
 import '../styles.scss';
 import CalendarIcon from '../../../assets/icons/calendar.png';
@@ -10,8 +12,6 @@ import CalendarIcon from '../../../assets/icons/calendar.png';
 import DateTimeBlock from '../Dialog/DateTimeBlock';
 import CalendarSelection from '../Dialog/CalendarSelection';
 import DescInputBlock from '../Dialog/DescInputBlock';
-import { stringifyDate } from '../../../util/calendar-arrangement';
-import { DateUnits } from '../../../context/global/index.model';
 
 export default function TaskBlock(props: ScheduleTaskProps): JSX.Element {
 	const { taskProps, setScheduleProps } = props;
@@ -24,7 +24,7 @@ export default function TaskBlock(props: ScheduleTaskProps): JSX.Element {
 	const handleTimeChange = (option: Option | null, propName: string) => {
 		if (option) {
 			const { value } = option;
-			// update time prop values on change
+			// Update time prop values on change
 			setScheduleProps((scheduleProps: ScheduleStates) => ({
 				...scheduleProps,
 				dateTime: {
@@ -39,7 +39,7 @@ export default function TaskBlock(props: ScheduleTaskProps): JSX.Element {
 	};
 
 	const handleDateChange = (selectedDate: DateUnits) => {
-		// update time prop values on change
+		// Update time prop values on change
 		setScheduleProps((scheduleProps: ScheduleStates) => ({
 			...scheduleProps,
 			dateTime: {

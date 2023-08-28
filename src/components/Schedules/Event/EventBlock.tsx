@@ -13,7 +13,7 @@ import CalendarSelection from '../Dialog/CalendarSelection';
 import ColorSelection from './ColorSelection';
 import DescInputBlock from '../Dialog/DescInputBlock';
 import CustomInput from '../Dialog/CustomInputs/CustomInput';
-import { ColorOption } from '../../../docs/data';
+import { ColorOption } from '../../../themes/data';
 import { stringifyDate } from '../../../util/calendar-arrangement';
 import { DateUnits } from '../../../context/global/index.model';
 
@@ -41,7 +41,7 @@ export default function EventBlock(props: ScheduleEventProps): JSX.Element {
 	const handleTimeChange = (option: Option | null, propName: string) => {
 		if (option) {
 			const { value } = option;
-			// update time prop values on change
+			// Update time prop values on change
 			setScheduleProps((scheduleProps: ScheduleStates) => ({
 				...scheduleProps,
 				dateTime: {
@@ -56,7 +56,7 @@ export default function EventBlock(props: ScheduleEventProps): JSX.Element {
 	};
 
 	const handleDateChange = (selectedDate: DateUnits) => {
-		// update time prop values on change
+		// Update time prop values on change
 		setScheduleProps((scheduleProps: ScheduleStates) => ({
 			...scheduleProps,
 			dateTime: {

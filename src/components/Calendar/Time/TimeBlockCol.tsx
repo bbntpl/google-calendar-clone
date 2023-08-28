@@ -1,14 +1,16 @@
-import TimeRow from './TimeRow'
+import { useContext } from 'react';
+import { Dayjs } from 'dayjs';
+
 import {
 	dayjsObjByDay,
 	getDateValues,
 	getScheduleTimeOptions,
 } from '../../../util/calendar-arrangement';
-import { Dayjs } from 'dayjs';
-import { useContext } from 'react';
 import GlobalContext from '../../../context/global/GlobalContext';
 import GlobalContextInterface from '../../../context/global/index.model';
 import { stringifyDate } from '../../../util/calendar-arrangement';
+
+import TimeRow from './TimeRow'
 
 interface TimeBlockColProps {
 	dayIndex: number,
@@ -23,9 +25,7 @@ const dateFormats = {
 
 export default function TimeBlockCol(props: TimeBlockColProps) {
 	const { dayIndex, dateObj } = props;
-	const {
-		filteredSchedules,
-	} = useContext(GlobalContext) as GlobalContextInterface;
+	const { filteredSchedules } = useContext(GlobalContext) as GlobalContextInterface;
 
 	const defaultDateFormat = {
 		yearFormat: 'YYYY',
@@ -33,19 +33,19 @@ export default function TimeBlockCol(props: TimeBlockColProps) {
 		dayFormat: 'DD',
 	}
 	const stringifiedDate = stringifyDate(getDateValues(dateObj, defaultDateFormat));
-	// filter the available schedules by day index
-	const filteredSchedulesByDay = filteredSchedules.filter(sch => {
-		const { start, end } = sch.dateTime.time;
+	// Filter the available schedules by day index
+	const filteredSchedulesByDay = filteredSchedules.filter(schedule => {
+		const { start, end } = schedule.dateTime.time;
 		const stringifiedPrevDate = stringifyDate(getDateValues(dayjsObjByDay({
 			date: getDateValues(dateObj, defaultDateFormat),
 			calendarType: 'day',
 			index: -1,
 		}), defaultDateFormat));
-		const matchedDate = sch.dateTime.date === stringifiedDate;
+		const matchedDate = schedule.dateTime.date === stringifiedDate;
 		const prevDateIncludesNextDay = (
-			sch.dateTime.date === stringifiedPrevDate
+			schedule.dateTime.date === stringifiedPrevDate
 			&& (start > end)
-			&& sch.type === 'event')
+			&& schedule.type === 'event')
 		return (matchedDate || prevDateIncludesNextDay);
 	});
 
@@ -54,12 +54,12 @@ export default function TimeBlockCol(props: TimeBlockColProps) {
 			getScheduleTimeOptions().map(({ timeWithoutMinutes }, hourIndex) => {
 				if (hourIndex % 4 !== 0) return;
 
-				// filter the available schedules by hour index
-				const filteredSchedulesByTime = filteredSchedulesByDay.filter(sch => {
-					const { type } = sch;
-					const { start, end } = sch.dateTime.time;
+				// Filter the available schedules by hour index
+				const filteredSchedulesByTime = filteredSchedulesByDay.filter(schedule => {
+					const { type } = schedule;
+					const { start, end } = schedule.dateTime.time;
 					const timeIndex = type === 'task' ? end : start;
-					const isScheduleSetFromPrevDay = sch.dateTime.date
+					const isScheduleSetFromPrevDay = schedule.dateTime.date
 					!== stringifyDate(getDateValues(dateObj, defaultDateFormat));
 					const isIndexZero = hourIndex === 0;
 					const matchedHourRange =
@@ -67,8 +67,6 @@ export default function TimeBlockCol(props: TimeBlockColProps) {
 						&& timeIndex >= Math.floor(hourIndex)
 						&& timeIndex < Math.floor(hourIndex + 4);
 
-					// scheduled event set from previous day that includes hour range 
-					// from next day
 					return (isScheduleSetFromPrevDay && isIndexZero) || matchedHourRange;
 				});
 

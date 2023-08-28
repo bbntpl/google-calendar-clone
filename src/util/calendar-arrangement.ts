@@ -1,18 +1,23 @@
 import dayjs, { Dayjs } from 'dayjs';
+
 import {
 	CalendarType,
 	DateUnits,
 } from '../context/global/index.model';
+
 import { hasOnlyDigits, objKeysToArr } from './reusable-funcs';
 
-// array that contains three or more elements
+// An array that contains three or more elements
 type ArrayThreeOrMore<T> = [T, T, ...T[]];
+
 type AvailableMinutes = '00' | '15' | '30' | '45';
+
 interface DayjsObjByDay {
 	date: DateUnits | undefined,
 	calendarType: CalendarType,
 	index: number,
 }
+
 interface DayTimeElement {
 	dayPortion: 'AM' | 'PM',
 	hour: number,
@@ -28,7 +33,15 @@ interface DateFormatting {
 	dayFormat?: string,
 }
 
-export function convertTZ(date: Date, tzString: string) {
+/**
+ * Converts a date to the specified time zone.
+ * 
+ * @param {Date|string} date - The date to be converted.
+ * @param {string} tzString - The target time zone.
+ * @returns {Date} The converted date in the target time zone.
+ */
+
+export function convertTZ(date: Date, tzString: string): Date {
 	return new Date((typeof date === 'string' ? new Date(date) : date)
 		.toLocaleString('en-US', { timeZone: tzString }));
 }
@@ -71,6 +84,8 @@ export function getYear(year = dayjs().year()) {
 	});
 }
 
+// Get date unit values (year, month, day) from a Dayjs object 
+// using specified date formats.
 export function getDateValues(dateObj: Dayjs, dateFormats: DateFormatting)
 	: DateUnits {
 	const {
@@ -78,18 +93,16 @@ export function getDateValues(dateObj: Dayjs, dateFormats: DateFormatting)
 		monthFormat = 'MM',
 		dayFormat = 'DD',
 	} = dateFormats;
-	const year = Number(dateObj.format(yearFormat));
+	const year = dateObj.format(yearFormat);
 	const month = dateObj.format(monthFormat);
 	const day = dateObj.format(dayFormat);
-	const numericalYear = Number(dateObj.format(yearFormat));
-	const numericalMonth = Number(dateObj.format(monthFormat));
-	const numericalDay = Number(dateObj.format(dayFormat));
 
-	// props based on date codes, not zero-indexed
+	// The properties are based on date codes (1 to 12), not zero-indexed (0 to 11)
 	return {
-		year: hasOnlyDigits(year) ? numericalYear : year,
-		month: hasOnlyDigits(month) ? numericalMonth : month,
-		day: hasOnlyDigits(day) ? numericalDay : day,
+		// The year must always be typed as number
+		year: Number(year),
+		month: hasOnlyDigits(month) ? Number(month) : month,
+		day: hasOnlyDigits(day) ? Number(day) : day,
 	};
 }
 
@@ -120,7 +133,7 @@ export function getScheduleTimeOptions() {
 			}
 		});
 
-	// move the last group of items(12AM) in front 
+	// Move the last group of items(12AM) on front 
 	const lastElementIndex = dayTime.length - 1;
 	for (let i = 0; i < minutes.length; i++) {
 		dayTime.unshift(dayTime.splice(lastElementIndex, 1)[0]);
@@ -128,9 +141,9 @@ export function getScheduleTimeOptions() {
 	return dayTime;
 }
 
-// excluding seconds "ss"
+// Note: it excludes the unit seconds "ss"
 export function stringifyDate(args: DateUnits) {
-	// convert month code to zero-indexed 0-11
+	// convert month codes (1 to 12) to zero-indexed (0 to 11)
 	const monthIndex = (args.month as number) - 1;
 	const datePropsToArr: ArrayThreeOrMore<number>
 		= objKeysToArr({ ...args, month: monthIndex }) as ArrayThreeOrMore<number>;

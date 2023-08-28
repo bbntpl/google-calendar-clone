@@ -45,13 +45,12 @@ export default function Label(props: LabelProps): JSX.Element {
 		})
 	};
 
-	// remove calendar from the calendar list
 	const removeCalendar = () => {
 		dispatchCalendarList({ type: UserActionType.REMOVE, payload: id });
 		setIsAlertVisible(false);
 	};
 
-	// props to be passed on the wrapped component
+	// Props that'll be passed to the wrapped component
 	const calendarLblOptsProps: DialogProps = {
 		componentProps: {
 			flags: { options: true, colors: true },
@@ -70,7 +69,7 @@ export default function Label(props: LabelProps): JSX.Element {
 		<>
 			<li
 				className='row middle-xs start-xs'
-				// display label options when hovered
+				// Display label options when hovered
 				onMouseOver={() => setShowOptions(true)}
 				onMouseOut={() => setShowOptions(false)}
 				style={{ position: 'relative' }}

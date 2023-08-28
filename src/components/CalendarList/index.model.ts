@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from 'react';
-import { 
-	CalendarLabelType, 
-	CalendarListActionTypes, 
+import {
+	CalendarLabelType,
+	CalendarListActionTypes,
 } from '../../context/global/index.model';
-import { ColorOption } from '../../docs/data';
+import { ColorOption } from '../../themes/data';
 import { DialogViewState } from '../../lib/Dialog/index.model';
 
 interface CalendarListSetStateAction {
@@ -12,7 +12,7 @@ interface CalendarListSetStateAction {
 }
 
 export interface LabelListProps extends CalendarListSetStateAction {
-recordPos: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+	recordPos: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
 export interface AddNewCalendarProps extends LabelListProps {

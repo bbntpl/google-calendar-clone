@@ -3,7 +3,7 @@ import { EventHandlers, WrappedComponentProps } from './index.model';
 
 import './styles.scss';
 import CheckIcon from '../../assets/icons/check.png';
-import { ColorOption, colorOptions } from '../../docs/data';
+import { ColorOption, colorOptions } from '../../themes/data';
 
 export default function Options(props: WrappedComponentProps) {
 	const {
@@ -17,7 +17,7 @@ export default function Options(props: WrappedComponentProps) {
 	const { calendarList, dispatchCalendarList } = globalContextProps;
 
 	const handleChange = (colorOption: ColorOption) => {
-		// update the context if the received calendar props has id
+		// Update the context if the received calendar props has id
 		if (calendarProps.id && Object.keys(eventHandlers).length === 0) {
 			dispatchCalendarList({
 				type: UserActionType.EDIT,
@@ -25,7 +25,7 @@ export default function Options(props: WrappedComponentProps) {
 			});
 			return;
 		}
-		// changing the color prop from the state of the parent
+		// Changing the color prop from the state of the parent
 		eventHandlers.handleColorChange?.(colorOption);
 	}
 

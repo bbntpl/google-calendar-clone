@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+
 import GlobalContext from './context/global/GlobalContext';
 import GlobalContextInterface from './context/global/index.model';
 

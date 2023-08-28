@@ -1,5 +1,3 @@
-import React from 'react';
-
 import ChevronLeft from '../../assets/icons/chevron-left.png';
 import ChevronRight from '../../assets/icons/chevron-right.png';
 import '../../styles/main.scss';

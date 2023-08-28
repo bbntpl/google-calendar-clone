@@ -1,20 +1,20 @@
 import { useState, useContext, useEffect} from 'react';
 
-import './styles.scss';
-import ChevronBottom from '../../assets/icons/chevron-bottom.png';
-import ChevronUp from '../../assets/icons/chevron-up.png';
-import PlusIcon from '../../assets/icons/plus.png';
-
 import GlobalContextInterface, {
 	UserActionType,
 	CalendarLabelType,
 } from '../../context/global/index.model';
 import GlobalContext from '../../context/global/GlobalContext';
 import { uniqueID } from '../../util/reusable-funcs';
+import { defaultColorOption } from '../../themes/data';
+
+import './styles.scss';
+import ChevronBottom from '../../assets/icons/chevron-bottom.png';
+import ChevronUp from '../../assets/icons/chevron-up.png';
+import PlusIcon from '../../assets/icons/plus.png';
 
 import NewCalendar from './NewCalendar';
 import LabelList from './LabelList';
-import { defaultColorOption } from '../../docs/data';
 
 export default function CalendarList(): JSX.Element {
 	const { 
@@ -32,7 +32,7 @@ export default function CalendarList(): JSX.Element {
 		setShowAddLblBtn(toggle => !toggle);
 	}
 	
-	// add/remove calendars depending on existence of a schedule by type
+	// Add/remove calendars depending on existence of a schedule by type
 	useEffect(() => {
 		const areThereTasks = savedSchedules.some(schedule => schedule.type === 'task');
 		const areThereEvents = savedSchedules.some(schedule => schedule.type === 'event');

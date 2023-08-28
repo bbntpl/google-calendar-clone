@@ -64,13 +64,13 @@ export default function ScheduleDialog(props: ScheduleDialogProps) {
 	const { location, colorOption, ...taskProps } = scheduleProps;
 
 	useEffect(() => {
-		// manually set selected schedule type derived from the received
+		// Set the selected schedule type derived from the received
 		// selected schedule only if it is not null
 		if (selectedSchedule) {
 			setSelectedScheduleType(selectedSchedule.type);
 		}
 		if (selectedSchedule === null) return;
-		// selected schedule becomes null after the component unmounts
+		// Selected schedule becomes null after the component unmounts
 		return () => setSelectedSchedule(null);
 	}, []);
 

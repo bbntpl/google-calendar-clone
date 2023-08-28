@@ -1,11 +1,12 @@
-import { Dispatch, MutableRefObject, SetStateAction } from 'react';
-import { ColorOption } from '../../docs/data';
+import { Dispatch, RefObject, SetStateAction } from 'react';
+import { ColorOption } from '../../themes/data';
+import React from 'react';
 
-// reusable types
+// Reusable types
 export type NonOptionalKeys<T> = {
 	[k in keyof T]-?: undefined extends T[k] ? never : k
 }[keyof T];
-export declare type SetState<T> = Dispatch<SetStateAction<T>>; 
+export declare type SetState<T> = Dispatch<SetStateAction<T>>;
 export interface Position {
 	x: number;
 	y: number;
@@ -13,8 +14,6 @@ export interface Position {
 export interface BooleansOnlyObj {
 	[key: string]: boolean
 }
-
-// unions that are required on multiple files
 export type CalendarType = 'day' | 'week' | 'month' | 'fourDays';
 
 /*** DATE & TIME ***/
@@ -119,7 +118,7 @@ export default interface GlobalContextInterface {
 	setNotifications?: () => Dispatch<SetStateAction<Notification>>;
 	filteredSchedules: Array<ScheduleTypes> | [];
 	selectedSchedule: SelectedSchedule;
-	setSelectedSchedule: Dispatch<SetStateAction<SelectedSchedule>>; 
+	setSelectedSchedule: Dispatch<SetStateAction<SelectedSchedule>>;
 	selectedDate: DateUnits;
 	setSelectedDate: Dispatch<SetStateAction<DateUnits>>;
 	visibilities: BooleansOnlyObj;
@@ -128,7 +127,7 @@ export default interface GlobalContextInterface {
 	recordPos: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 	defaultDateTime: DefaultDateTime;
 	setDefaultDateTime: Dispatch<SetStateAction<DefaultDateTime>>;
-	scheduleDialogRef: MutableRefObject<HTMLDivElement | null>;
+	scheduleDialogRef: RefObject<HTMLElement | null>;
 	isScheduleDialogVisible: boolean;
 	setIsScheduleDialogVisible: Dispatch<SetStateAction<boolean>>;
 	selectedScheduleType: ScheduleNames;

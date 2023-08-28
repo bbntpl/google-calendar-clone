@@ -1,4 +1,5 @@
-import { useContext, useState } from 'react';
+import { MouseEvent, useContext, useState } from 'react';
+
 import GlobalContextInterface, {
 	ScheduleTypes,
 } from '../../../context/global/index.model';
@@ -34,7 +35,8 @@ export default function Slot(props: SlotProps) {
 	const {
 		scheduleProps,
 		stringifiedDate,
-		scheduleViewPosition = 'fixed' as const,
+		// Bookmarked: make use of this property later
+		// scheduleViewPosition = 'fixed' as const,
 	} = props;
 	const { calendarId, title, type } = scheduleProps;
 	const { time, date: scheduleDate } = scheduleProps.dateTime;
@@ -67,7 +69,7 @@ export default function Slot(props: SlotProps) {
 	}
 
 	const timeOptions = getScheduleTimeOptions();
-	const formatTimeRange = () => {
+	const formattedTimeRange = () => {
 		if (end < 0 && start < 0) return '';
 		const endTime = timeOptions[end].time || '';
 		const startTime = timeOptions[start].time || '';
@@ -78,7 +80,7 @@ export default function Slot(props: SlotProps) {
 		}
 	}
 
-	const slotHeight = () => {
+	const calculateSlotHeight = () => {
 		const defaultHeight = 13;
 		if (scheduleProps.type === 'task') {
 			return defaultHeight * 2;
@@ -93,7 +95,7 @@ export default function Slot(props: SlotProps) {
 		}
 	}
 
-	const topPosition = () => {
+	const calculateTopPosition = () => {
 		const initTime = start || end;
 		if (initTime < 0 || stringifiedDate !== scheduleDate) return 0;
 		return (initTime % 4) * 13;
@@ -107,8 +109,8 @@ export default function Slot(props: SlotProps) {
 	const slotStyles = {
 		backgroundColor: bgColor,
 		borderLeft: `5px solid ${associatedCalendar?.colorOption.value}`,
-		height: `${slotHeight()}px`,
-		top: `${topPosition()}px`,
+		height: `${calculateSlotHeight()}px`,
+		top: `${calculateTopPosition()}px`,
 		zIndex,
 	};
 
@@ -116,9 +118,15 @@ export default function Slot(props: SlotProps) {
 		setZIndex(1000);
 		setIsHovered(false);
 	}
+
 	const handleMouseOver = () => {
 		setZIndex(2000);
 		setIsHovered(true);
+	}
+
+	const handleClick = (event: MouseEvent<HTMLElement, globalThis.MouseEvent>) => {
+		recordPos(event);
+		setIsScheduleViewVisible(visible => !visible)
 	}
 
 	return (
@@ -128,21 +136,14 @@ export default function Slot(props: SlotProps) {
 				className='calendar-slot'
 				onMouseOver={handleMouseOver}
 				onMouseOut={handleMouseOut}
-				onClick={(e) => {
-					recordPos(e);
-					setIsScheduleViewVisible(visible => !visible)
-				}}
+				onClick={handleClick}
 				ref={linkRef}
 			>
-				{
-					<div className='calendar-slot__text'>
-						<>
-							<SlotTitle scheduleProps={scheduleProps} title={title} isHovered={isHovered} />
-							{` ${formatTimeRange()}`}
-						</>
-					</div>
-				}
-			</button>
+				<div className='calendar-slot__text'>
+					<SlotTitle scheduleProps={scheduleProps} title={title} isHovered={isHovered} />
+					{` ${formattedTimeRange()}`}
+				</div>
+			</button >
 			<Dialog ref={scheduleViewRef} {...scheduleViewProps} />
 		</>
 	)

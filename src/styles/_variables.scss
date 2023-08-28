@@ -3,13 +3,11 @@ $primary-color-font: #3c4043;
 $bg-color--hover: rgba(60,64,67,.08);
 $dialog-item--hover: rgb(234,234,234);
 
-// colors
 $color-black: #000;
 $color-royal-blue: #1A73E8;
 $color-rolling-stone: #70757A;
 $color-grafito: #616161;
 
-// filtered colors
 $filtered-color-white: invert(100%) sepia(0%) saturate(7500%) hue-rotate(119deg) brightness(101%) contrast(103%);
 $filtered-color-light: invert(41%) sepia(9%) saturate(280%) hue-rotate(174deg) brightness(89%) contrast(89%);
 $filtered-color-dark: invert(10%) sepia(2%) saturate(2072%) hue-rotate(187deg) brightness(93%) contrast(92%);

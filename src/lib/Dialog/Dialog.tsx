@@ -1,16 +1,17 @@
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
+
 import { DialogProps } from './index.model';
 
 import DialogCore from './DialogCore';
 
 type ComponentToPassRef = HTMLDivElement | null;
-const DialogOptions = forwardRef<ComponentToPassRef, DialogProps>(
+const Dialog = forwardRef<ComponentToPassRef, DialogProps>(
 	(props, ref) => {
 		const {
 			isCloseable = true,
 			componentProps = {},
 			Component,
-			// represents change in x or/and y
+			// Represents change in x or/and y
 			delta = { x: 0, y: 0 },
 			isDraggable = true,
 			isDialogVisible,
@@ -21,7 +22,7 @@ const DialogOptions = forwardRef<ComponentToPassRef, DialogProps>(
 			stylePosition = 'fixed',
 		} = props;
 
-		// props to be passed on the dialog component
+		// The props that'll be passed to the dialog component
 		const dialogProps = {
 			delta,
 			draggableProps: {
@@ -68,6 +69,5 @@ const DialogOptions = forwardRef<ComponentToPassRef, DialogProps>(
 		)
 	})
 
-DialogOptions.displayName = 'DialogOptions';
-
-export default DialogOptions;
+Dialog.displayName = 'Dialog';
+export default Dialog;

@@ -6,6 +6,7 @@ import {
 	useReducer,
 	useState,
 } from 'react';
+
 import useCursorPosition from '../../hooks/useCursorPosition';
 import useComponentVisible from '../../hooks/useComponentVisible';
 import GlobalContext from './GlobalContext';
@@ -22,12 +23,12 @@ import GlobalContextInterface, {
 } from './index.model';
 import { uniqueID } from '../../util/reusable-funcs';
 import { dateToday, stringifyDate } from '../../util/calendar-arrangement';
-import { defaultColorOption } from '../../docs/data';
 import {
 	updateLocalStorage,
 	deleteLocalStorage,
 	getItemFromLocal,
 } from '../../util/local-storage';
+import { defaultColorOption } from '../../themes/data';
 
 function actionTypes<
 	StateType extends ScheduleTypes | CalendarLabelType,
@@ -109,11 +110,10 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
 	const [selectedScheduleType, setSelectedScheduleType] = useState<ScheduleNames>('event');
 	const { position, recordPos } = useCursorPosition();
 
-	// can be a tag or a type of a schedule
+	// Note: It can be a tag or a type of a schedule
 	const [calendarList, dispatchCalendarList] =
 		useReducer(calendarListReducer, initialCalendarList);
 
-	// toggle states
 	const [visibilities, setVisibilities] = useState<BooleansOnlyObj>({
 		sidebar: true,
 		labels: true,
@@ -125,7 +125,7 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
 		setIsScheduleDialogVisible,
 	] = useComponentVisible(false);
 
-	// default values for schedule dialog(task or event)
+	// Default values for schedule dialog(task or event)
 	const [defaultDateTime, setDefaultDateTime] = useState({
 		date: stringifyDate(dateToday),
 		time: {

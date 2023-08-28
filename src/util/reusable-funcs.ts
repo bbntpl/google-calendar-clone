@@ -1,11 +1,9 @@
-// types for reusable functions
 interface GetIndexByPropArgs {
 	arr: Record<string, unknown>[]
 	key: string
 	value: unknown
 }
 
-// reusable functions
 export const getIndexByProp = ({ arr, key, value }: GetIndexByPropArgs) => {
 	return arr.findIndex(obj => obj[key] === value);
 }

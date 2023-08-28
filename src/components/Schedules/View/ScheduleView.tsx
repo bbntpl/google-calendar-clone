@@ -71,11 +71,11 @@ export function ScheduleView(props: ScheduleViewProps) {
 	const associatedCalendar = calendarList.find(cal => cal.id === calendarId);
 
 	useEffect(() => {
-		// set the received schedule props as a selected schedule
+		// Set the received schedule props as a selected schedule
 		setSelectedSchedule((sch: ScheduleTypes | null | undefined) => {
 			return sch === null ? scheduleProps : { ...sch, ...scheduleProps };
 		});
-		// selected schedule becomes null after the component unmounts
+		// The selected schedule becomes null after the component unmounts
 		return () => setSelectedSchedule(null);
 	}, []);
 

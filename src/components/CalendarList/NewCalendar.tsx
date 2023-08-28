@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
+
 import {
 	UserActionType,
 	CalendarLabelType,
 } from '../../context/global/index.model';
 import useComponentVisible from '../../hooks/useComponentVisible';
 import { uniqueID } from '../../util/reusable-funcs';
+
 import { AddNewCalendarProps, InitCalendarLblProps } from './index.model';
 import { DialogProps } from '../../lib/Dialog/index.model';
+import Dialog from '../../lib/Dialog';
+
 import './styles.scss';
 
-import Dialog from '../../lib/Dialog';
 import Options from './Options';
-import { ColorOption, defaultColorOption } from '../../docs/data';
+import { ColorOption, defaultColorOption } from '../../themes/data';
 
 type NewCalendar = InitCalendarLblProps | CalendarLabelType;
 const initCalendarLblProps: InitCalendarLblProps = {
@@ -37,7 +40,6 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 		dialogLinkRef,
 	] = useComponentVisible(false);
 
-	// event handlers
 	const addCalendar = () => {
 		dispatchCalendarList({
 			type: UserActionType.ADD,
@@ -63,7 +65,7 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 		setNewCalendar({ ...newCalendar, colorOption });
 	}
 
-	// props to be passed on the reusable dialog component
+	// Props that'll be passed to the reusable dialog component
 	const componentProps = {
 		flags: { options: false, colors: true },
 		calendarProps: newCalendar,
@@ -77,7 +79,7 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 		},
 	}
 
-	const dialogOptionsProps: DialogProps = {
+	const dialogProps: DialogProps = {
 		componentProps,
 		Component: Options,
 		isDialogVisible,
@@ -104,7 +106,7 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 							setIsDialogVisible(visible => !visible);
 						}}
 					/>
-					<Dialog ref={dialogRef} {...dialogOptionsProps} />
+					<Dialog ref={dialogRef} {...dialogProps} />
 				</div>
 			</li>
 		</>

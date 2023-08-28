@@ -1,21 +1,28 @@
-import { useState, useEffect, useRef } from 'react';
+import {
+	useState,
+	useEffect,
+	useRef,
+	RefObject,
+} from 'react';
 
-type ElementsToRef = HTMLDivElement | HTMLElement | HTMLButtonElement;
+type ElementsToRef = HTMLDivElement | HTMLElement
+	| HTMLButtonElement;
 
-// a custom hook that controls the visibility 
+// A custom hook that controls the visibility 
 // of the referenced component
 function useComponentVisible(initialIsVisible: boolean) {
 	const [isComponentVisible, setIsComponentVisible] = useState(initialIsVisible);
 	const linkRef = useRef<HTMLButtonElement | null>(null);
+	// HTMLDivElement || React.Ref<typeof React.Component>
 	const componentRef = useRef<HTMLDivElement | null>(null);
 
 	const handleHideDropdown = (e: KeyboardEvent) => {
 		if (e.key !== 'Escape') return;
 		setIsComponentVisible(false);
 	};
-	
+
 	const handleCurrentTarget = (
-		ref: React.MutableRefObject<ElementsToRef | null>,
+		ref: RefObject<ElementsToRef | null>,
 		{ target }: MouseEvent,
 	) => {
 		if (ref.current != null) {
@@ -27,7 +34,8 @@ function useComponentVisible(initialIsVisible: boolean) {
 		if (
 			componentRef.current &&
 			handleCurrentTarget(componentRef, event) &&
-			// when somewhat loses the ref to link, allow to untoggle component anyway
+			// When it somewhat loses the ref to link, 
+			// it allows to untoggle component anyway
 			(linkRef.current === null || handleCurrentTarget(linkRef, event))) {
 			setIsComponentVisible(false);
 		}

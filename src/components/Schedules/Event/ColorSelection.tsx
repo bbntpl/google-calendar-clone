@@ -1,6 +1,6 @@
 import CustomSelect from '../Dialog/CustomInputs/CustomSelect';
 import { StylesConfig } from 'react-select';
-import { colorOptions, ColorOption } from '../../../docs/data';
+import { colorOptions, ColorOption } from '../../../themes/data';
 
 interface ColorSelectionProps {
 	colorOption: ColorOption;

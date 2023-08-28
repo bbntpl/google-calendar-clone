@@ -48,7 +48,7 @@ export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
 		setSelectedDate(date);
 	}
 
-	// onclick handler when clicking the day in calendar
+	// On click handler for calendar day button
 	const handleClick = (numericalDate: DateUnits) => {
 		handleSelectedDay(numericalDate);
 	}
@@ -61,7 +61,7 @@ export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
 		handleClick(numericalDate);
 	}
 
-	// it results in a styling modifier depending on the met conditions
+	// It returns a style modifier depending on the met conditions
 	const numericalDateModifier = ({ year, month, day }: DateUnits) => {
 		const isReceivedDateToday =
 			stringifyDate(dateToday) === stringifyDate({ year, month, day });
