@@ -3,28 +3,32 @@
 .calendar-container {
 	&--static { 
 		width: 230px;
-		& > .calendar-month--mini {
-			width: 100%
-		}
 	}
 	&--by-content {
 		width: 100%;
-		& > .calendar-month--mini {
-			width: 100%;
-		}
 	 }
-	padding-bottom: 10px;
+}
+
+.calendar-month--mini {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 0 5px 10px 5px;
 }
 
 .calendar__week-grid--mini {
 	display: grid;
-	grid-template-columns: repeat(7, 30px);
+	grid-template-columns: repeat(7, 1fr);
 	width: 100%;
 	text-align: center;
 	font-size: 10px;
 	font-weight: 500;
 	& > * {
-    	height: 26px;
+		display: flex;
+  	justify-content: center;
+  	align-items: center;  
+    height: 26px;
 		margin: 2px;
 	}
 	[class$=day-type] {
@@ -64,6 +68,7 @@
 	}
 	padding-left: 8px;
 	display: flex;
+	width: 100%;
 	justify-content: space-between;
 }
 
