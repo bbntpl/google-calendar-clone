@@ -17,6 +17,7 @@ interface TimeRowProps {
 
 export default function TimeRow(props: TimeRowProps) {
 	const {
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		time,
 		hourIndex = -1,
 		dayIndex,

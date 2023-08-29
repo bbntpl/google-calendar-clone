@@ -19,7 +19,7 @@ import './styles.scss';
 import MultiplyIcon from '../../assets/icons/multiply.png';
 
 type CloseBtnProps = {
-		eventHandler: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+	eventHandler: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 }
 
 const CloseBtn = ({ eventHandler }: CloseBtnProps) => (
@@ -130,6 +130,7 @@ const DialogCore = forwardRef<HTMLDivElement, WrappedDialogProps>(
 				positionOffset={isSelfAdjustable ? adjustedDialogPos : positionOffset}
 				bounds={bounds}
 				nodeRef={ref as RefObject<HTMLDivElement>}
+				defaultClassName={!isDraggable ? 'react-draggable-transform-none': ''}
 			>
 				<div ref={ref} className={classNames.join(' ')}>
 					{

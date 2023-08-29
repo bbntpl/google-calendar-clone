@@ -12,6 +12,7 @@ import Alert from '../../lib/Alert/Alert';
 import { DialogProps } from '../../lib/Dialog/index.model';
 import Dialog from '../../lib/Dialog';
 import Options from './Options';
+import { createPortal } from 'react-dom';
 
 export default function Label(props: LabelProps): JSX.Element {
 	const { recordPos } = useContext(GlobalContext) as GlobalContextInterface;
@@ -40,7 +41,7 @@ export default function Label(props: LabelProps): JSX.Element {
 			type: UserActionType.EDIT,
 			payload: {
 				...calendarProps,
-				selected: e.target.checked, 
+				selected: e.target.checked,
 			},
 		})
 	};
@@ -114,15 +115,18 @@ export default function Label(props: LabelProps): JSX.Element {
 				<Dialog ref={dialogRef} {...calendarLblOptsProps} />
 			</li>
 			{
-				<Alert
-					ref={alertRef}
-					name={`${name}'s `}
-					action='remove'
-					type='Calendar'
-					handleAction={removeCalendar}
-					handleHideComponent={() => setIsAlertVisible(false)}
-					isVisible={isAlertVisible}
-				/>
+				createPortal(
+					<Alert
+						ref={alertRef}
+						name={`${name}'s `}
+						action='remove'
+						type='Calendar'
+						handleAction={removeCalendar}
+						handleHideComponent={() => setIsAlertVisible(false)}
+						isVisible={isAlertVisible}
+					/>,
+					document.body,
+				)
 			}
 		</>
 	)

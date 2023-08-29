@@ -141,10 +141,11 @@ $time-label-width: 4rem;
 	height: max-content;
 	margin-top: 1rem;
 	margin-bottom: -8px;
-	z-index: 300;
+	z-index: 201;
 }
 
 .calendar-component-container:nth-child(2) {
+	position: relative;
 	z-index: 200;
 	margin-bottom: 1rem;
 }

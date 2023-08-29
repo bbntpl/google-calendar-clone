@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
+
 import GlobalContext from '../../../context/global/GlobalContext';
 import GlobalContextInterface, {
 	CalendarLabelType,
@@ -26,6 +27,7 @@ import LocationIcon from '../../../assets/icons/location.png';
 import Alert from '../../../lib/Alert/Alert';
 import DataItem from './DataItem';
 import { ScheduleNames, DateTimeInputs } from '../../../context/global/index.model';
+import { createPortal } from 'react-dom';
 
 interface ScheduleViewProps {
 	readonly scheduleProps: ScheduleTypes;
@@ -59,7 +61,7 @@ function ScheduleTime(props: HoursRangeProps) {
 
 export function ScheduleView(props: ScheduleViewProps) {
 	const { scheduleProps, setIsScheduleViewVisible } = props;
-	const { calendarId, description, title, type, ...rest } = scheduleProps;
+	const { calendarId, description, title, type, ...otherScheduleProps } = scheduleProps;
 	const {
 		calendarList,
 		setSelectedSchedule,
@@ -67,7 +69,6 @@ export function ScheduleView(props: ScheduleViewProps) {
 		setIsScheduleDialogVisible,
 	} = useContext(GlobalContext) as GlobalContextInterface;
 	const [alertRef, isAlertVisible, setIsAlertVisible] = useComponentVisible(false);
-
 	const associatedCalendar = calendarList.find(cal => cal.id === calendarId);
 
 	useEffect(() => {
@@ -75,7 +76,6 @@ export function ScheduleView(props: ScheduleViewProps) {
 		setSelectedSchedule((sch: ScheduleTypes | null | undefined) => {
 			return sch === null ? scheduleProps : { ...sch, ...scheduleProps };
 		});
-		// The selected schedule becomes null after the component unmounts
 		return () => setSelectedSchedule(null);
 	}, []);
 
@@ -85,12 +85,12 @@ export function ScheduleView(props: ScheduleViewProps) {
 	}
 
 	const toggleTaskCompletion = () => {
-		if ('completed' in rest) {
+		if ('completed' in otherScheduleProps) {
 			dispatchSchedules({
 				type: UserActionType.EDIT,
 				payload: {
 					...scheduleProps,
-					completed: !rest.completed,
+					completed: !otherScheduleProps.completed,
 				},
 			})
 		}
@@ -119,21 +119,21 @@ export function ScheduleView(props: ScheduleViewProps) {
 					<div>{title || '(No title)'}</div>
 				</div>
 				<DataItem
-					condition={!!('dateTime' in rest && (rest.dateTime.time.start && rest.dateTime.time.end))}
+					condition={!!('dateTime' in otherScheduleProps && (otherScheduleProps.dateTime.time.start && otherScheduleProps.dateTime.time.end))}
 					icon={ClockIcon}
 					DataElement={() => (
 						<div>
 							<ScheduleTime
-								dateTime={rest.dateTime}
+								dateTime={otherScheduleProps.dateTime}
 								type={type}
 							/>
 						</div>
 					)}
 				/>
 				<DataItem
-					condition={!!('location' in rest && rest.location)}
+					condition={!!('location' in otherScheduleProps && otherScheduleProps.location)}
 					icon={LocationIcon}
-					DataElement={() => (<div>{(rest as EventInterface).location}</div>)}
+					DataElement={() => (<div>{(otherScheduleProps as EventInterface).location}</div>)}
 				/>
 				<DataItem
 					condition={!!description}
@@ -147,14 +147,13 @@ export function ScheduleView(props: ScheduleViewProps) {
 						return <div>{(associatedCalendar as CalendarLabelType).name}</div>
 					}}
 				/>
-				<div className='schedule-view-block'>{
-					'completed' in rest
-					&& <button onClick={toggleTaskCompletion}>
-						{
-							`${rest.completed ? 'Not c' : 'C'}ompleted`
-						}
-					</button>
-				}
+				<div className='schedule-view-block'>
+					{
+						'completed' in otherScheduleProps
+						&& <button onClick={toggleTaskCompletion}>
+							{`${otherScheduleProps.completed ? 'Not c' : 'C'}ompleted`}
+						</button>
+					}
 				</div>
 			</div>
 			<div className='schedule-btn-list'>
@@ -166,14 +165,19 @@ export function ScheduleView(props: ScheduleViewProps) {
 				</button>
 			</div>
 		</div>
-		<Alert
-			ref={alertRef}
-			name={`${truncateString(title, 30)}`}
-			action={'delete'}
-			type={type}
-			handleAction={deleteSchedule}
-			handleHideComponent={() => setIsAlertVisible(false)}
-			isVisible={isAlertVisible}
-		/>
+		{
+			createPortal(
+				<Alert
+					ref={alertRef}
+					name={`${truncateString(title, 30)}`}
+					action={'delete'}
+					type={type}
+					handleAction={deleteSchedule}
+					handleHideComponent={() => setIsAlertVisible(false)}
+					isVisible={isAlertVisible}
+				/>,
+				document.body,
+			)
+		}
 	</>)
 }

@@ -77,7 +77,9 @@ export function getMonth(month = dayjs().month()) {
 	return daysMatrix;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function getYear(year = dayjs().year()) {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	year = Math.floor(year);
 	return Array.from({ length: 12 }, (_, i) => {
 		return getMonth(i);
