@@ -22,7 +22,7 @@
 	grid-template-columns: repeat(7, 1fr);
 	width: 100%;
 	text-align: center;
-	font-size: 10px;
+	font-size: 11px;
 	font-weight: 500;
 	& > * {
 		display: flex;
@@ -30,6 +30,9 @@
   	align-items: center;  
     height: 26px;
 		margin: 2px;
+		& > span {
+			font-size: 11px;
+		}
 	}
 	[class$=day-type] {
     vertical-align: middle;

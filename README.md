@@ -1,5 +1,5 @@
 # Google Calendar Clone
-Built with React, TypeScript and Sass
+Built with React + TypeScript
 
 ## Available Features
 - [X] Calendar List
@@ -19,6 +19,7 @@ Built with React, TypeScript and Sass
 - Firebase (BaaS)
 - Dayjs (Date and time API)
 - Typescript (A superset lang of JS)
+- Sass (Stylesheet Lanuage)
 
 
 ### Credits

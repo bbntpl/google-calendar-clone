@@ -25,12 +25,14 @@
 			font-family: Helvetica,Arial,sans-serif;
 			position: relative;
 			width: 100%;
+			padding: 0 5px;
 			.calendar-label {
 				width: 100%;
 				display: block;
     		overflow: hidden;
     		text-overflow: ellipsis;
     		white-space: nowrap;
+				font-size: 14px;
 			}
 			& > * {
 				margin: 0 6px 0 0;

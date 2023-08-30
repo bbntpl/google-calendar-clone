@@ -112,7 +112,7 @@ export default function EventBlock(props: ScheduleEventProps): JSX.Element {
 				<span>
 					<img src={CalendarIcon} />
 				</span>
-				<div style={{ display: 'flex', gap: '.5rem' }}>
+				<div>
 					<CalendarSelection
 						calendarId={calendarId}
 						handleChange={handleCalendarChange}

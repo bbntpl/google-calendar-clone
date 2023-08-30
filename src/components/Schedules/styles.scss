@@ -1,167 +1,198 @@
-@import '../../styles/variables';
+@import "../../styles/variables";
 
-.calendar-schedule__event, 
+.calendar-schedule__event,
 .schedule-view-block {
-	& > div {
-		margin: 1rem 0;
-	}
+  & > div {
+    margin: 1rem 0;
+  }
 }
 
 /*** BUTTONS TO OPEN SCHEDUEL DIALOG***/
 .schedule__create-btn-wrapper {
-	position: relative;
+  position: relative;
 }
 
 /*** SCHEDULE DIALOG ***/
 .schedule-dialog {
-	color: $primary-color-font;
+  padding: 1.5rem 2rem;
+  color: $primary-color-font;
 }
 
 .schedule-dialog__options {
-	display: flex;
-	justify-content: flex-end;
-	margin: 1rem 2rem;
-	& > button {
-		border: none;
-		padding: 5px 1rem;
-		font-size: 1.4rem;
-		border-radius: 10px;
-	}
+  display: flex;
+  justify-content: flex-end;
+  & > button {
+    border: none;
+    padding: 5px 1rem;
+    font-size: 1.4rem;
+    border-radius: 10px;
+  }
 }
 
 #save-schedule {
-	color: #fff;
-	font-size: 15px;
-	background-color: $color-royal-blue;
+  color: #fff;
+  font-size: 15px;
+  background-color: $color-royal-blue;
 }
 
 .schedule-block {
-	width: 100%;
-	margin: 1.5rem 2rem;
+  width: 100%;
+  margin: 1.5rem 0;
 }
 
 .schedule-input-list {
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
-	width: 100%;
-	flex-direction: row;
-	font-size: 13px;
-	& > span:first-of-type {
-		width: 22px;
-		margin-right: 22px;
-		img {
-			display: flex;
-			align-self: flex-start;
-			width: 22px;
-			filter: $filtered-color-grafito;
-		}
-	}
-	& .hover-effect {
-		@extend %hover-effect;
-	}
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  flex-direction: row;
+  font-size: 13px;
+  & > span:first-of-type {
+    width: 22px;
+    margin-right: 22px;
+    img {
+      display: flex;
+      align-self: flex-start;
+      width: 22px;
+      filter: $filtered-color-grafito;
+    }
+  }
+  & > div, & > span:nth-of-type(2) {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  & > span:nth-of-type(2) {
+    display: inline-flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  & .hover-effect {
+    @extend %hover-effect;
+  }
 }
 
 %hover-effect {
-	color: $color-royal-blue;
+  color: $color-royal-blue;
 }
 
 .schedule-type-selector {
-	display: flex;
-	gap: 0 12px;
+  display: flex;
+  gap: 0 12px;
 }
 
 [class^=schedule-type] {
-	border: 0;
-	padding: 8px 4px;
-	background-color: transparent;
-	font-weight: 500;
-	@include child-attribute('--active') {
-		@extend %hover-effect;
-		background-color: #e8f0fe;
-	}
-	:hover {
-		@extend %hover-effect;
-	}
+  border: 0;
+  padding: 8px 4px;
+  background-color: transparent;
+  font-weight: 500;
+  @include child-attribute('--active') {
+    @extend %hover-effect;
+    background-color: #e8f0fe;
+  }
+  :hover {
+    @extend %hover-effect;
+  }
 }
 
 /*** SCHEDULE INPUTS ***/
 [class^=schedule-input] {
-	color: $primary-color-font;
+  color: $primary-color-font;
 }
 .schedule-input__title {
-	height: 35px;
-	font-size: 1.2rem;
-	padding: 0 2px;
-	border: none;
-	border-bottom: 1px solid rgb(204, 204, 204);
+  height: 35px;
+  font-size: 1.2rem;
+  padding: 0 2px;
+  border: none;
+  border-bottom: 1px solid rgb(204, 204, 204);
 }
 
 .schedule-input__date-time {
-	position: relative;
-	display: flex;
-	gap: .3rem 1rem;
-	align-items: center;
-	flex-wrap: wrap;
+  position: relative;
+  display: flex;
+  gap: 0.3rem 1rem;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .schedule-input__textarea {
-	height: 100px;
-	width: 300px;
-	resize: none;
-	border: 1px solid rgb(204, 204, 204);
-	padding: 10px;
-	font-size: 12px;
+  height: 100px;
+  width: 300px;
+  resize: none;
+  border: 1px solid rgb(204, 204, 204);
+  padding: 10px;
+  font-size: 12px;
 }
 
 .schedule-input__text {
-	width: 200px;
-	height: 20px;
-	padding: 0 5px;
-	border: 1px solid rgb(204, 204, 204);
+  width: 200px;
+  height: 20px;
+  padding: 0 10px;
+  font-size: 12px;
+  border: 1px solid rgb(204, 204, 204);
 }
 
 /*** SCHEDULE VIEW ***/
 .calendar-schedule__view {
-	display: flex;
-	justify-content: space-between;
-	margin: 0 10px 1rem 2rem;
-	width: max-content;
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem .50rem 1.5rem 2rem;
+  width: 100%;
 }
 
 .schedule-view-block {
-	min-width: calc(100% - 30px);
-	width: 400px;
-	button {
-		border: none;
-		color: #3c4043;
-		font-weight: bold;
-		font-size: calc(1rem - 2px);
-		padding: 4px 8px;
-		background: none;
-	}
-	button:hover {
-		background: $bg-color--hover;
-	}
+  min-width: calc(100% - 30px);
+  width: 400px;
+  button {
+    border: none;
+    color: #3c4043;
+    font-weight: bold;
+    font-size: calc(1rem - 2px);
+    padding: 4px 8px;
+    background: none;
+  }
+  button:hover {
+    background: $bg-color--hover;
+  }
 }
 
 .schedule-btn-list {
-	display: flex;
-	flex-direction: column;
-	gap: 5px 0;
-	width: 50px;
-	button {
-		border: 1px solid transparent;
-		background-color: transparent;
-		padding: 2px;
-		img {
-			display: flex;
-			align-self: center;
-			width: 22px;
-			filter: $filtered-color-grafito;
-		}
-	}
-	button:hover {
-		border: 1px solid $color-grafito;
-	}
+  display: flex;
+  flex-direction: column;
+  gap: 5px 0;
+  width: 50px;
+  button {
+    border: 1px solid transparent;
+    background-color: transparent;
+    padding: 2px;
+    img {
+      display: flex;
+      align-self: center;
+      width: 22px;
+      filter: $filtered-color-grafito;
+    }
+  }
+  button:hover {
+    border: 1px solid $color-grafito;
+  }
+}
+
+@media (max-width: $screen-breakpoint-xsm) {
+  .schedule-input-list {
+    & > span:first-of-type {
+      display: none;
+    }
+  }
+  .schedule-dialog {
+    padding: 0.50rem 0.75rem;
+  }
+  .schedule-input__textarea {
+    height: 80px;
+    width: 100%;
+  }
+  .calendar-schedule__view {
+   padding: .50rem .50rem .50rem 1rem;
+  }
 }
