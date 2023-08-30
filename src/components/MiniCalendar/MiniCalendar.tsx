@@ -1,5 +1,5 @@
 import { Fragment, useState, useEffect, useContext } from 'react';
-import { getMonth, stringifyDate, dateToday } from '../../util/calendar-arrangement';
+import { getMonth, convertDateUnitsToString, dateToday } from '../../util/calendar-arrangement';
 import './styles.scss';
 import dayjs from 'dayjs';
 
@@ -11,8 +11,10 @@ import GlobalContextInterface, {
 
 type RootElementModifier = 'static' | 'by-content';
 interface MiniCalendarProps {
-	rootElModifier: RootElementModifier,
+	rootElModifier: RootElementModifier
+	initialDate: DateUnits;
 }
+
 interface SelectCalendarDayProps {
 	numericalMonth: number,
 	numericalDate: DateUnits,
@@ -21,6 +23,7 @@ interface SelectCalendarDayProps {
 export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
 	const {
 		rootElModifier = 'static',
+		initialDate,
 	} = props;
 	const {
 		selectedDate,
@@ -28,18 +31,25 @@ export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
 	} = useContext(GlobalContext) as GlobalContextInterface;
 	const [currentMonth, setCurrentMonth] = useState(getMonth());
 	const [currentMonthIndex, setCurrentMonthIndex] = useState(dayjs().month());
+	const [isInitialDateExistsAndNotUsed, setIsInitialDateExistsAndNotUsed]
+		= useState(!!initialDate);
+
+	// This ensures that the initialDate prop must be highlighted initially,
+	// only before the first change of date/day happens by clicking on the day code
+	const highlightedDate = isInitialDateExistsAndNotUsed
+		? initialDate : selectedDate;
 
 	useEffect(() => {
 		setCurrentMonth(getMonth(currentMonthIndex));
 	}, [currentMonthIndex]);
 
 	useEffect(() => {
-		const yearIndex = (selectedDate.year as number) - dayjs().year();
+		const yearIndex = (highlightedDate.year as number) - dayjs().year();
 		const newMonthIndex = yearIndex === 0
-			? (selectedDate.month as number) - 1
-			: (yearIndex * 12) + ((selectedDate.month as number) - 1);
+			? (highlightedDate.month as number) - 1
+			: (yearIndex * 12) + ((highlightedDate.month as number) - 1);
 		setCurrentMonthIndex(newMonthIndex);
-	}, [selectedDate])
+	}, [highlightedDate])
 
 	const decrementMonthIndex = () => setCurrentMonthIndex(index => index - 1);
 	const incrementMonthIndex = () => setCurrentMonthIndex(index => index + 1);
@@ -48,8 +58,8 @@ export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
 		setSelectedDate(date);
 	}
 
-	// On click handler for calendar day button
-	const handleClick = (numericalDate: DateUnits) => {
+	// On click handler for calendar month switch button
+	const handleMonthSwitchClick = (numericalDate: DateUnits) => {
 		handleSelectedDay(numericalDate);
 	}
 
@@ -58,22 +68,29 @@ export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
 		if (!isDayFromCurrentMonth) {
 			setCurrentMonthIndex(numericalMonth - 1);
 		}
-		handleClick(numericalDate);
+		handleMonthSwitchClick(numericalDate);
 	}
 
 	// It returns a style modifier depending on the met conditions
 	const numericalDateModifier = ({ year, month, day }: DateUnits) => {
 		const isReceivedDateToday =
-			stringifyDate(dateToday) === stringifyDate({ year, month, day });
+			convertDateUnitsToString(dateToday) === convertDateUnitsToString({ year, month, day });
 		const isSelectedMonth = month === Number(currentMonth[2][1].format('M'));
 		if (isReceivedDateToday && isSelectedMonth) {
 			return '--today';
 		} else if (!isSelectedMonth) {
 			return '--greyed';
-		} else if (stringifyDate(selectedDate) === stringifyDate({ year, month, day })) {
+		} else if (convertDateUnitsToString(highlightedDate) === convertDateUnitsToString({ year, month, day })) {
 			return '--selected';
 		}
 		return '';
+	}
+
+	const handleDayClick = (props: SelectCalendarDayProps) => () => {
+		if (initialDate && isInitialDateExistsAndNotUsed) {
+			setIsInitialDateExistsAndNotUsed(false);
+		}
+		selectCalendarDay(props)
 	}
 
 	return (
@@ -100,11 +117,10 @@ export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
 					{currentMonth.map((week, weekIndex) => (
 						<Fragment key={weekIndex}>
 							{week.map((day, dayIndex) => {
-								const numericalYear = Number(day.format('YYYY'));
 								const numericalMonth = Number(day.format('M'));
 								const numericalDay = Number(day.format('D'));
 								const numericalDate = {
-									year: numericalYear,
+									year: Number(day.format('YYYY')),
 									month: numericalMonth,
 									day: numericalDay,
 								};
@@ -113,7 +129,7 @@ export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
 									<button
 										key={dayIndex}
 										className={`numerical-day${modifier}`}
-										onClick={() => selectCalendarDay({ numericalMonth, numericalDate })}
+										onClick={handleDayClick({ numericalMonth, numericalDate })}
 									>
 										<span>{numericalDay}</span>
 									</button>

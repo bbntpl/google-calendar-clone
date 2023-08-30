@@ -52,7 +52,7 @@ export default function Slot(props: SlotProps) {
 		isScheduleViewVisible,
 		setIsScheduleViewVisible,
 		linkRef,
-	] = useComponentVisible(false);
+	] = useComponentVisible();
 	const scheduleViewProps = {
 		isDraggable: false,
 		isSelfAdjustable: true,

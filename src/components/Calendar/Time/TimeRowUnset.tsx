@@ -4,7 +4,7 @@ import GlobalContextInterface, {
 	DateUnits,
 	ScheduleTypes,
 } from '../../../context/global/index.model';
-import { stringifyDate } from '../../../util/calendar-arrangement';
+import { convertDateUnitsToString } from '../../../util/calendar-arrangement';
 import useComponentVisible from '../../../hooks/useComponentVisible';
 
 import '../styles.scss';
@@ -32,7 +32,7 @@ function SlotList(props: SlotListProps) {
 					if (index === 0) return;
 					return <Slot
 						key={`slot-list-item-${index}`}
-						stringifiedDate={stringifyDate(dateValues)}
+						stringifiedDate={convertDateUnitsToString(dateValues)}
 						scheduleProps={schedule}
 						scheduleViewPosition='absolute'
 					/>
@@ -60,7 +60,7 @@ export default function TimeRowUnset(props: TimeRowProps) {
 		isSlotListVisible,
 		setIsSlotListVisible,
 		linkRef,
-	] = useComponentVisible(false);
+	] = useComponentVisible();
 
 	const slotListProps = {
 		isDraggable: false,
@@ -87,7 +87,7 @@ export default function TimeRowUnset(props: TimeRowProps) {
 					recordPos(e);
 					setSelectedDate(dateValues);
 					setDefaultDateTime({
-						date: stringifyDate(dateValues),
+						date: convertDateUnitsToString(dateValues),
 						time: { start: -1, end: -1 },
 					});
 					setIsScheduleDialogVisible(true);
@@ -98,7 +98,7 @@ export default function TimeRowUnset(props: TimeRowProps) {
 						if (index !== 0) return;
 						return <Slot
 							key={`slot-${schedule.id}`}
-							stringifiedDate={stringifyDate(dateValues)}
+							stringifiedDate={convertDateUnitsToString(dateValues)}
 							scheduleProps={schedule}
 						/>
 					})

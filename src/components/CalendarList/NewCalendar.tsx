@@ -38,7 +38,7 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 		isDialogVisible,
 		setIsDialogVisible,
 		dialogLinkRef,
-	] = useComponentVisible(false);
+	] = useComponentVisible();
 
 	const addCalendar = () => {
 		dispatchCalendarList({

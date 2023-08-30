@@ -78,7 +78,7 @@ export default function ScheduleDialog(props: ScheduleDialogProps) {
 		setScheduleProps(setScheduleProps => ({ ...setScheduleProps, title }));
 	}
 
-	const isIdExists = savedSchedules.find(sch => sch.id === scheduleProps.id);
+	const isIdExists = savedSchedules.find(schedule => schedule.id === scheduleProps.id);
 
 	const editSchedule = () => {
 		dispatchSchedules({

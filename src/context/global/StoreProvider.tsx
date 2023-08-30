@@ -16,13 +16,13 @@ import GlobalContextInterface, {
 	CalendarListActionTypes,
 	CalendarType,
 	ScheduleActionTypes,
-	ScheduleNames,
+	ScheduleTypeNames,
 	ScheduleTypes,
 	SelectedSchedule,
 	UserActionType,
 } from './index.model';
 import { uniqueID } from '../../util/reusable-funcs';
-import { dateToday, stringifyDate } from '../../util/calendar-arrangement';
+import { dateToday, convertDateUnitsToString } from '../../util/calendar-arrangement';
 import {
 	updateLocalStorage,
 	deleteLocalStorage,
@@ -52,10 +52,12 @@ function actionTypes<
 			})];
 			updateLocalStorage(stateName, editedArr);
 			return editedArr;
-		case UserActionType.REMOVE: // action receives id as its payload prop
+		case UserActionType.REMOVE:
 			const reducedArr = [...state.filter((obj: StateType) => {
+				// The action payload is equivalent to id
 				return obj.id !== action.payload;
 			})];
+			
 			reducedArr.length
 				? updateLocalStorage(stateName, reducedArr)
 				: deleteLocalStorage(stateName);
@@ -107,7 +109,7 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
 	);
 	const [selectedSchedule, setSelectedSchedule] = useState<SelectedSchedule>(null);
 	const [selectedDate, setSelectedDate] = useState(dateToday);
-	const [selectedScheduleType, setSelectedScheduleType] = useState<ScheduleNames>('event');
+	const [selectedScheduleType, setSelectedScheduleType] = useState<ScheduleTypeNames>('event');
 	const { position, recordPos } = useCursorPosition();
 
 	// Note: It can be a tag or a type of a schedule
@@ -123,11 +125,11 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
 		scheduleDialogRef,
 		isScheduleDialogVisible,
 		setIsScheduleDialogVisible,
-	] = useComponentVisible(false);
+	] = useComponentVisible();
 
 	// Default values for schedule dialog(task or event)
 	const [defaultDateTime, setDefaultDateTime] = useState({
-		date: stringifyDate(dateToday),
+		date: convertDateUnitsToString(dateToday),
 		time: {
 			start: new Date().getHours(),
 			end: new Date().getHours(),
@@ -146,7 +148,7 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
 	useEffect(() => {
 		setDefaultDateTime(defaultDateTime => ({
 			...defaultDateTime,
-			date: stringifyDate(selectedDate),
+			date: convertDateUnitsToString(selectedDate),
 		}));
 	}, [selectedDate]);
 

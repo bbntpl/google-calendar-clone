@@ -1,15 +1,15 @@
 import { CalendarLabelType } from '../../context/global/index.model';
 import { LabelListProps } from './index.model';
-import Label from './Label';
+import CalendarItem from './CalendarItem';
 
-export const LabelList = (props: LabelListProps): JSX.Element => {
+export const CalendarItemList = (props: LabelListProps): JSX.Element => {
 	const { calendarList } = props;
 	return <>{calendarList.map((calendarLbl: CalendarLabelType, index: number) => {
-		return <Label
-			key={`label-${index}`}
+		return <CalendarItem
+			key={`calendar-item-${index}`}
 			calendarProps={calendarLbl}
 			globalContextProps={props} />
 	})}</>
 }
 
-export default LabelList;
+export default CalendarItemList;

@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Dayjs } from 'dayjs';
 
-import { dateToday, getDateValues, stringifyDate } from '../../../util/calendar-arrangement';
+import { dateToday, getDateValues, convertDateUnitsToString } from '../../../util/calendar-arrangement';
 import { DateUnits } from '../../../context/global/index.model';
 import GlobalContext from '../../../context/global/GlobalContext';
 import GlobalContextInterface from '../../../context/global/index.model';
@@ -26,12 +26,12 @@ export default function DayHeader(props: DayHeaderProps) {
 	} = useContext(GlobalContext) as GlobalContextInterface;
 	const { dateObj, dayIndex, isCentered = true } = props;
 
-	const filteredSchedulesByDayAndTime = filteredSchedules.filter(sch => {
-		return sch.dateTime.date === stringifyDate(getDateValues(dateObj, {
+	const filteredSchedulesByDayAndTime = filteredSchedules.filter(schedule => {
+		return schedule.dateTime.date === convertDateUnitsToString(getDateValues(dateObj, {
 			yearFormat: 'YYYY',
 			monthFormat: 'MM',
 			dayFormat: 'DD',
-		})) && (sch.dateTime.time.start < 0 && sch.dateTime.time.end < 0 );
+		})) && (schedule.dateTime.time.start < 0 && schedule.dateTime.time.end < 0 );
 	});
 	
 	const areDatesEqual = (dateObjToCompare: DateUnits) => {

@@ -3,7 +3,7 @@ import GlobalContext from '../../../context/global/GlobalContext';
 import GlobalContextInterface, {
 	DateUnits, ScheduleTypes,
 } from '../../../context/global/index.model';
-import { stringifyDate } from '../../../util/calendar-arrangement';
+import { convertDateUnitsToString } from '../../../util/calendar-arrangement';
 import '../styles.scss';
 import Slot from '../Slot/Slot';
 
@@ -43,7 +43,7 @@ export default function TimeRow(props: TimeRowProps) {
 					recordPos(e);
 					setSelectedDate(dateValues);
 					setDefaultDateTime({
-						date: stringifyDate(dateValues),
+						date: convertDateUnitsToString(dateValues),
 						time: {
 							start: hourIndex,
 							end: (hourIndex + 1),
@@ -56,7 +56,7 @@ export default function TimeRow(props: TimeRowProps) {
 					filteredSchedulesByTime.map((schedule) => {
 						return <Slot
 							key={`slot-${schedule.id}`}
-							stringifiedDate={stringifyDate(dateValues)}
+							stringifiedDate={convertDateUnitsToString(dateValues)}
 							scheduleProps={schedule}
 						/>
 					})

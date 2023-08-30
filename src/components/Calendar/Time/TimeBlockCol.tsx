@@ -8,7 +8,7 @@ import {
 } from '../../../util/calendar-arrangement';
 import GlobalContext from '../../../context/global/GlobalContext';
 import GlobalContextInterface from '../../../context/global/index.model';
-import { stringifyDate } from '../../../util/calendar-arrangement';
+import { convertDateUnitsToString } from '../../../util/calendar-arrangement';
 
 import TimeRow from './TimeRow'
 
@@ -32,11 +32,11 @@ export default function TimeBlockCol(props: TimeBlockColProps) {
 		monthFormat: 'MM',
 		dayFormat: 'DD',
 	}
-	const stringifiedDate = stringifyDate(getDateValues(dateObj, defaultDateFormat));
+	const stringifiedDate = convertDateUnitsToString(getDateValues(dateObj, defaultDateFormat));
 	// Filter the available schedules by day index
 	const filteredSchedulesByDay = filteredSchedules.filter(schedule => {
 		const { start, end } = schedule.dateTime.time;
-		const stringifiedPrevDate = stringifyDate(getDateValues(dayjsObjByDay({
+		const stringifiedPrevDate = convertDateUnitsToString(getDateValues(dayjsObjByDay({
 			date: getDateValues(dateObj, defaultDateFormat),
 			calendarType: 'day',
 			index: -1,
@@ -60,7 +60,7 @@ export default function TimeBlockCol(props: TimeBlockColProps) {
 					const { start, end } = schedule.dateTime.time;
 					const timeIndex = type === 'task' ? end : start;
 					const isScheduleSetFromPrevDay = schedule.dateTime.date
-					!== stringifyDate(getDateValues(dateObj, defaultDateFormat));
+					!== convertDateUnitsToString(getDateValues(dateObj, defaultDateFormat));
 					const isIndexZero = hourIndex === 0;
 					const matchedHourRange =
 						!isScheduleSetFromPrevDay

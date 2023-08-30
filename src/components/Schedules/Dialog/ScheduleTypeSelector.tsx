@@ -1,11 +1,11 @@
 import { useContext } from 'react';
 import GlobalContext from '../../../context/global/GlobalContext';
 import GlobalContextInterface, {
-	ScheduleNames,
+	ScheduleTypeNames,
 } from '../../../context/global/index.model';
 
 interface ScheduleTypeSelectorProps {
-	scheduleType: ScheduleNames | null | undefined;
+	scheduleType: ScheduleTypeNames | null | undefined;
 }
 export default function ScheduleTypeSelector(props: ScheduleTypeSelectorProps) {
 	const { scheduleType } = props;
@@ -14,7 +14,7 @@ export default function ScheduleTypeSelector(props: ScheduleTypeSelectorProps) {
 		setSelectedScheduleType,
 	} = useContext(GlobalContext) as GlobalContextInterface;
 
-	const scheduleTypeClassName = (buttonName: ScheduleNames) => {
+	const scheduleTypeClassName = (buttonName: ScheduleTypeNames) => {
 		return `schedule-type${buttonName === (scheduleType || selectedScheduleType)
 			? '--active' : ''}`;
 	}

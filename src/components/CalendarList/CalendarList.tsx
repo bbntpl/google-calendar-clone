@@ -14,7 +14,7 @@ import ChevronUp from '../../assets/icons/chevron-up.png';
 import PlusIcon from '../../assets/icons/plus.png';
 
 import NewCalendar from './NewCalendar';
-import LabelList from './LabelList';
+import CalendarItemList from './CalendarItemList';
 
 export default function CalendarList(): JSX.Element {
 	const { 
@@ -83,7 +83,7 @@ export default function CalendarList(): JSX.Element {
 					</span>
 				</div>
 				<ul className={`accordion__panel ${isCollapsed ? 'show' : 'hide'}`}>
-					<LabelList
+					<CalendarItemList
 						calendarList={calendarList}
 						dispatchCalendarList={dispatchCalendarList}
 						recordPos={recordPos}
