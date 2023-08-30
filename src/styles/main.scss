@@ -25,11 +25,16 @@ button {
 	width: 100vw;
 	max-width: 100%;
 	min-height: 100vh;
+	height: max-content;
 	font-family: 'Noto Sans SC', Helvetica, Arial, sans-serif;
 }
 
 .header > * , .sidebar > *, .calendar-wrapper > * {
 	padding: 4px 16px;
+}
+
+.sidebar {
+	padding-bottom: 5rem
 }
 
 .header, .sidebar {

@@ -20,7 +20,7 @@ export function CalendarDate() {
 		isMiniCalendarVisible,
 		setIsMiniCalendarVisible,
 		linkRef,
-	] = useComponentVisible(false);
+	] = useComponentVisible();
 	
 	const miniCalendarProps = {
 		Component: MiniCalendar,
@@ -66,7 +66,7 @@ export function CalendarDate() {
 					? <h6 className='header-text'>{displayRelevantDate()}</h6>
 					: <button
 						ref={linkRef}
-						className='clear-btn--no-effects row align-xs'
+						className='clear-btn--no-effects row middle-sm'
 						onClick={() => setIsMiniCalendarVisible(visible => !visible)}
 					>
 						<h6 className='header-text'>{displayRelevantDate()}</h6>
