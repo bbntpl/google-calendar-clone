@@ -14,7 +14,7 @@ import Dialog from '../../lib/Dialog';
 import Options from './Options';
 import { createPortal } from 'react-dom';
 
-export default function Label(props: LabelProps): JSX.Element {
+export default function CalendarItem(props: LabelProps): JSX.Element {
 	const { recordPos } = useContext(GlobalContext) as GlobalContextInterface;
 	const { calendarProps, globalContextProps } = props;
 	const { dispatchCalendarList } = globalContextProps;
@@ -26,14 +26,14 @@ export default function Label(props: LabelProps): JSX.Element {
 		isAlertVisible,
 		setIsAlertVisible,
 		alertLinkRef,
-	] = useComponentVisible(false);
+	] = useComponentVisible();
 
 	const [
 		dialogRef,
 		isCalendarLblOptsVisible,
 		setIsCalendarLblOptsVisible,
 		dialogLinkRef,
-	] = useComponentVisible(false);
+	] = useComponentVisible();
 
 	const handleToggleCbox = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.stopPropagation();
@@ -46,7 +46,7 @@ export default function Label(props: LabelProps): JSX.Element {
 		})
 	};
 
-	const removeCalendar = () => {
+	const deleteCalendar = () => {
 		dispatchCalendarList({ type: UserActionType.REMOVE, payload: id });
 		setIsAlertVisible(false);
 	};
@@ -119,9 +119,9 @@ export default function Label(props: LabelProps): JSX.Element {
 					<Alert
 						ref={alertRef}
 						name={`${name}'s `}
-						action='remove'
+						action='delete'
 						type='Calendar'
-						handleAction={removeCalendar}
+						handleAction={deleteCalendar}
 						handleHideComponent={() => setIsAlertVisible(false)}
 						isVisible={isAlertVisible}
 					/>,

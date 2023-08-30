@@ -14,7 +14,7 @@ export default function withScheduleDialogToggle(Component: any) {
 			isDialogVisible,
 			setIsDialogVisible,
 			linkRef,
-		] = useComponentVisible(false);
+		] = useComponentVisible();
 
 		const dialogProps = {
 			Component: ScheduleTypeList,

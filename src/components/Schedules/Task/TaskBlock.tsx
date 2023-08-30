@@ -3,7 +3,7 @@ import {
 	ScheduleTaskProps,
 	Option,
 } from '../index.model';
-import { stringifyDate } from '../../../util/calendar-arrangement';
+import { convertDateUnitsToString } from '../../../util/calendar-arrangement';
 import { DateUnits } from '../../../context/global/index.model';
 
 import '../styles.scss';
@@ -44,7 +44,7 @@ export default function TaskBlock(props: ScheduleTaskProps): JSX.Element {
 			...scheduleProps,
 			dateTime: {
 				...scheduleProps.dateTime,
-				date: stringifyDate(selectedDate),
+				date: convertDateUnitsToString(selectedDate),
 			},
 		}));
 	};

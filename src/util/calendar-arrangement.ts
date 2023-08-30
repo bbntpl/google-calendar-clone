@@ -144,7 +144,7 @@ export function getScheduleTimeOptions() {
 }
 
 // Note: it excludes the unit seconds "ss"
-export function stringifyDate(args: DateUnits) {
+export function convertDateUnitsToString(args: DateUnits) {
 	// convert month codes (1 to 12) to zero-indexed (0 to 11)
 	const monthIndex = (args.month as number) - 1;
 	const datePropsToArr: ArrayThreeOrMore<number>
@@ -155,7 +155,7 @@ export function stringifyDate(args: DateUnits) {
 		.slice(0, -9);
 }
 
-export function stringifiedDateToObj(stringifiedDate: string) {
+export function convertStringToDateUnits(stringifiedDate: string) {
 	const year = Number(stringifiedDate.slice(0, 4));
 	const month = Number(stringifiedDate.slice(4, 6));
 	const day = Number(stringifiedDate.slice(6, 8));

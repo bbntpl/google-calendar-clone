@@ -45,7 +45,7 @@ export interface DefaultDateTime {
 type OmitScheduleProps
 	= Omit<TaskInterface | EventInterface, 'dateTime' | 'calendarId'>;
 
-export type ScheduleNames = 'task' | 'event';
+export type ScheduleTypeNames = 'task' | 'event';
 export type ScheduleTypes = EventInterface | TaskInterface;
 export type SchedulePayload = EditEvent | EditTask;
 export type ScheduleTypesOnArray = Array<EventInterface> | Array<TaskInterface>
@@ -55,7 +55,7 @@ export interface Schedule {
 	description: string;
 	calendarId: number;
 	dateTime: DateTimeInputs;
-	type: ScheduleNames;
+	type: ScheduleTypeNames;
 }
 export interface EventInterface extends Schedule {
 	location: string;
@@ -130,6 +130,6 @@ export default interface GlobalContextInterface {
 	scheduleDialogRef: RefObject<HTMLElement | null>;
 	isScheduleDialogVisible: boolean;
 	setIsScheduleDialogVisible: Dispatch<SetStateAction<boolean>>;
-	selectedScheduleType: ScheduleNames;
-	setSelectedScheduleType: Dispatch<SetStateAction<ScheduleNames>>;
+	selectedScheduleType: ScheduleTypeNames;
+	setSelectedScheduleType: Dispatch<SetStateAction<ScheduleTypeNames>>;
 }

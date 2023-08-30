@@ -8,12 +8,16 @@ import {
 type ElementsToRef = HTMLDivElement | HTMLElement
 	| HTMLButtonElement;
 
+interface ComponentVisibleHookProps {
+	initialVisibility?: boolean
+}
+
 // A custom hook that controls the visibility 
 // of the referenced component
-function useComponentVisible(initialIsVisible: boolean) {
-	const [isComponentVisible, setIsComponentVisible] = useState(initialIsVisible);
+function useComponentVisible({ initialVisibility = false }:
+	ComponentVisibleHookProps = {}) {
+	const [isComponentVisible, setIsComponentVisible] = useState(initialVisibility);
 	const linkRef = useRef<HTMLButtonElement | null>(null);
-	// HTMLDivElement || React.Ref<typeof React.Component>
 	const componentRef = useRef<HTMLDivElement | null>(null);
 
 	const handleHideDropdown = (e: KeyboardEvent) => {
@@ -30,13 +34,26 @@ function useComponentVisible(initialIsVisible: boolean) {
 		}
 	}
 
+	const isAlertElsClicked = (event: MouseEvent) => {
+		const clickedElement = event.target as HTMLElement;
+		let currentNode: HTMLElement | null = clickedElement;
+		while (currentNode) {
+			if (currentNode.classList.contains('alert')) {
+				return true;
+			}
+			currentNode = currentNode.parentElement;
+		}
+	}
+
 	const handleClickOutside = (event: MouseEvent) => {
-		if (
-			componentRef.current &&
-			handleCurrentTarget(componentRef, event) &&
-			// When it somewhat loses the ref to link, 
-			// it allows to untoggle component anyway
-			(linkRef.current === null || handleCurrentTarget(linkRef, event))) {
+
+		const clickedWithinComponent = componentRef.current &&
+			handleCurrentTarget(componentRef, event);
+		const clickedToggleVisibilityBtn
+			= linkRef.current === null || handleCurrentTarget(linkRef, event);
+
+		if (clickedWithinComponent && !isAlertElsClicked(event)
+			&& clickedToggleVisibilityBtn) {
 			setIsComponentVisible(false);
 		}
 	};

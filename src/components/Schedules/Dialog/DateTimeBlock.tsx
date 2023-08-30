@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import GlobalContext from '../../../context/global/GlobalContext';
 import GlobalContextInterface, {
 	DateTimeInputs, DateUnits,
@@ -17,6 +17,7 @@ import MiniCalendar from '../../MiniCalendar';
 import Dialog from '../../../lib/Dialog';
 import CustomSelect from './CustomInputs/CustomSelect';
 import { Option } from '../index.model';
+import { convertStringToDateUnits } from '../../../util/calendar-arrangement';
 
 export interface DateTimeBlockProps {
 	dateTime: DateTimeInputs;
@@ -44,11 +45,23 @@ export default function DateTimeBlock(props: DateTimeBlockProps) {
 		linkRef,
 	] = useComponentVisible(false);
 
+	// The purpose of this is to prevent date change after its first
+	// execution so that existing schedule date won't overwritten
+	// by the highlighted date
+const dateChangeNotAllowed = useRef(true);
 	useEffect(() => {
-		handleDateChange(selectedDate);
+		if (dateChangeNotAllowed.current) {
+			dateChangeNotAllowed.current = false
+		} else {
+			handleDateChange(selectedDate);
+		}
 	}, [selectedDate])
+
 	const miniCalendarProps = {
 		Component: MiniCalendar,
+		componentProps: {
+			initialDate: convertStringToDateUnits(dateTime.date),
+		},
 		positionOffset: { x: 0, y: 30 },
 		isDraggable: false,
 		isDialogVisible: isMiniCalendarVisible,
@@ -57,7 +70,8 @@ export default function DateTimeBlock(props: DateTimeBlockProps) {
 	}
 
 	const dateToDisplay = () => {
-		return getShortDate(dayjsObj(selectedDate));
+		const dateToDisplay = convertStringToDateUnits(dateTime.date) || selectedDate;
+		return getShortDate(dayjsObj(dateToDisplay));
 	}
 
 	const options = scheduleTimeOptions.map(({ time }, hourIndex) => {
@@ -82,7 +96,6 @@ export default function DateTimeBlock(props: DateTimeBlockProps) {
 			}}
 		/>
 	}
-
 	return (
 		<>
 			<div className='schedule-input-list flex-centered'>

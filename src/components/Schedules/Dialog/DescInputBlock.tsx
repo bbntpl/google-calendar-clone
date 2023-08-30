@@ -9,7 +9,7 @@ interface DescriptionTextProps {
 }
 
 export default function DescInputBlock(props: DescriptionTextProps) {
-	const { description, handleChange } = props;
+	const { description, handleChange, ...textAreaAttrs } = props;
 
 	return (
 		<div className='schedule-input-list'>
@@ -17,7 +17,7 @@ export default function DescInputBlock(props: DescriptionTextProps) {
 				<img src={DescIcon} />
 			</span>
 			<textarea
-				{...props}
+				{...textAreaAttrs}
 				className='schedule-input__textarea'
 				placeholder={'Add description'}
 				onChange={handleChange}

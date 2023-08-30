@@ -14,7 +14,7 @@ import ColorSelection from './ColorSelection';
 import DescInputBlock from '../Dialog/DescInputBlock';
 import CustomInput from '../Dialog/CustomInputs/CustomInput';
 import { ColorOption } from '../../../themes/data';
-import { stringifyDate } from '../../../util/calendar-arrangement';
+import { convertDateUnitsToString } from '../../../util/calendar-arrangement';
 import { DateUnits } from '../../../context/global/index.model';
 
 export default function EventBlock(props: ScheduleEventProps): JSX.Element {
@@ -26,7 +26,7 @@ export default function EventBlock(props: ScheduleEventProps): JSX.Element {
 		calendarId,
 		dateTime,
 	} = eventProps;
-
+	
 	const locationInputProps = {
 		value: location,
 		onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +61,7 @@ export default function EventBlock(props: ScheduleEventProps): JSX.Element {
 			...scheduleProps,
 			dateTime: {
 				...scheduleProps.dateTime,
-				date: stringifyDate(selectedDate),
+				date: convertDateUnitsToString(selectedDate),
 			},
 		}));
 	};

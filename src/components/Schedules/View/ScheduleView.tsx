@@ -12,7 +12,7 @@ import {
 	dayjsObj,
 	getScheduleTimeOptions,
 	getShortDate,
-	stringifiedDateToObj,
+	convertStringToDateUnits,
 } from '../../../util/calendar-arrangement';
 import useComponentVisible from '../../../hooks/useComponentVisible';
 
@@ -26,7 +26,7 @@ import LocationIcon from '../../../assets/icons/location.png';
 
 import Alert from '../../../lib/Alert/Alert';
 import DataItem from './DataItem';
-import { ScheduleNames, DateTimeInputs } from '../../../context/global/index.model';
+import { ScheduleTypeNames, DateTimeInputs } from '../../../context/global/index.model';
 import { createPortal } from 'react-dom';
 
 interface ScheduleViewProps {
@@ -36,7 +36,7 @@ interface ScheduleViewProps {
 
 interface HoursRangeProps {
 	readonly dateTime: DateTimeInputs;
-	readonly type: ScheduleNames;
+	readonly type: ScheduleTypeNames;
 }
 
 function HoursRange(props: HoursRangeProps) {
@@ -51,7 +51,7 @@ function HoursRange(props: HoursRangeProps) {
 
 function ScheduleTime(props: HoursRangeProps) {
 	const { dateTime } = props;
-	const dateValues = stringifiedDateToObj(dateTime.date);
+	const dateValues = convertStringToDateUnits(dateTime.date);
 	const shortDate = getShortDate(dayjsObj(dateValues));
 	return <>
 		<div>{shortDate}</div>
@@ -68,13 +68,13 @@ export function ScheduleView(props: ScheduleViewProps) {
 		dispatchSchedules,
 		setIsScheduleDialogVisible,
 	} = useContext(GlobalContext) as GlobalContextInterface;
-	const [alertRef, isAlertVisible, setIsAlertVisible] = useComponentVisible(false);
+	const [alertRef, isAlertVisible, setIsAlertVisible] = useComponentVisible();
 	const associatedCalendar = calendarList.find(cal => cal.id === calendarId);
 
 	useEffect(() => {
 		// Set the received schedule props as a selected schedule
-		setSelectedSchedule((sch: ScheduleTypes | null | undefined) => {
-			return sch === null ? scheduleProps : { ...sch, ...scheduleProps };
+		setSelectedSchedule((schedule: ScheduleTypes | null | undefined) => {
+			return schedule === null ? scheduleProps : { ...schedule, ...scheduleProps };
 		});
 		return () => setSelectedSchedule(null);
 	}, []);
@@ -95,13 +95,12 @@ export function ScheduleView(props: ScheduleViewProps) {
 			})
 		}
 	}
-
 	const deleteSchedule = () => {
 		dispatchSchedules({
 			type: UserActionType.REMOVE,
 			payload: scheduleProps.id,
 		})
-		setIsScheduleViewVisible(visible => !visible);
+		setIsScheduleViewVisible(false);
 	}
 
 	return (<>
