@@ -1,0 +1,53 @@
+{
+	"name": "google-calendar-clone-frontend",
+	"version": "0.1.0",
+	"private": true,
+	"proxy": "http://localhost:5000",
+	"dependencies": {
+		"dayjs": "^1.11.9",
+		"env-cmd": "^10.1.0",
+		"firebase": "^10.3.0",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-draggable": "^4.4.5",
+		"react-scripts": "5.0.1",
+		"react-select": "^5.7.4",
+		"typescript": "^5.2.2"
+	},
+	"overrides": {
+		"typescript": "^5.2.2"
+	},
+	"scripts": {
+		"build:css": "sass src/**/**.css build/stylesheets ",
+		"watch:css": "sass src/**/**.css build/stylesheets -w",
+		"startnb": "BROWSER=none react-scripts start",
+		"start:dev": "env-cmd -f .env.development npm start",
+		"start": "react-scripts start",
+		"build": "react-scripts build",
+		"test": "react-scripts test",
+		"eject": "react-scripts eject"
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	},
+	"devDependencies": {
+		"@types/react": "^18.2.21",
+		"@types/react-dom": "^18.2.7",
+		"@typescript-eslint/eslint-plugin": "^6.4.1",
+		"@typescript-eslint/parser": "^6.4.1",
+		"eslint": "^8.48.0",
+		"eslint-plugin-jsx-a11y": "^6.7.1",
+		"eslint-plugin-react": "^7.33.2",
+		"eslint-plugin-react-hooks": "^4.6.0",
+		"sass": "^1.66.1"
+	}
+}

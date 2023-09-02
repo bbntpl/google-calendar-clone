@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    // "strict": true,
+    "module": "commonjs",
+    "moduleResolution": "NodeNext",
+    "resolveJsonModule": true,
+    "allowJs": true,
+  },
+  "include": [
+    "**.ts"
+  ],
+  "exclude": [
+    "/data/**."
+  ]
+}
