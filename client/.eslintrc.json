@@ -1,0 +1,89 @@
+{
+	"env": {
+		"browser": true,
+		"es2021": true
+	},
+	"extends": [
+		"plugin:react/recommended",
+		"plugin:@typescript-eslint/recommended"
+	],
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"ecmaFeatures": {
+			"jsx": true
+		},
+		"ecmaVersion": "latest",
+		"sourceType": "module"
+	},
+	"plugins": [
+		"react",
+		"@typescript-eslint"
+	],
+	"rules": {
+		"max-lines": [
+			"error",
+			{
+				"max": 200
+			}
+		],
+		"max-lines-per-function": [
+			"error",
+			{
+				"max": 35
+			}
+		],
+		"indent": [
+			0,
+			"tab"
+		],
+		"no-empty-function": "off",
+		"@typescript-eslint/no-empty-function": [
+			"error"
+		],
+		"@typescript-eslint/no-var-requires": "off",
+		"react/react-in-jsx-scope": "off",
+		"no-tabs": [
+			0,
+			{
+				"allowIndentationTabs": true
+			}
+		],
+		"quotes": [
+			2,
+			"single"
+		],
+		"comma-dangle": [
+			2,
+			"always-multiline"
+		]
+	},
+	"overrides": [
+		{
+			"files": [
+				"src/components/**",
+				"src/App*",
+				"src/views/**",
+				"src/route/**",
+				"src/hooks/**",
+				"src/context/**",
+				"*tsx",
+				"*jsx",
+				"*ts"
+			],
+			"rules": {
+				"max-lines-per-function": [
+					"error",
+					{
+						"max": 150
+					}
+				],
+				"max-statements": [
+					"error",
+					{
+						"max": 20
+					}
+				]
+			}
+		}
+	]
+}

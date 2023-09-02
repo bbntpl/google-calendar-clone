@@ -1,0 +1,40 @@
+Australian Holidays,en.australian
+Austrian Holidays,en.austrian
+Brazilian Holidays,en.brazilian
+Canadian Holidays,en.canadian
+China Holidays,en.china
+Christian Holidays,en.christian
+Danish Holidays,en.danish
+Dutch Holidays,en.dutch
+Finnish Holidays,en.finnish
+French Holidays,en.french
+German Holidays,en.german
+Greek Holidays,en.greek
+Hong Kong (C) Holidays,en.hong_kong_c
+Hong Kong Holidays,en.hong_kong
+Indian Holidays,en.indian
+Indonesian Holidays,en.indonesian
+Iranian Holidays,en.iranian
+Irish Holidays,en.irish
+Islamic Holidays,en.islamic
+Italian Holidays,en.italian
+Japanese Holidays,en.japanese
+Jewish Holidays,en.jewish
+Malaysian Holidays,en.malaysia
+Mexican Holidays,en.mexican
+New Zealand Holidays,en.new_zealand
+Norwegian Holidays,en.norwegian
+Philippines Holidays,en.philippines
+Polish Holidays,en.polish
+Portuguese Holidays,en.portuguese
+Russian Holidays,en.russian
+Singapore Holidays,en.singapore
+South Africa Holidays,en.sa
+South Korean Holidays,en.south_korea
+Spain Holidays,en.spain
+Swedish Holidays,en.swedish
+Taiwan Holidays,en.taiwan
+Thai Holidays,en.thai
+UK Holidays,en.uk
+US Holidays,en.usa
+Vietnamese Holidays,en.vietnamese
