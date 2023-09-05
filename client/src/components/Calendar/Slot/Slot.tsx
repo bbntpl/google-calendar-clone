@@ -1,24 +1,27 @@
-import { MouseEvent, useContext, useState } from 'react';
+import {
+	MouseEvent,
+	useState,
+} from 'react';
 
-import GlobalContextInterface, {
-	ScheduleTypes,
-} from '../../../context/global/index.model';
-import GlobalContext from '../../../context/global/GlobalContext';
 import { getScheduleTimeOptions } from '../../../util/calendar-arrangement';
 import useComponentVisible from '../../../hooks/useComponentVisible';
 
 import { ScheduleView } from '../../Schedules/View/ScheduleView';
 import Dialog from '../../../lib/Dialog';
 import { DialogProps } from '../../../lib/Dialog/index.model';
+import { Schedule } from '../../../context/StoreContext/types/schedule';
+import { useStore } from '../../../context/StoreContext';
+import { useAppConfigUpdater } from '../../../context/AppConfigContext';
+import { createPortal } from 'react-dom';
 
 type SlotProps = {
-	scheduleProps: ScheduleTypes
+	scheduleProps: Schedule
 	stringifiedDate: string
 	scheduleViewPosition?: DialogProps['stylePosition']
 }
 
 type SlotTitleProps = {
-	scheduleProps: ScheduleTypes
+	scheduleProps: Schedule
 	title: string
 	isHovered: boolean
 }
@@ -35,16 +38,12 @@ export default function Slot(props: SlotProps) {
 	const {
 		scheduleProps,
 		stringifiedDate,
-		// Bookmarked: make use of this property later
-		// scheduleViewPosition = 'fixed' as const,
 	} = props;
 	const { calendarId, title, type } = scheduleProps;
 	const { time, date: scheduleDate } = scheduleProps.dateTime;
 	const { start, end } = time;
-	const {
-		calendarList,
-		recordPos,
-	} = useContext(GlobalContext) as GlobalContextInterface;
+	const { calendars } = useStore();
+	const { recordPosition } = useAppConfigUpdater();
 	const [zIndex, setZIndex] = useState(1000);
 	const [isHovered, setIsHovered] = useState(false);
 	const [
@@ -60,7 +59,6 @@ export default function Slot(props: SlotProps) {
 			scheduleProps,
 			setIsScheduleViewVisible,
 		},
-		positionOffset: { x: 0, y: 0 },
 		Component: ScheduleView,
 		hasInitTransition: true,
 		isDialogVisible: isScheduleViewVisible,
@@ -101,7 +99,7 @@ export default function Slot(props: SlotProps) {
 		return (initTime % 4) * 13;
 	}
 
-	const associatedCalendar = calendarList.find(obj => obj.id === calendarId);
+	const associatedCalendar = calendars.find((obj) => obj.id === calendarId);
 	const bgColor = 'colorOption' in scheduleProps
 		? scheduleProps.colorOption.value || associatedCalendar?.colorOption.value
 		: associatedCalendar?.colorOption.value
@@ -125,7 +123,7 @@ export default function Slot(props: SlotProps) {
 	}
 
 	const handleClick = (event: MouseEvent<HTMLElement, globalThis.MouseEvent>) => {
-		recordPos(event);
+		recordPosition(event);
 		setIsScheduleViewVisible(visible => !visible)
 	}
 
@@ -143,8 +141,13 @@ export default function Slot(props: SlotProps) {
 					<SlotTitle scheduleProps={scheduleProps} title={title} isHovered={isHovered} />
 					{` ${formattedTimeRange()}`}
 				</div>
-			</button >
-			<Dialog ref={scheduleViewRef} {...scheduleViewProps} />
+			</button>
+			{
+				createPortal(
+					<Dialog ref={scheduleViewRef} {...scheduleViewProps} />,
+					document.body,
+				)
+			}
 		</>
 	)
 }

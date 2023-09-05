@@ -1,9 +1,4 @@
-import React, { useContext } from 'react';
-import GlobalContext from '../../../context/global/GlobalContext';
-import GlobalContextInterface, {
-	DateUnits,
-	ScheduleTypes,
-} from '../../../context/global/index.model';
+
 import { convertDateUnitsToString } from '../../../util/calendar-arrangement';
 import useComponentVisible from '../../../hooks/useComponentVisible';
 
@@ -11,10 +6,14 @@ import '../styles.scss';
 
 import Slot from '../Slot/Slot';
 import Dialog from '../../../lib/Dialog';
+import { DateUnits } from '../../../context/CalendarConfigContext/index.model';
+import { Schedule } from '../../../context/StoreContext/types/schedule';
+import { useCalendarConfigUpdater } from '../../../context/CalendarConfigContext';
+import { useAppConfigUpdater } from '../../../context/AppConfigContext';
 
 interface SlotListProps {
 	dateValues: DateUnits;
-	filteredSchedulesByTime: ScheduleTypes[] | [];
+	filteredSchedulesByTime: Schedule[] | [];
 }
 
 interface TimeRowProps extends SlotListProps {
@@ -52,8 +51,11 @@ export default function TimeRowUnset(props: TimeRowProps) {
 		setSelectedDate,
 		setIsScheduleDialogVisible,
 		setDefaultDateTime,
-		recordPos,
-	} = useContext(GlobalContext) as GlobalContextInterface;
+	} = useCalendarConfigUpdater();
+
+	const {
+		recordPosition,
+	} = useAppConfigUpdater();
 
 	const [
 		slotListRef,
@@ -84,7 +86,7 @@ export default function TimeRowUnset(props: TimeRowProps) {
 				className='calendar-time__block'
 				onClick={(e) => {
 					if (e.target !== e.currentTarget) return;
-					recordPos(e);
+					recordPosition(e);
 					setSelectedDate(dateValues);
 					setDefaultDateTime({
 						date: convertDateUnitsToString(dateValues),

@@ -1,12 +1,9 @@
-import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
+import {
+	Dispatch,
+	SetStateAction,
+	useEffect,
+} from 'react';
 
-import GlobalContext from '../../../context/global/GlobalContext';
-import GlobalContextInterface, {
-	CalendarItem,
-	EventInterface,
-	ScheduleTypes,
-	UserActionType,
-} from '../../../context/global/index.model';
 import { truncateString } from '../../../util/reusable-funcs';
 import {
 	dayjsObj,
@@ -26,17 +23,26 @@ import LocationIcon from '../../../assets/icons/location.png';
 
 import Alert from '../../../lib/Alert/Alert';
 import DataItem from './DataItem';
-import { ScheduleTypeNames, DateTimeInputs } from '../../../context/global/index.model';
 import { createPortal } from 'react-dom';
+import {
+	Event,
+	Schedule,
+	ScheduleType,
+} from '../../../context/StoreContext/types/schedule';
+import { DateTimeInputs } from '../../../context/CalendarConfigContext/index.model';
+import { Calendar } from '../../../context/StoreContext/types/calendar';
+import { useStore, useStoreUpdater } from '../../../context/StoreContext';
+import { useCalendarConfigUpdater } from '../../../context/CalendarConfigContext';
+import { UserAction } from '../../../context/StoreContext/index.model';
 
 interface ScheduleViewProps {
-	readonly scheduleProps: ScheduleTypes;
+	readonly scheduleProps: Schedule;
 	setIsScheduleViewVisible: Dispatch<SetStateAction<boolean>>;
 }
 
 interface HoursRangeProps {
 	readonly dateTime: DateTimeInputs;
-	readonly type: ScheduleTypeNames;
+	readonly type: ScheduleType;
 }
 
 function HoursRange(props: HoursRangeProps) {
@@ -62,18 +68,19 @@ function ScheduleTime(props: HoursRangeProps) {
 export function ScheduleView(props: ScheduleViewProps) {
 	const { scheduleProps, setIsScheduleViewVisible } = props;
 	const { calendarId, description, title, type, ...otherScheduleProps } = scheduleProps;
-	const {
-		calendarList,
-		setSelectedSchedule,
-		dispatchSchedules,
-		setIsScheduleDialogVisible,
-	} = useContext(GlobalContext) as GlobalContextInterface;
+
+	const { calendars } = useStore();
+	const { dispatchSchedules } = useStoreUpdater();
+	const { setSelectedSchedule } = useCalendarConfigUpdater();
+	const { setIsScheduleDialogVisible } = useCalendarConfigUpdater();
+
 	const [alertRef, isAlertVisible, setIsAlertVisible] = useComponentVisible();
-	const associatedCalendar = calendarList.find(cal => cal.id === calendarId);
+	const associatedCalendar
+		= calendars.find((calendar: Calendar) => calendar.id === calendarId);
 
 	useEffect(() => {
 		// Set the received schedule props as a selected schedule
-		setSelectedSchedule((schedule: ScheduleTypes | null | undefined) => {
+		setSelectedSchedule((schedule: Schedule | null | undefined) => {
 			return schedule === null ? scheduleProps : { ...schedule, ...scheduleProps };
 		});
 		return () => setSelectedSchedule(null);
@@ -81,13 +88,13 @@ export function ScheduleView(props: ScheduleViewProps) {
 
 	const editSchedule = () => {
 		setIsScheduleViewVisible(visible => !visible);
-		setIsScheduleDialogVisible(visible => !visible);
+		setIsScheduleDialogVisible((visible: boolean) => !visible);
 	}
 
 	const toggleTaskCompletion = () => {
 		if ('completed' in otherScheduleProps) {
 			dispatchSchedules({
-				type: UserActionType.EDIT,
+				type: UserAction.EDIT,
 				payload: {
 					...scheduleProps,
 					completed: !otherScheduleProps.completed,
@@ -97,8 +104,10 @@ export function ScheduleView(props: ScheduleViewProps) {
 	}
 	const deleteSchedule = () => {
 		dispatchSchedules({
-			type: UserActionType.REMOVE,
-			payload: scheduleProps.id,
+			type: UserAction.REMOVE,
+			payload: {
+				id: scheduleProps.id,
+			},
 		})
 		setIsScheduleViewVisible(false);
 	}
@@ -132,7 +141,7 @@ export function ScheduleView(props: ScheduleViewProps) {
 				<DataItem
 					condition={!!('location' in otherScheduleProps && otherScheduleProps.location)}
 					icon={LocationIcon}
-					DataElement={() => (<div>{(otherScheduleProps as EventInterface).location}</div>)}
+					DataElement={() => (<div>{(otherScheduleProps as Event).location}</div>)}
 				/>
 				<DataItem
 					condition={!!description}
@@ -143,7 +152,7 @@ export function ScheduleView(props: ScheduleViewProps) {
 					condition={!!calendarId}
 					icon={CalendarIcon}
 					DataElement={() => {
-						return <div>{(associatedCalendar as CalendarItem).name}</div>
+						return <div>{(associatedCalendar as Calendar).name}</div>
 					}}
 				/>
 				<div className='schedule-view-block'>

@@ -80,7 +80,7 @@
 				"max-statements": [
 					"error",
 					{
-						"max": 20
+						"max": 22
 					}
 				]
 			}

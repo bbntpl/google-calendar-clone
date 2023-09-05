@@ -1,17 +1,17 @@
 import { Dispatch, SetStateAction } from 'react';
 import {
-	EventInterface,
-	TaskInterface,
-} from '../../context/global/index.model';
+	Event,
+	Task,
+} from '../../context/StoreContext/types/schedule';
 
-export interface ScheduleStates extends EventInterface, TaskInterface { }
+export interface ScheduleStates extends Event, Task { }
 export interface ScheduleEventProps {
-	eventProps: Omit<EventInterface, 'id' | 'type' | 'title'>;
+	eventProps: Omit<Event, 'id' | 'type' | 'title'>;
 	setScheduleProps: Dispatch<SetStateAction<ScheduleStates>>;
 }
 
 export interface ScheduleTaskProps {
-	taskProps: Omit<TaskInterface, 'id' | 'type' | 'title'>;
+	taskProps: Omit<Task, 'id' | 'type' | 'title'>;
 	setScheduleProps: Dispatch<SetStateAction<ScheduleStates>>;
 }
 

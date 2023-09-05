@@ -1,10 +1,10 @@
-import { ScheduleTypeNames } from '../../../context/global/index.model';
+import { ScheduleType } from '../../../context/StoreContext/types/schedule';
 import ScheduleTypeSelector from './ScheduleTypeSelector';
 
 interface MainContentProps {
 	title: string;
 	setTitle: (title: string) => void;
-	scheduleType: ScheduleTypeNames | null;
+	scheduleType: ScheduleType | null;
 }
 
 export default function ScheduleMainContent(props: MainContentProps) {

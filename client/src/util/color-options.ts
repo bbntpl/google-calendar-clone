@@ -4,7 +4,7 @@ export interface ColorOption {
 	readonly value: string;
 }
 
-export const colorOptions: ColorOption[] = [
+export const colorOptions: Array<ColorOption> = [
 	{ color: 'basil', label: 'Basil', value: '#0B8043' },
 	{ color: 'black', label: 'Black', value: '#000' },
 	{ color: 'blueberry', label: 'Blueberry', value: '#3F51B5' },
@@ -16,6 +16,7 @@ export const colorOptions: ColorOption[] = [
 	{ color: 'grafito', label: 'Grafito', value: '#616161' },
 ];
 
-export const defaultColorOption = colorOptions.find(opt => {
-	return opt.color === 'black';
-}) as ColorOption;
+export const getColorOption = (color: ColorOption['color'] = 'black') => {
+	const colorOption = colorOptions.find(option => option.color === color);
+	return colorOption || colorOptions[1];
+}

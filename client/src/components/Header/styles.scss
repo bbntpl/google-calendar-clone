@@ -52,8 +52,16 @@
 	}
 }
 
+.settings-icon-wrapper {
+	@include isometric-dim($size: 40px);
+	background-color: transparent;
+	border-radius: 50%;
+	& > img {
+		@include isometric-dim($size: 30px);
+	}
+}
+
 .user-image-wrapper {
-	border-radius: 2px;
 	@include isometric-dim($size: 40px);
 	background-color: transparent;
 	border-radius: 50%;

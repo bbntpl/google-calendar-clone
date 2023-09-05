@@ -1,9 +1,7 @@
-import { useContext } from 'react';
 import { Option } from '../index.model';
 
 import CustomSelect from './CustomInputs/CustomSelect';
-import GlobalContext from '../../../context/global/GlobalContext';
-import GlobalContextInterface from '../../../context/global/index.model';
+import { useStore } from '../../../context/StoreContext';
 
 interface CalendarSelectionProps {
 	calendarId: number;
@@ -12,11 +10,9 @@ interface CalendarSelectionProps {
 
 export default function CalendarSelection(props: CalendarSelectionProps) {
 	const { calendarId, handleChange } = props;
-	const {
-		calendarList,
-	} = useContext(GlobalContext) as GlobalContextInterface;
+	const { calendars } = useStore();
 
-	const calendarOptions = calendarList.map(({ name, id }) => {
+	const calendarOptions = calendars.map(({ name, id }) => {
 		return { label: name, value: id }
 	});
 	const calendarOption = calendarOptions.find(obj => {

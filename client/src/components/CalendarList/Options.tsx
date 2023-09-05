@@ -1,9 +1,15 @@
-import { UserActionType } from '../../context/global/index.model';
-import { EventHandlers, WrappedComponentProps } from './index.model';
+import {
+	EventHandlers,
+	WrappedComponentProps,
+} from './index.model';
 
 import './styles.scss';
 import CheckIcon from '../../assets/icons/check.png';
-import { ColorOption, colorOptions } from '../../themes/data';
+import {
+	ColorOption,
+	colorOptions,
+} from '../../util/color-options';
+import { UserAction } from '../../context/StoreContext/index.model';
 
 export default function Options(props: WrappedComponentProps) {
 	const {
@@ -20,7 +26,7 @@ export default function Options(props: WrappedComponentProps) {
 		// Update the context if the received calendar props has id
 		if (calendarProps.id && Object.keys(eventHandlers).length === 0) {
 			dispatchCalendarList({
-				type: UserActionType.EDIT,
+				type: UserAction.EDIT,
 				payload: { ...calendarProps, colorOption },
 			});
 			return;
@@ -33,7 +39,7 @@ export default function Options(props: WrappedComponentProps) {
 		calendarList.forEach((calendar) => {
 			const { id: calendarId } = calendar;
 			dispatchCalendarList({
-				type: UserActionType.EDIT,
+				type: UserAction.EDIT,
 				payload: {
 					...calendarProps,
 					id: calendarId,

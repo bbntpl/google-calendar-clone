@@ -1,14 +1,12 @@
+import { useCalendarConfigUpdater } from '../../../context/CalendarConfigContext';
 import { DialogProps } from '../../../lib/Dialog/index.model';
-import { useContext } from 'react';
-import GlobalContext from '../../../context/global/GlobalContext';
-import GlobalContextInterface from '../../../context/global/index.model';
 
 export default function ScheduleTypeList(props: DialogProps) {
 	const { setIsDialogVisible } = props;
 	const {
 		setIsScheduleDialogVisible,
 		setSelectedScheduleType,
-	} = useContext(GlobalContext) as GlobalContextInterface;
+	} = useCalendarConfigUpdater();
 
 	return (
 		<>

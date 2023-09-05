@@ -51,6 +51,16 @@ button {
 	height: calc(100vh - 64px);
 }
 
+.loading-txt {
+	font-size: 13px;
+	font-family: 'Noto Sans SC', Helvetica, Arial, sans-serif;
+	color: $color-royal-blue;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .max-content{
 	width: max-content!important;
 }

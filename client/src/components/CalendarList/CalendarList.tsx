@@ -1,28 +1,39 @@
-import { useState, useContext, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 
-import GlobalContextInterface, {
-	UserActionType,
-	CalendarItem,
-} from '../../context/global/index.model';
-import GlobalContext from '../../context/global/GlobalContext';
-import { uniqueID } from '../../util/reusable-funcs';
-import { defaultColorOption } from '../../themes/data';
+import { Calendar, CalendarType } from '../../context/StoreContext/types/calendar';
+import { useAppConfigUpdater } from '../../context/AppConfigContext';
+import { useStore, useStoreUpdater } from '../../context/StoreContext';
+import { UserAction } from '../../context/StoreContext/index.model';
+import { Schedule } from '../../context/StoreContext/types/schedule';
+
+import NewCalendar from './NewCalendar';
+import CalendarItemList from './CalendarItemList';
 
 import './styles.scss';
 import ChevronBottom from '../../assets/icons/chevron-bottom.png';
 import ChevronUp from '../../assets/icons/chevron-up.png';
 import PlusIcon from '../../assets/icons/plus.png';
 
-import NewCalendar from './NewCalendar';
-import CalendarItemList from './CalendarItemList';
+import { getColorOption } from '../../util/color-options';
+import { uniqueID } from '../../util/reusable-funcs';
 
-export default function CalendarList(): JSX.Element {
-	const { 
-		calendarList, 
-		dispatchCalendarList, 
-		savedSchedules, 
-		recordPos, 
-	} = useContext(GlobalContext) as GlobalContextInterface;
+interface CalendarListProps {
+	type: CalendarType
+	calendars: Array<Calendar>
+	limit?: number
+	title?: string
+}
+
+export default function CalendarList({
+	title = 'My Calendars',
+	type,
+	calendars,
+	limit = 10,
+}: CalendarListProps): JSX.Element {
+	const { recordPosition } = useAppConfigUpdater();
+	const { savedSchedules } = useStore();
+	const { dispatchCalendars } = useStoreUpdater();
+
 	const [isCollapsed, setIsCollapsed] = useState(false);
 	const [showAddLblBtn, setShowAddLblBtn] = useState(false);
 
@@ -31,44 +42,50 @@ export default function CalendarList(): JSX.Element {
 		e.stopPropagation();
 		setShowAddLblBtn(toggle => !toggle);
 	}
-	
+
 	// Add/remove calendars depending on existence of a schedule by type
 	useEffect(() => {
-		const areThereTasks = savedSchedules.some(schedule => schedule.type === 'task');
-		const areThereEvents = savedSchedules.some(schedule => schedule.type === 'event');
+		const areThereTasks = savedSchedules.some((schedule: Schedule) => {
+			return schedule.type === 'task';
+		});
 
-		const taskCalendar = calendarList.filter((calendar) => calendar.name === 'Tasks');
-		const evtCalendar = calendarList.filter((calendar) => calendar.name === 'Events');
+		const areThereEvents = savedSchedules.some((schedule: Schedule) => {
+			return schedule.type === 'event';
+		});
 
-		type InitialCalendarLabelProps = Omit<CalendarItem, 'name'>;
-		const calendarLblProps: InitialCalendarLabelProps = {
+		const taskCalendar = calendars.filter((calendar) => calendar.name === 'Tasks');
+		const evtCalendar = calendars.filter((calendar) => calendar.name === 'Events');
+
+		type InitialCalendarLabelProps = Omit<Calendar, 'name'>;
+		const calendarItemProps: InitialCalendarLabelProps = {
 			id: uniqueID(),
-			colorOption: defaultColorOption,
+			colorOption: getColorOption(),
 			removable: false,
 			selected: false,
+			type,
 		};
 		if (!areThereTasks && taskCalendar.length) {
-			dispatchCalendarList({
-				type: UserActionType.REMOVE,
-				payload: taskCalendar[0].id,
+			dispatchCalendars({
+				type: UserAction.REMOVE,
+				payload: { id: taskCalendar[0].id },
 			});
 		} else if (!areThereEvents && evtCalendar.length) {
-			dispatchCalendarList({
-				type: UserActionType.REMOVE,
-				payload: evtCalendar[0].id,
+			dispatchCalendars({
+				type: UserAction.REMOVE,
+				payload: { id: evtCalendar[0].id },
 			});
 		} else if (areThereTasks && !taskCalendar) {
-			dispatchCalendarList({
-				type: UserActionType.ADD,
-				payload: Object.assign({}, calendarLblProps, { name: 'Tasks' }),
+			dispatchCalendars({
+				type: UserAction.ADD,
+				payload: Object.assign({}, calendarItemProps, { name: 'Tasks' }),
 			});
 		} else if (areThereEvents && !evtCalendar) {
-			dispatchCalendarList({
-				type: UserActionType.ADD,
-				payload: Object.assign({}, calendarLblProps, { name: 'Events' }),
+			dispatchCalendars({
+				type: UserAction.ADD,
+				payload: Object.assign({}, calendarItemProps, { name: 'Events' }),
 			});
 		}
-	}, [calendarList, savedSchedules]);
+	}, [calendars, savedSchedules]);
 
 	return (
 		<div className='accordion-container'>
@@ -79,7 +96,7 @@ export default function CalendarList(): JSX.Element {
 						setShowAddLblBtn(false);
 						handleToggleAccordion();
 					}}>
-					<h5 className='row'>{`My Calendars ${calendarList.length}/10`}</h5>
+					<h5 className='row'>{`${title} ${calendars.length}/${limit}`}</h5>
 					<span className='row end-xs middle-xs'>
 						<button
 							className='clear-btn--no-effects'
@@ -92,19 +109,18 @@ export default function CalendarList(): JSX.Element {
 				</div>
 				<ul className={`accordion__panel ${isCollapsed ? 'show' : 'hide'}`}>
 					<CalendarItemList
-						calendarList={calendarList}
-						dispatchCalendarList={dispatchCalendarList}
-						recordPos={recordPos}
+						calendarList={calendars}
+						dispatchCalendarList={dispatchCalendars}
+						recordPosition={recordPosition}
 					/>
 					{
 						showAddLblBtn
 							? <NewCalendar
 								setShowAddLblBtn={setShowAddLblBtn}
-								dispatchCalendarList={dispatchCalendarList}
-								calendarList={calendarList}
-								recordPos={recordPos}
-							/>
-							: null
+								dispatchCalendarList={dispatchCalendars}
+								calendarList={calendars}
+								recordPosition={recordPosition}
+							/> : null
 					}
 				</ul>
 			</div>

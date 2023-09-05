@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import StoreProvider from './context/global/StoreProvider';
+import FirebaseAuthProvider from './context/FirebaseAuthContext';
+import StoreProvider from './context/StoreContext/index';
+import AppConfigProvider from './context/AppConfigContext';
+import CalendarConfigProvider from './context/CalendarConfigContext';
 
 import './styles/index.css';
 
@@ -12,9 +15,15 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-	// <React.StrictMode>
-	<StoreProvider>
-		<App />
-	</StoreProvider>,
-	// </React.StrictMode>,
+	<React.StrictMode>
+		<FirebaseAuthProvider>
+			<AppConfigProvider>
+				<CalendarConfigProvider>
+					<StoreProvider>
+						<App />
+					</StoreProvider>,
+				</CalendarConfigProvider>
+			</AppConfigProvider>
+		</FirebaseAuthProvider>
+	</React.StrictMode>,
 );

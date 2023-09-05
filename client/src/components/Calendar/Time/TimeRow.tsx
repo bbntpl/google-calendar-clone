@@ -1,18 +1,20 @@
-import { useContext } from 'react';
-import GlobalContext from '../../../context/global/GlobalContext';
-import GlobalContextInterface, {
-	DateUnits, ScheduleTypes,
-} from '../../../context/global/index.model';
-import { convertDateUnitsToString } from '../../../util/calendar-arrangement';
+
+import { DateUnits } from '../../../context/CalendarConfigContext/index.model';
+import { Schedule } from '../../../context/StoreContext/types/schedule';
+
 import '../styles.scss';
+
+import { convertDateUnitsToString } from '../../../util/calendar-arrangement';
 import Slot from '../Slot/Slot';
+import { useCalendarConfigUpdater } from '../../../context/CalendarConfigContext/index';
+import { useAppConfigUpdater } from '../../../context/AppConfigContext';
 
 interface TimeRowProps {
 	dayIndex: number,
 	time?: string,
 	hourIndex?: number,
 	dateValues: DateUnits
-	filteredSchedulesByTime: ScheduleTypes[] | []
+	filteredSchedulesByTime: Schedule[] | []
 }
 
 export default function TimeRow(props: TimeRowProps) {
@@ -24,12 +26,16 @@ export default function TimeRow(props: TimeRowProps) {
 		dateValues,
 		filteredSchedulesByTime,
 	} = props;
+
+	const {
+		recordPosition,
+	} = useAppConfigUpdater();
+
 	const {
 		setSelectedDate,
 		setIsScheduleDialogVisible,
 		setDefaultDateTime,
-		recordPos,
-	} = useContext(GlobalContext) as GlobalContextInterface;
+	} = useCalendarConfigUpdater();
 
 	return (
 		<div className='calendar-time__row'>
@@ -40,7 +46,7 @@ export default function TimeRow(props: TimeRowProps) {
 				className='calendar-time__block'
 				onClick={(e) => {
 					if (e.target !== e.currentTarget) return;
-					recordPos(e);
+					recordPosition(e);
 					setSelectedDate(dateValues);
 					setDefaultDateTime({
 						date: convertDateUnitsToString(dateValues),

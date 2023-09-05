@@ -1,14 +1,14 @@
-import { useContext } from 'react';
 import { Dayjs } from 'dayjs';
 
 import { dateToday, getDateValues, convertDateUnitsToString } from '../../../util/calendar-arrangement';
-import { DateUnits } from '../../../context/global/index.model';
-import GlobalContext from '../../../context/global/GlobalContext';
-import GlobalContextInterface from '../../../context/global/index.model';
 
 import TimeRowUnset from '../Time/TimeRowUnset';
 
 import '../styles.scss';
+import { useStore } from '../../../context/StoreContext';
+import { useCalendarConfig, useCalendarConfigUpdater } from '../../../context/CalendarConfigContext';
+import { Schedule } from '../../../context/StoreContext/types/schedule';
+import { DateUnits } from '../../../context/CalendarConfigContext/index.model';
 
 interface DayHeaderProps {
 	dateObj: Dayjs,
@@ -19,21 +19,29 @@ interface DayHeaderProps {
 
 export default function DayHeader(props: DayHeaderProps) {
 	const {
-		filteredSchedules,
+		filteredSchedules
+	} = useStore();
+
+	const {
 		selectedDate,
+	} = useCalendarConfig();
+
+	const {
 		setSelectedDate,
 		setSelectedCalendarUnit,
-	} = useContext(GlobalContext) as GlobalContextInterface;
+	} = useCalendarConfigUpdater();
+
 	const { dateObj, dayIndex, isCentered = true } = props;
 
-	const filteredSchedulesByDayAndTime = filteredSchedules.filter(schedule => {
-		return schedule.dateTime.date === convertDateUnitsToString(getDateValues(dateObj, {
-			yearFormat: 'YYYY',
-			monthFormat: 'MM',
-			dayFormat: 'DD',
-		})) && (schedule.dateTime.time.start < 0 && schedule.dateTime.time.end < 0 );
-	});
-	
+	const filteredSchedulesByDayAndTime
+		= filteredSchedules.filter((schedule: Schedule) => {
+			return schedule.dateTime.date === convertDateUnitsToString(getDateValues(dateObj, {
+				yearFormat: 'YYYY',
+				monthFormat: 'MM',
+				dayFormat: 'DD',
+			})) && (schedule.dateTime.time.start < 0 && schedule.dateTime.time.end < 0);
+		});
+
 	const areDatesEqual = (dateObjToCompare: DateUnits) => {
 		const { year, month, day } = dateObjToCompare;
 		const numericalYear = Number(dateObj.format('YYYY'));

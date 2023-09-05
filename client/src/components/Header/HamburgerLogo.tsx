@@ -1,17 +1,11 @@
-import React, { useContext } from 'react';
-
-import GlobalContextInterface, {
-	BooleansOnlyObj,
-} from '../../context/global/index.model';
-
 import GoogleCalendar from '../../assets/icons/google-calendar.png';
 import Hamburger from '../../assets/icons/hamburger.png';
-import GlobalContext from '../../context/global/GlobalContext';
+
+import { useAppConfigUpdater } from '../../context/AppConfigContext';
+import { BooleansOnlyObj } from '../../context/AppConfigContext/index.model';
 
 export function HamburgerLogo() {
-	const {
-		setVisibilities,
-	} = useContext(GlobalContext) as GlobalContextInterface;
+	const { setVisibilities } = useAppConfigUpdater();
 
 	const toggleSidebar = () => {
 		setVisibilities((visibilities: BooleansOnlyObj) => ({

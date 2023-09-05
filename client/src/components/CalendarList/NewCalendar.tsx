@@ -1,27 +1,33 @@
 import React, { useState } from 'react';
 
-import {
-	UserActionType,
-	CalendarItem,
-} from '../../context/global/index.model';
 import useComponentVisible from '../../hooks/useComponentVisible';
-import { uniqueID } from '../../util/reusable-funcs';
+import { Calendar } from '../../context/StoreContext/types/calendar';
+import { UserAction } from '../../context/StoreContext/index.model';
+import {
+	AddNewCalendarProps,
+	InitCalendarItemProps,
+} from './index.model';
 
-import { AddNewCalendarProps, InitCalendarLblProps } from './index.model';
 import { DialogProps } from '../../lib/Dialog/index.model';
 import Dialog from '../../lib/Dialog';
 
 import './styles.scss';
 
 import Options from './Options';
-import { ColorOption, defaultColorOption } from '../../themes/data';
+import {
+	ColorOption,
+	getColorOption,
+} from '../../util/color-options';
+import { uniqueID } from '../../util/reusable-funcs';
 
-type NewCalendar = InitCalendarLblProps | CalendarItem;
-const initCalendarLblProps: InitCalendarLblProps = {
+
+type NewCalendar = InitCalendarItemProps | Calendar;
+const initCalendarItemProps: InitCalendarItemProps = {
 	name: '',
-	colorOption: defaultColorOption,
+	colorOption: getColorOption(),
 	selected: false,
 	removable: true,
+	type: 'default',
 }
 
 export default function NewCalendar(props: AddNewCalendarProps) {
@@ -29,10 +35,10 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 		setShowAddLblBtn,
 		calendarList,
 		dispatchCalendarList,
-		recordPos,
+		recordPosition,
 	} = props;
 
-	const [newCalendar, setNewCalendar] = useState<NewCalendar>(initCalendarLblProps);
+	const [newCalendar, setNewCalendar] = useState<NewCalendar>(initCalendarItemProps);
 	const [
 		dialogRef,
 		isDialogVisible,
@@ -42,7 +48,7 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 
 	const addCalendar = () => {
 		dispatchCalendarList({
-			type: UserActionType.ADD,
+			type: UserAction.ADD,
 			payload: { ...newCalendar, id: uniqueID() },
 		})
 	}
@@ -102,7 +108,7 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 						className='rounded-color'
 						style={{ backgroundColor: newCalendar.colorOption.value }}
 						onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-							recordPos(e);
+							recordPosition(e);
 							setIsDialogVisible(visible => !visible);
 						}}
 					/>

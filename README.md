@@ -55,6 +55,7 @@ CALENDAR_ID=holiday@group.v.calendar.google.com
 
 - Thanks to [drewbot](https://github.com/drewbot/sass-flexbox-grid) for the sass flexbox grid stylesheet
 - Thanks to [mattn](https://github.com/mattn) for the holiday events by region list
+- Thanks to [icons8] for their icons
 
 ### Screenshots
 
