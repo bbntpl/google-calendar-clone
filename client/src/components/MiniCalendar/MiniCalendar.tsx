@@ -1,13 +1,12 @@
-import { Fragment, useState, useEffect, useContext } from 'react';
-import { getMonth, convertDateUnitsToString, dateToday } from '../../util/calendar-arrangement';
-import './styles.scss';
+import { Fragment, useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 
+import { getMonth, convertDateUnitsToString, dateToday } from '../../util/calendar-arrangement';
+import './styles.scss';
+
 import Switcher from '../../lib/Switcher';
-import GlobalContext from '../../context/global/GlobalContext';
-import GlobalContextInterface, {
-	DateUnits,
-} from '../../context/global/index.model';
+import { DateUnits } from '../../context/CalendarConfigContext/index.model';
+import { useCalendarConfig, useCalendarConfigUpdater } from '../../context/CalendarConfigContext';
 
 type RootElementModifier = 'static' | 'by-content';
 interface MiniCalendarProps {
@@ -29,10 +28,8 @@ export default function MiniCalendar(props: MiniCalendarProps): JSX.Element {
 		rootElModifier = 'static',
 		initialDate,
 	} = props;
-	const {
-		selectedDate,
-		setSelectedDate,
-	} = useContext(GlobalContext) as GlobalContextInterface;
+	const { selectedDate } = useCalendarConfig();
+	const { setSelectedDate } = useCalendarConfigUpdater();
 	const [currentMonth, setCurrentMonth] = useState(getMonth());
 	const [currentMonthIndex, setCurrentMonthIndex] = useState(dayjs().month());
 	const [isInitialDateExistsAndNotUsed, setIsInitialDateExistsAndNotUsed]

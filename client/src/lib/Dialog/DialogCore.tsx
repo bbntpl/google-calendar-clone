@@ -1,6 +1,5 @@
 import React, {
 	RefObject,
-	useContext,
 	useEffect,
 	useState,
 	forwardRef,
@@ -8,8 +7,9 @@ import React, {
 import Draggable from 'react-draggable';
 
 import { WrappedDialogProps } from './index.model';
-import GlobalContext from '../../context/global/GlobalContext';
-import GlobalContextInterface, { ElementsToRef, Position } from '../../context/global/index.model';
+import { ElementsToRef, Position } from '../../context/index.model';
+import { useAppConfig } from '../../context/AppConfigContext';
+
 import useDialogAdjuster from '../../hooks/useDialogAdjuster';
 import {
 	removeMatchedTxtOnArr,
@@ -50,8 +50,7 @@ const DialogCore = forwardRef<ElementsToRef, WrappedDialogProps>(
 			hasInitTransition,
 		} = flags;
 		const { handle, positionOffset } = draggableProps;
-		const { position: cursorPosition }
-			= useContext(GlobalContext) as GlobalContextInterface;
+		const { position: cursorPosition } = useAppConfig();
 
 		// If x and y in positionOffset are string then they should be
 		// converted to number

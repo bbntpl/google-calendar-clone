@@ -4,7 +4,6 @@ import {
 	Option,
 } from '../index.model';
 import { convertDateUnitsToString } from '../../../util/calendar-arrangement';
-import { DateUnits } from '../../../context/global/index.model';
 
 import '../styles.scss';
 import CalendarIcon from '../../../assets/icons/calendar.png';
@@ -12,6 +11,7 @@ import CalendarIcon from '../../../assets/icons/calendar.png';
 import DateTimeBlock from '../Dialog/DateTimeBlock';
 import CalendarSelection from '../Dialog/CalendarSelection';
 import DescInputBlock from '../Dialog/DescInputBlock';
+import { DateUnits } from '../../../context/CalendarConfigContext/index.model';
 
 export default function TaskBlock(props: ScheduleTaskProps): JSX.Element {
 	const { taskProps, setScheduleProps } = props;

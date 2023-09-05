@@ -1,18 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useContext, useEffect, useState } from 'react';
+
 import '../styles.scss';
-import GlobalContext from '../../../context/global/GlobalContext';
-import GlobalContextInterface, {
-	UserActionType,
-	SetState,
-	SelectedSchedule,
-} from '../../../context/global/index.model';
+
 import { uniqueID } from '../../../util/reusable-funcs';
 
 import ScheduleMainContent from './ScheduleMainContent';
 import TaskBlock from '../Task/TaskBlock';
 import EventBlock from '../Event/EventBlock';
 import { ScheduleStates } from '../index.model';
+import { SetState } from '../../../context/index.model';
+import { SelectedSchedule } from '../../../context/StoreContext/types/schedule';
+import { UserAction } from '../../../context/StoreContext/index.model';
+import { useStore, useStoreUpdater } from '../../../context/StoreContext';
+import { useCalendarConfig, useCalendarConfigUpdater } from '../../../context/CalendarConfigContext';
+import { CalendarType } from '../../../context/StoreContext/types/calendar';
 
 interface ScheduleDialogProps {
 	setIsScheduleDialogVisible: SetState<boolean>;
@@ -21,20 +23,24 @@ interface ScheduleDialogProps {
 
 export default function ScheduleDialog(props: ScheduleDialogProps) {
 	const { setIsScheduleDialogVisible, selectedSchedule } = props;
-
 	const {
-		calendarList,
-		defaultDateTime,
 		savedSchedules,
-		dispatchSchedules,
-		setSelectedSchedule,
+		calendars,
+	} = useStore();
+	const { dispatchSchedules } = useStoreUpdater();
+	const {
+		defaultDateTime,
 		selectedScheduleType,
+	} = useCalendarConfig();
+	const {
+		setSelectedSchedule,
 		setSelectedScheduleType,
-	} = useContext(GlobalContext) as GlobalContextInterface;
+	} = useCalendarConfigUpdater();
 
 	const defaultScheduleState = {
-		calendarId: calendarList[0].id,
-		colorOption: calendarList[0].colorOption,
+		calendarType: 'default' as CalendarType,
+		calendarId: calendars[0].id,
+		colorOption: calendars[0].colorOption,
 		completed: false,
 		dateTime: {
 			allDay: false,
@@ -82,7 +88,7 @@ export default function ScheduleDialog(props: ScheduleDialogProps) {
 
 	const editSchedule = () => {
 		dispatchSchedules({
-			type: UserActionType.EDIT,
+			type: UserAction.EDIT,
 			payload: selectedScheduleType === 'event'
 				? { ...eventProps, type: 'event' }
 				: { ...taskProps, type: 'task' },
@@ -91,7 +97,7 @@ export default function ScheduleDialog(props: ScheduleDialogProps) {
 
 	const addSchedule = () => {
 		dispatchSchedules({
-			type: UserActionType.ADD,
+			type: UserAction.ADD,
 			payload: selectedScheduleType === 'event'
 				? eventProps : taskProps,
 		});

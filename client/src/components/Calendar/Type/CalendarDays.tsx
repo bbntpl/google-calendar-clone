@@ -1,14 +1,12 @@
-import { useContext } from 'react';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import dayjs from 'dayjs';
-import GlobalContext from '../../../context/global/GlobalContext';
-import GlobalContextInterface from '../../../context/global/index.model';
 import { dayjsObjByDay } from '../../../util/calendar-arrangement';
 import '../styles.scss';
 
 import { DayHeader } from '../Day';
 import { TimeBlockCol, TimeLabelCol, TimeLabel } from '../Time';
+import { useCalendarConfig } from '../../../context/CalendarConfigContext';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -18,7 +16,7 @@ export default function CalendarDays({ numOfDays }: { numOfDays: number }) {
 	const { 
 		selectedDate, 
 		selectedCalendarUnit, 
-	} = useContext(GlobalContext) as GlobalContextInterface;
+	} = useCalendarConfig();
 
 	const dateObj = (index: number) => {
 		return dayjsObjByDay({

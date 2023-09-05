@@ -1,7 +1,5 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import useComponentVisible from '../../hooks/useComponentVisible';
-import GlobalContext from '../../context/global/GlobalContext';
-import GlobalContextInterface, { UserActionType } from '../../context/global/index.model';
 import { LabelProps } from './index.model';
 
 import './styles.scss';
@@ -13,9 +11,13 @@ import { DialogProps } from '../../lib/Dialog/index.model';
 import Dialog from '../../lib/Dialog';
 import Options from './Options';
 import { createPortal } from 'react-dom';
+import { UserAction } from '../../context/StoreContext/index.model';
+import {
+	useAppConfigUpdater,
+} from '../../context/AppConfigContext';
 
 export default function CalendarItem(props: LabelProps): JSX.Element {
-	const { recordPos } = useContext(GlobalContext) as GlobalContextInterface;
+	const { recordPosition } = useAppConfigUpdater();
 	const { calendarProps, globalContextProps } = props;
 	const { dispatchCalendarList } = globalContextProps;
 	const { id, selected, colorOption, name, removable } = calendarProps;
@@ -38,7 +40,7 @@ export default function CalendarItem(props: LabelProps): JSX.Element {
 	const handleToggleCbox = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.stopPropagation();
 		dispatchCalendarList({
-			type: UserActionType.EDIT,
+			type: UserAction.EDIT,
 			payload: {
 				...calendarProps,
 				selected: e.target.checked,
@@ -47,7 +49,7 @@ export default function CalendarItem(props: LabelProps): JSX.Element {
 	};
 
 	const deleteCalendar = () => {
-		dispatchCalendarList({ type: UserActionType.REMOVE, payload: id });
+		dispatchCalendarList({ type: UserAction.REMOVE, payload: { id } });
 		setIsAlertVisible(false);
 	};
 
@@ -103,7 +105,7 @@ export default function CalendarItem(props: LabelProps): JSX.Element {
 							<button
 								ref={dialogLinkRef}
 								onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-									recordPos(e);
+									recordPosition(e);
 									setIsCalendarLblOptsVisible(visible => !visible);
 								}}
 								className='clear-btn--no-effects'

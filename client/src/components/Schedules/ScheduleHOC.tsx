@@ -1,14 +1,14 @@
-import { useContext, forwardRef } from 'react';
-import { ScheduleTypeList } from './Dialog';
+import { forwardRef } from 'react';
+
+import { useAppConfigUpdater } from '../../context/AppConfigContext';
 import useComponentVisible from '../../hooks/useComponentVisible';
-import GlobalContext from '../../context/global/GlobalContext';
-import GlobalContextInterface from '../../context/global/index.model';
+import { ScheduleTypeList } from './Dialog';
 import Dialog from '../../lib/Dialog';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function withScheduleDialogToggle(Component: any) {
 	const wrappedComponent = () => {
-		const { recordPos } = useContext(GlobalContext) as GlobalContextInterface;
+		const { recordPosition } = useAppConfigUpdater();
 		const [
 			dialogRef,
 			isDialogVisible,
@@ -19,7 +19,7 @@ export default function withScheduleDialogToggle(Component: any) {
 		const dialogProps = {
 			Component: ScheduleTypeList,
 			isCloseable: false,
-			positionOffset: { x: 20, y: 50 },
+			positionOffset: { x: 30, y: 60 },
 			delta: { x: 10, y: 10 },
 			isDraggable: false,
 			isDialogVisible,
@@ -28,7 +28,7 @@ export default function withScheduleDialogToggle(Component: any) {
 		};
 
 		const toggleVisibility = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-			recordPos(e);
+			recordPosition(e);
 			setIsDialogVisible(visible => !visible);
 		}
 

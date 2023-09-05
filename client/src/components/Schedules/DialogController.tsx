@@ -1,11 +1,11 @@
-import { useContext } from 'react';
-
-import GlobalContext from '../../context/global/GlobalContext';
-import GlobalContextInterface from '../../context/global/index.model';
-
 import { DialogProps } from '../../lib/Dialog/index.model';
 import Dialog from '../../lib/Dialog/index';
 import ScheduleDialog from './Dialog';
+
+import {
+	useCalendarConfig,
+	useCalendarConfigUpdater,
+} from '../../context/CalendarConfigContext';
 
 // It controls the visibility of the schedule dialog
 export default function DialogController() {
@@ -13,8 +13,8 @@ export default function DialogController() {
 		scheduleDialogRef,
 		selectedSchedule,
 		isScheduleDialogVisible,
-		setIsScheduleDialogVisible,
-	} = useContext(GlobalContext) as GlobalContextInterface;
+	} = useCalendarConfig();
+	const { setIsScheduleDialogVisible } = useCalendarConfigUpdater();
 
 	const scheduleDialogProps: DialogProps = {
 		componentProps: {

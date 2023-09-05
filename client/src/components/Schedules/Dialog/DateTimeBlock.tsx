@@ -1,13 +1,11 @@
-import { useContext, useEffect, useRef } from 'react';
-import GlobalContext from '../../../context/global/GlobalContext';
-import GlobalContextInterface, {
-	DateTimeInputs, DateUnits,
-} from '../../../context/global/index.model';
+import { useEffect, useRef } from 'react';
+
 import {
 	dayjsObj,
 	getScheduleTimeOptions,
 	getShortDate,
 } from '../../../util/calendar-arrangement';
+import { convertStringToDateUnits } from '../../../util/calendar-arrangement';
 import useComponentVisible from '../../../hooks/useComponentVisible';
 
 import ClockIcon from '../../../assets/icons/clock.png';
@@ -16,8 +14,10 @@ import SortDownIcon from '../../../assets/icons/sort-down.png';
 import MiniCalendar from '../../MiniCalendar';
 import Dialog from '../../../lib/Dialog';
 import CustomSelect from './CustomInputs/CustomSelect';
+
 import { Option } from '../index.model';
-import { convertStringToDateUnits } from '../../../util/calendar-arrangement';
+import { DateTimeInputs, DateUnits } from '../../../context/CalendarConfigContext/index.model';
+import { useCalendarConfig } from '../../../context/CalendarConfigContext';
 
 export interface DateTimeBlockProps {
 	dateTime: DateTimeInputs;
@@ -34,7 +34,7 @@ export default function DateTimeBlock(props: DateTimeBlockProps) {
 	const {
 		selectedDate,
 		selectedScheduleType,
-	} = useContext(GlobalContext) as GlobalContextInterface;
+	} = useCalendarConfig();
 	const { start, end } = dateTime.time;
 	const scheduleTimeOptions = getScheduleTimeOptions();
 

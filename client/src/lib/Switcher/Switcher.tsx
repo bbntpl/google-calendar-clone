@@ -3,8 +3,8 @@ import ChevronRight from '../../assets/icons/chevron-right.png';
 import '../../styles/main.scss';
 
 interface SwitcherProps {
-	goPrev: () => void,
-	goNext: () => void,
+	goPrev?: () => void
+	goNext?: () => void
 }
 
 const containerStyles = {
@@ -16,15 +16,24 @@ const containerStyles = {
 }
 
 export default function Switcher(props: SwitcherProps): JSX.Element {
-	const { goPrev, goNext } = props;
+	const {
+		goPrev,
+		goNext,
+	} = props;
 	return (
 		<div style={containerStyles}>
-			<button className='clear-btn' onClick={goPrev}>
-				<img src={ChevronLeft} />
-			</button>
-			<button className='clear-btn' onClick={goNext}>
-				<img src={ChevronRight} />
-			</button>
+			{
+				goPrev === undefined ? null :
+					<button className='clear-btn' onClick={goPrev}>
+						<img src={ChevronLeft} />
+					</button>
+			}
+			{
+				goNext === undefined ? null :
+					<button className='clear-btn' onClick={goNext}>
+						<img src={ChevronRight} />
+					</button>
+			}
 		</div>
 	)
 }

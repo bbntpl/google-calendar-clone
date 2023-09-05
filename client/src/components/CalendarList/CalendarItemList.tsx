@@ -1,10 +1,10 @@
-import { CalendarItem as CalendarItemType } from '../../context/global/index.model';
 import { LabelListProps } from './index.model';
 import CalendarItem from './CalendarItem';
+import { Calendar } from '../../context/StoreContext/types/calendar';
 
 export const CalendarItemList = (props: LabelListProps): JSX.Element => {
 	const { calendarList } = props;
-	return <>{calendarList.map((calendarLbl: CalendarItemType, index: number) => {
+	return <>{calendarList.map((calendarLbl: Calendar, index: number) => {
 		return <CalendarItem
 			key={`calendar-item-${index}`}
 			calendarProps={calendarLbl}

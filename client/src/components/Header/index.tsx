@@ -1,11 +1,10 @@
-import { useContext } from 'react';
+import React from 'react';
+
 import {
 	dateToday,
 	dayjsObj,
 	getDateValues,
 } from '../../util/calendar-arrangement';
-import GlobalContextInterface, { DateUnits } from '../../context/global/index.model';
-import GlobalContext from '../../context/global/GlobalContext';
 
 import './styles.scss';
 
@@ -13,13 +12,22 @@ import Switcher from '../../lib/Switcher';
 import { HamburgerLogo } from './HamburgerLogo';
 import CalendarUnitSelector from './CalendarUnitSelector';
 import { CalendarDate } from './CalendarDate';
+import SettingsButton from './Settings/Button';
+import UserAuthButton from './UserAuthButton';
+
+import {
+	useCalendarConfig,
+	useCalendarConfigUpdater,
+} from '../../context/CalendarConfigContext';
+import { DateUnits } from '../../context/CalendarConfigContext/index.model';
+
 
 export default function Header(): JSX.Element {
 	const {
 		selectedCalendarUnit,
 		selectedDate,
-		setSelectedDate,
-	} = useContext(GlobalContext) as GlobalContextInterface;
+	} = useCalendarConfig();
+	const { setSelectedDate } = useCalendarConfigUpdater();
 
 	const dateFormats = {
 		yearFormat: 'YYYY',
@@ -76,7 +84,11 @@ export default function Header(): JSX.Element {
 						<CalendarDate />
 					</div>
 				</div>
-				<CalendarUnitSelector />
+				<div className='row center-xs middle-xs max-content col-xs-offset-1'>
+					<CalendarUnitSelector />
+					<SettingsButton />
+					<UserAuthButton />
+				</div>
 			</div>
 		</div>
 	)

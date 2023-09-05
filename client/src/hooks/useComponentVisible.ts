@@ -4,7 +4,7 @@ import {
 	useRef,
 	RefObject,
 } from 'react';
-import { ElementsToRef } from '../context/global/index.model';
+import { ElementsToRef } from '../context/index.model';
 
 interface ComponentVisibleHookProps {
 	initialVisibility?: boolean
@@ -14,7 +14,8 @@ interface ComponentVisibleHookProps {
 // of the referenced component
 function useComponentVisible({ initialVisibility = false }:
 	ComponentVisibleHookProps = {}) {
-	const [isComponentVisible, setIsComponentVisible] = useState(initialVisibility);
+	const [isComponentVisible, setIsComponentVisible]
+		= useState<boolean>(initialVisibility);
 	const linkRef = useRef<HTMLButtonElement | null>(null);
 	const componentRef = useRef<ElementsToRef | null>(null);
 

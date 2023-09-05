@@ -1,19 +1,18 @@
-import { useContext } from 'react';
 import SortDown from '../../assets/icons/sort-down.png';
-import GlobalContext from '../../context/global/GlobalContext';
-import GlobalContextInterface from '../../context/global/index.model';
 import useComponentVisible from '../../hooks/useComponentVisible';
 
 import MiniCalendar from '../MiniCalendar';
 import Dialog from '../../lib/Dialog';
 import { dayjsObj } from '../../util/calendar-arrangement';
+import { useCalendarConfig } from '../../context/CalendarConfigContext';
+import { useAppConfig } from '../../context/AppConfigContext';
 
 export function CalendarDate() {
-		const {
+	const {
 		selectedCalendarUnit,
 		selectedDate,
-		visibilities,
-	} = useContext(GlobalContext) as GlobalContextInterface;
+	} = useCalendarConfig();
+	const { visibilities } = useAppConfig();
 
 	const [
 		miniCalendarRef,
@@ -21,7 +20,7 @@ export function CalendarDate() {
 		setIsMiniCalendarVisible,
 		linkRef,
 	] = useComponentVisible();
-	
+
 	const miniCalendarProps = {
 		Component: MiniCalendar,
 		positionOffset: { x: 0, y: 40 },

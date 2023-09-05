@@ -1,20 +1,20 @@
-import { useContext } from 'react';
-import GlobalContext from '../../../context/global/GlobalContext';
-import GlobalContextInterface, {
-	ScheduleTypeNames,
-} from '../../../context/global/index.model';
+import { ScheduleType } from '../../../context/StoreContext/types/schedule';
+import {
+	useCalendarConfig,
+	useCalendarConfigUpdater,
+} from '../../../context/CalendarConfigContext';
 
 interface ScheduleTypeSelectorProps {
-	scheduleType: ScheduleTypeNames | null | undefined;
+	scheduleType: ScheduleType | null | undefined;
 }
 export default function ScheduleTypeSelector(props: ScheduleTypeSelectorProps) {
 	const { scheduleType } = props;
 	const {
 		selectedScheduleType,
-		setSelectedScheduleType,
-	} = useContext(GlobalContext) as GlobalContextInterface;
+	} = useCalendarConfig();
+	const { setSelectedScheduleType } = useCalendarConfigUpdater();
 
-	const scheduleTypeClassName = (buttonName: ScheduleTypeNames) => {
+	const scheduleTypeClassName = (buttonName: ScheduleType) => {
 		return `schedule-type${buttonName === (scheduleType || selectedScheduleType)
 			? '--active' : ''}`;
 	}

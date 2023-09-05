@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch, SetStateAction } from 'react';
 import { DraggableProps } from 'react-draggable';
-import { Position } from '../../context/global/index.model';
+import { Position } from '../../context/index.model';
 
 type CommonTypes = string | number | boolean | null;
 
@@ -35,7 +35,7 @@ export interface DraggableDialogProps {
 }
 
 export interface ComponentWithVisibleControl extends
-ComponentGenericProps, DialogViewState { }
+	ComponentGenericProps, DialogViewState { }
 
 interface DialogWithInsertedComponentProps {
 	componentProps: ComponentWithVisibleControl;

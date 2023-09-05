@@ -1,34 +1,32 @@
 import { Dispatch, SetStateAction } from 'react';
-import {
-	CalendarItem,
-	CalendarListActions,
-} from '../../context/global/index.model';
-import { ColorOption } from '../../themes/data';
+
 import { DialogViewState } from '../../lib/Dialog/index.model';
+import { Calendar, CalendarListActions } from '../../context/StoreContext/types/calendar';
+import { ColorOption } from '../../util/color-options';
 
 interface CalendarListSetStateAction {
-	calendarList: Array<CalendarItem> | [];
+	calendarList: Array<Calendar> | [];
 	dispatchCalendarList: Dispatch<CalendarListActions>;
 }
 
 export interface LabelListProps extends CalendarListSetStateAction {
-	recordPos: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+	recordPosition: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
 export interface AddNewCalendarProps extends LabelListProps {
 	setShowAddLblBtn: Dispatch<SetStateAction<boolean>>;
 }
 
-export type InitCalendarLblProps = Omit<CalendarItem, 'id'>;
+export type InitCalendarItemProps = Omit<Calendar, 'id'>;
 export type LblColorChange = (colorOption: ColorOption) => void;
 
 export interface EventHandlers {
-	setNewCalendar?: Dispatch<SetStateAction<InitCalendarLblProps>>;
+	setNewCalendar?: Dispatch<SetStateAction<InitCalendarItemProps>>;
 	handleColorChange?: LblColorChange;
 }
 
 export interface LabelProps {
-	calendarProps: CalendarItem;
+	calendarProps: Calendar;
 	globalContextProps: CalendarListSetStateAction;
 }
 
