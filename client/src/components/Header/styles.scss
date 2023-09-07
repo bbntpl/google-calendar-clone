@@ -65,8 +65,16 @@
 	@include isometric-dim($size: 40px);
 	background-color: transparent;
 	border-radius: 50%;
-	& > img {
-		@include isometric-dim($size: 30px);
+	& > span {
+		line-height: 10px;
+	}
+	& img {
+		border-radius: 50%;
+		@include isometric-dim($size: 40px);
 	}
 	border: 1px solid $color-lighter-gray;
+}
+
+.sign-out-btn {
+	line-height: 23px;
 }

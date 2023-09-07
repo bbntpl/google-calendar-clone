@@ -31,7 +31,7 @@ export default function SettingsButton() {
 
   return <div>
     <button
-      className='clear-btn--no-effects settings-icon-wrapper'
+      className='clear-btn settings-icon-wrapper'
       onClick={handleClick}
       ref={linkRef}
     >
