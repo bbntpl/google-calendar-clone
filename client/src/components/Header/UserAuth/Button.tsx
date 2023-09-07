@@ -14,7 +14,9 @@ auth.useDeviceLanguage();
 
 export default function UserAuthButton() {
   const user = useFirebaseAuth();
-  const [photoSrc, setPhotoSrc] = useState(UserImage);
+  const [photoSrc, setPhotoSrc] = useState(
+    user && user.photoURL ? user.photoURL : UserImage,
+  );
 
   const [
     authDialogRef,
