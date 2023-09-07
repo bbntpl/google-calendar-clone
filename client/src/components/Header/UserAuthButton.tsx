@@ -1,5 +1,3 @@
-import React from 'react';
-
 import UserImage from '../../assets/icons/user.png';
 
 export default function UserAuthButton() {

@@ -2,19 +2,20 @@ import { UserAction } from '../index.model';
 import { Calendar, CalendarListActions } from '../types/calendar';
 import { Schedule, ScheduleActions } from '../types/schedule';
 
-import {
-	deleteLocalStorage,
-	updateStorageItem,
-} from '../../../util/local-storage';
+import * as LocalStorageHelper from '../../../util/local-storage';
 
-// import { useFirebaseAuth } from '../../FirebaseAuthContext';
-import { getLocalStorageName } from '..';
+const {
+	appendItemToArray,
+	appendArrayItemToArray,
+	editItemInArray,
+	removeItemFromArrayById,
+	remove,
+} = LocalStorageHelper;
 
 interface ExecuteActionProps<S, A> {
 	state: S[] | []
 	action: A
-	updatedState: S[]
-	stateName: string
+	propKey: string
 }
 
 export default function executeAction<
@@ -25,19 +26,28 @@ export default function executeAction<
 	const {
 		state,
 		action,
-		updatedState,
-		stateName,
+		propKey,
 	} = props;
-
-	const storageKey = getLocalStorageName();
-	const itemKey = stateName;
-	const updatedArr = updatedState;
 
 	switch (action.type) {
 		case UserAction.ADD:
-			updateStorageItem<State>({ storageKey, itemKey, updatedArr });
+			appendItemToArray<State>(
+				propKey,
+				action.payload as State,
+			);
 
-			return updatedState;
+			return [...state, action.payload as State];
+		case UserAction.ADD_MULTIPLE:
+			const { addedItems, whereTo } = action.payload;
+			const addedArr = [...state, ...addedItems] as State[];
+			if (whereTo === 'storage' || whereTo === 'both') {
+				appendArrayItemToArray<State>(
+					propKey,
+					addedItems as Array<State>,
+				);
+			}
+			return whereTo === 'memory' || whereTo === 'both'
+				? addedArr : state;
 		case UserAction.EDIT:
 			const editedArr = [...state.map((object: State) => {
 				if (object.id === action.payload.id) {
@@ -45,16 +55,18 @@ export default function executeAction<
 				}
 				return object;
 			})];
-			updateStorageItem<State>({ storageKey, itemKey, updatedArr });
+			editItemInArray<State>(propKey, action.payload as State);
 
 			return editedArr;
 		case UserAction.REMOVE:
-			const reducedArr = [...state.filter((obj: State) => {
+			const reducedArr = state.filter((obj: State) => {
 				return obj.id !== action.payload.id;
-			})];
+			});
+			const itemToBeRemoved = state.find(obj => action.payload.id === obj.id);
+			if (!itemToBeRemoved) return reducedArr;
 			reducedArr.length > 0
-				? updateStorageItem<State>({ storageKey, itemKey, updatedArr })
-				: deleteLocalStorage(stateName);
+				? removeItemFromArrayById<State>(propKey, itemToBeRemoved)
+				: remove(propKey);
 
 			return reducedArr;
 		default:

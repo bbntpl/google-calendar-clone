@@ -19,7 +19,7 @@ import {
 export default function CalendarItem(props: LabelProps): JSX.Element {
 	const { recordPosition } = useAppConfigUpdater();
 	const { calendarProps, globalContextProps } = props;
-	const { dispatchCalendarList } = globalContextProps;
+	const { dispatchCalendars } = globalContextProps;
 	const { id, selected, colorOption, name, removable } = calendarProps;
 
 	const [showOptions, setShowOptions] = useState(false);
@@ -39,7 +39,7 @@ export default function CalendarItem(props: LabelProps): JSX.Element {
 
 	const handleToggleCbox = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.stopPropagation();
-		dispatchCalendarList({
+		dispatchCalendars({
 			type: UserAction.EDIT,
 			payload: {
 				...calendarProps,
@@ -49,15 +49,15 @@ export default function CalendarItem(props: LabelProps): JSX.Element {
 	};
 
 	const deleteCalendar = () => {
-		dispatchCalendarList({ type: UserAction.REMOVE, payload: { id } });
+		dispatchCalendars({ type: UserAction.REMOVE, payload: { id } });
 		setIsAlertVisible(false);
 	};
 
 	// Props that'll be passed to the wrapped component
 	const calendarLblOptsProps: DialogProps = {
 		componentProps: {
-			flags: { options: true, colors: true },
 			...props,
+			flags: { options: true, colors: true },
 		},
 		Component: Options,
 		delta: { x: 20, y: 0 },

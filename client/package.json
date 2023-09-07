@@ -4,6 +4,7 @@
 	"private": true,
 	"proxy": "http://localhost:5000",
 	"dependencies": {
+		"@googleapis/calendar": "^9.3.1",
 		"dayjs": "^1.11.9",
 		"env-cmd": "^10.1.0",
 		"firebase": "^10.3.0",

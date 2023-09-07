@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import cors from 'cors';
 import express, { Request, Response } from 'express';
+
 import { calendar_v3 } from '@googleapis/calendar/build/v3'
 import { calendar } from '@googleapis/calendar';
 
@@ -19,7 +20,8 @@ app.use(express.json());
 
 // Get the available holiday events based on the region value.
 // By default the region value is en.usa. 
-app.get('/api', async function (_req: Request, res: Response) {
+app.get('/api/:region', async function (req: Request, res: Response) {
+	const { region } = req.params;
 	try {
 		const calendarInstance: Calendar = calendar({
 			version: 'v3',
@@ -27,7 +29,7 @@ app.get('/api', async function (_req: Request, res: Response) {
 		});
 
 		const holidayListParams: calendar_v3.Params$Resource$Events$List = {
-			calendarId: `${CALENDAR_REGION}#${CALENDAR_ID}`,
+			calendarId: `${region || CALENDAR_REGION}#${CALENDAR_ID}`,
 		};
 
 		const apiResponse = await calendarInstance.events.list(holidayListParams);

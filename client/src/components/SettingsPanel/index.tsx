@@ -1,10 +1,13 @@
-import Header from '../Header';
+import Header from './Header';
+
+import './styles.scss';
+import SettingsHub from './SettingsHub';
 
 export default function SettingsPanel() {
-
 	return (
-		<div>
+		<div className='settings-panel'>
 			<Header />
+			<SettingsHub />
 		</div>
 	)
 }

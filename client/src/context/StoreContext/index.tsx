@@ -1,6 +1,7 @@
 import {
   createContext,
   useContext,
+  useEffect,
   useMemo,
   useReducer,
 } from 'react';
@@ -8,15 +9,17 @@ import {
 import * as StoreModel from './index.model';
 import * as GlobalContextTypes from '../index.model';
 import { Calendar, CalendarType } from './types/calendar';
+import { Schedule } from './types/schedule';
 
 import { useFirebaseAuth } from '../FirebaseAuthContext';
 import calendarListReducer from './reducers/calendar-reducer';
 import scheduleReducer from './reducers/schedule-reducer';
 
-import { getItemFromLocal } from '../../util/local-storage';
 import { uniqueID } from '../../util/reusable-funcs';
 import { getColorOption } from '../../util/color-options';
-import { Schedule } from './types/schedule';
+import * as LocalStorageHelper from '../../util/local-storage';
+
+const { get } = LocalStorageHelper;
 
 const StoreContext =
   createContext<StoreModel.ContextState | null>(null);
@@ -24,34 +27,50 @@ const StoreContext =
 const StoreDispatchContext =
   createContext<StoreModel.DispatchContextState | null>(null);
 
-const localStorageItemName = 'gccbvrbryn445-storage';
+const localStorageNamespace = 'gccbvrbryn445-storage';
 
-const initialCalendar: Calendar = {
-  id: uniqueID(),
-  name: 'Your Calendar',
-  colorOption: getColorOption(),
-  selected: true,
-  removable: false,
-  type: 'default' as CalendarType,
-};
+const initialCalendars: Array<Calendar> = [
+  {
+    id: uniqueID(),
+    name: 'Your Calendar',
+    colorOption: getColorOption(),
+    selected: true,
+    removable: false,
+    type: 'default' as CalendarType,
+  },
+  {
+    id: uniqueID(),
+    name: 'Holidays in United States',
+    colorOption: getColorOption(),
+    selected: true,
+    removable: false,
+    type: 'holiday' as CalendarType,
+    timeZone: 'UTC',
+    description: 'Holidays and Observances in United States',
+    region: 'en.usa',
+  },
+];
 
-export const getLocalStorageName = () => localStorageItemName;
+export const getLocalStorageNamespace = () => localStorageNamespace;
 
 const getStoreData = (user: unknown) => {
-  if (user) {
-    return getItemFromLocal(localStorageItemName);
-  } else {
-    return getItemFromLocal(localStorageItemName);
-  }
+  console.log(user);
+  const savedSchedules
+    = get<Array<Schedule>>(`${localStorageNamespace}_savedSchedules`) || [];
+  const calendars
+    = get<Array<Calendar>>(`${localStorageNamespace}_calendars`) || [];
+
+  return { savedSchedules, calendars }
 }
 
-export default function StoreProvider({ children }: GlobalContextTypes.ContextProviderProps):
+export default function StoreProvider({ children }:
+  GlobalContextTypes.ContextProviderProps):
   JSX.Element {
   const user = useFirebaseAuth();
   const storeData = getStoreData(user);
 
   const getInitialCalendars = (calendars: Array<Calendar>) => {
-    return calendars && calendars.length > 0 ? calendars : [initialCalendar];
+    return calendars && calendars.length > 0 ? calendars : initialCalendars;
   }
 
   const getInitialSchedules = (schedules: Array<Schedule>) => {
@@ -60,13 +79,25 @@ export default function StoreProvider({ children }: GlobalContextTypes.ContextPr
 
   const [savedSchedules, dispatchSchedules] = useReducer(
     scheduleReducer,
-    getInitialSchedules(storeData.schedules),
+    getInitialSchedules(storeData.savedSchedules),
   )
 
   const [calendars, dispatchCalendars] = useReducer(
     calendarListReducer,
     getInitialCalendars(storeData.calendars),
   )
+
+  useEffect(() => {
+    if (!(storeData.calendars && storeData.calendars.length > 0)) {
+      dispatchCalendars({
+        type: StoreModel.UserAction.ADD_MULTIPLE,
+        payload: {
+          addedItems: getInitialCalendars(storeData.calendars),
+          whereTo: 'storage',
+        },
+      })
+    }
+  }, [])
 
   const filteredSchedules = useMemo(() => {
     const calendarIds = calendars

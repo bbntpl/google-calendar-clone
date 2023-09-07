@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import '../styles.scss';
 
@@ -8,6 +8,7 @@ import { uniqueID } from '../../../util/reusable-funcs';
 import ScheduleMainContent from './ScheduleMainContent';
 import TaskBlock from '../Task/TaskBlock';
 import EventBlock from '../Event/EventBlock';
+
 import { ScheduleStates } from '../index.model';
 import { SetState } from '../../../context/index.model';
 import { SelectedSchedule } from '../../../context/StoreContext/types/schedule';

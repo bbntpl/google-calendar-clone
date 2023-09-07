@@ -1,4 +1,3 @@
-import React from 'react';
 import Switcher from '../../lib/Switcher';
 import { useAppConfigUpdater } from '../../context/AppConfigContext/index';
 import UserAuthButton from '../Header/UserAuthButton';
@@ -8,14 +7,14 @@ export default function Header() {
 
   const hideSettingsPanel = () => {
     setVisibilities(prevVisibilities => ({
-      settings: false,
       ...prevVisibilities,
+      settings: false,
     }))
   }
 
-  return <header className='header'>
-    <div className='header__inner'>
-      <div>
+  return <header className='settings-header'>
+    <div className='settings-header__inner'>
+      <div className='row middle-md'>
         <Switcher
           goPrev={hideSettingsPanel}
         />

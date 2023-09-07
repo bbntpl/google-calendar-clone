@@ -12,7 +12,7 @@ const containerStyles = {
 	alignItems: 'center',
 	justifyContent: 'center',
 	gap: '.8rem',
-	width: '70px',
+	width: 'max-content',
 }
 
 export default function Switcher(props: SwitcherProps): JSX.Element {

@@ -5,15 +5,17 @@ import { Calendar, CalendarListActions } from '../../context/StoreContext/types/
 import { ColorOption } from '../../util/color-options';
 
 interface CalendarListSetStateAction {
-	calendarList: Array<Calendar> | [];
-	dispatchCalendarList: Dispatch<CalendarListActions>;
+	calendars: Array<Calendar> | [];
+	dispatchCalendars: Dispatch<CalendarListActions>;
 }
 
-export interface LabelListProps extends CalendarListSetStateAction {
+export interface CalendarItemsProps extends CalendarListSetStateAction {
 	recordPosition: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
-export interface AddNewCalendarProps extends LabelListProps {
+export interface AddNewCalendarProps {
+	dispatchCalendars: Dispatch<CalendarListActions>;
+	recordPosition: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 	setShowAddLblBtn: Dispatch<SetStateAction<boolean>>;
 }
 

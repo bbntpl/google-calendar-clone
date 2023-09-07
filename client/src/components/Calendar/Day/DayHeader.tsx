@@ -19,7 +19,7 @@ interface DayHeaderProps {
 
 export default function DayHeader(props: DayHeaderProps) {
 	const {
-		filteredSchedules
+		filteredSchedules,
 	} = useStore();
 
 	const {

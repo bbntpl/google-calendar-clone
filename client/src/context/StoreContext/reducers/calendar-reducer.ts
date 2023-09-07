@@ -1,18 +1,16 @@
 import executeAction from '.';
+import { getLocalStorageNamespace } from '..';
 import { Calendar, CalendarListActions } from '../types/calendar';
 
 export const calendarReducer = (
 	state: Array<Calendar> | [],
 	action: CalendarListActions,
 ) => {
-
-	const updatedState: Array<Calendar> = state.length < 60
-		? [...state, action.payload as Calendar]
-		: state;
-	const stateName = 'calendars';
+	const namespace = getLocalStorageNamespace();
+	const propKey = `${namespace}_calendars`;
 
 	return executeAction<Calendar, CalendarListActions>
-		({ state, action, updatedState, stateName });
+		({ state, action, propKey });
 }
 
 export default calendarReducer;

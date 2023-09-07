@@ -10,22 +10,23 @@ import {
 	colorOptions,
 } from '../../util/color-options';
 import { UserAction } from '../../context/StoreContext/index.model';
+import { useStore, useStoreUpdater } from '../../context/StoreContext';
 
 export default function Options(props: WrappedComponentProps) {
 	const {
 		flags,
 		calendarProps,
-		globalContextProps,
 		setIsDialogVisible,
 		eventHandlers = {} as EventHandlers,
 	} = props;
 	const { options, colors } = flags;
-	const { calendarList, dispatchCalendarList } = globalContextProps;
+	const { calendars } = useStore();
+	const { dispatchCalendars } = useStoreUpdater();
 
 	const handleChange = (colorOption: ColorOption) => {
 		// Update the context if the received calendar props has id
 		if (calendarProps.id && Object.keys(eventHandlers).length === 0) {
-			dispatchCalendarList({
+			dispatchCalendars({
 				type: UserAction.EDIT,
 				payload: { ...calendarProps, colorOption },
 			});
@@ -36,12 +37,12 @@ export default function Options(props: WrappedComponentProps) {
 	}
 
 	const unselectAllExceptMatchedId = () => {
-		calendarList.forEach((calendar) => {
+		calendars.forEach((calendar) => {
 			const { id: calendarId } = calendar;
-			dispatchCalendarList({
+			dispatchCalendars({
 				type: UserAction.EDIT,
 				payload: {
-					...calendarProps,
+					...calendar,
 					id: calendarId,
 					selected: calendarId === calendarProps.id,
 				},

@@ -1,5 +1,5 @@
-export async function getHolidayEvents() {
-	const holidayApiUrl = process.env.REACT_APP_HOLIDAY_API_URL;
+export async function getHolidayEventsByRegion(region: string) {
+	const holidayApiUrl = `${process.env.REACT_APP_HOLIDAY_API_URL}/${region}`;
 	if (!holidayApiUrl) {
 		throw new Error('REACT_APP_HOLIDAY_API_URL env var not set.');
 	}

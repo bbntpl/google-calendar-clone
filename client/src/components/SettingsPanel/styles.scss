@@ -1,0 +1,83 @@
+@import '../../styles/variables';
+
+.settings-panel {
+  overflow: hidden;
+}
+
+.settings-header {
+  height: 64px;
+  border-bottom: 1px solid $color-lighter-gray;
+  min-width: min-content;
+  width: 100%;
+  &__inner {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    height: 100%;
+   h1 {
+    font-size: clamp(16px, 1.3vw, 3rem);
+    color: $color-grafito;
+   } 
+  }
+}
+
+.settings-main {
+  display: flex;
+	flex-direction: row;
+	position: relative;
+	min-height: calc(100vh - 64px);
+  height: max-content;
+  padding: 2rem 0;
+}
+
+.settings-sidebar {
+  width: 30%;
+  max-width: 300px;
+}
+
+.settings-hub {
+  border-left: 1px solid $color-lighter-gray;
+  padding: 2rem 1.2rem;
+  min-height: 100%;
+  height: max-content;
+  & > div {
+    margin-bottom: 1rem;
+  }
+  & h1 {
+    margin-bottom: .5rem;
+  }
+  & p {
+    font-size: 13px;
+  }
+}
+
+.section-text {
+  font-size: 1.3rem;
+  color: $primary-color-font;
+}
+
+.checkbox-list {
+  margin: 1.2rem 0;
+  list-style-type: none;
+& input {
+  margin-right: 5px;
+}
+& li {
+  font-size: 13px; 
+}
+& > .checkbox-item {
+  display: flex;
+  align-items: center;
+  margin: 6px;
+}
+}
+
+.view-more-btn {
+  color: $color-royal-blue;
+  font-weight: bold;
+  &:hover {
+    text-decoration: underline;
+  }
+}

@@ -12,9 +12,11 @@ export default function CalendarSelection(props: CalendarSelectionProps) {
 	const { calendarId, handleChange } = props;
 	const { calendars } = useStore();
 
-	const calendarOptions = calendars.map(({ name, id }) => {
-		return { label: name, value: id }
-	});
+	const calendarOptions = calendars
+		.filter(calendar => calendar.type === 'default')
+		.map(({ name, id }) => {
+			return { label: name, value: id }
+		});
 	const calendarOption = calendarOptions.find(obj => {
 		return obj.value === calendarId;
 	});
