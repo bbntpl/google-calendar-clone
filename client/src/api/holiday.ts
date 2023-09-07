@@ -61,7 +61,7 @@ export function convertExternalEventToSchedule(
 
 	if (externalEvent.organizer && externalEvent.organizer.displayName) {
 		const calendarName = externalEvent.organizer.displayName;
-		const splitResult = calendarName.split('in');
+		const splitResult = calendarName.split(' in ');
 		if (splitResult.length > 1) {
 			locationName = splitResult[1].trim();
 		}
