@@ -27,4 +27,5 @@ export type CalendarListActions =
 	| { type: UserAction.ADD, payload: Calendar }
 	| { type: UserAction.ADD_MULTIPLE, payload: UserActionAddMultiplePayload }
 	| { type: UserAction.EDIT, payload: Calendar | Partial<Calendar> }
-	| { type: UserAction.REMOVE, payload: CalendarId };
+	| { type: UserAction.REMOVE, payload: CalendarId }
+	| { type: UserAction.REMOVE_MULTIPLE, payload: CalendarId[] }

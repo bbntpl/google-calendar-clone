@@ -7,7 +7,8 @@ export enum UserAction {
 	ADD = 'ADD',
 	ADD_MULTIPLE = 'ADD_MULTIPLE',
 	EDIT = 'EDIT',
-	REMOVE = 'REMOVE'
+	REMOVE = 'REMOVE',
+	REMOVE_MULTIPLE = 'REMOVE_MULTIPLE'
 }
 
 export interface ContextState {

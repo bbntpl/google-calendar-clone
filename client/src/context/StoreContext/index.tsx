@@ -43,7 +43,7 @@ const initialCalendars: Array<Calendar> = [
     name: 'Holidays in United States',
     colorOption: getColorOption(),
     selected: true,
-    removable: false,
+    removable: true,
     type: 'holiday' as CalendarType,
     timeZone: 'UTC',
     description: 'Holidays and Observances in United States',

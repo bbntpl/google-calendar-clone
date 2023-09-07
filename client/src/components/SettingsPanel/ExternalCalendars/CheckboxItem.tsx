@@ -1,11 +1,6 @@
-import { HolidayItem } from './index.model';
+import { CheckboxItemProps } from './index.model';
 
-interface CheckboxItem {
-  holidayItem: HolidayItem
-  handleCboxToggle: (regionName: string) => () => void
-}
-
-export default function CheckboxItem(props: CheckboxItem) {
+export default function CheckboxItem(props: CheckboxItemProps) {
   const { holidayItem, handleCboxToggle } = props;
   const { selected, name } = holidayItem;
 
@@ -13,7 +8,7 @@ export default function CheckboxItem(props: CheckboxItem) {
     <input
       type='checkbox'
       checked={selected}
-      onChange={() => handleCboxToggle(name)}
+      onChange={() => handleCboxToggle()}
     />
     <div>
       <p>{name}</p>

@@ -54,6 +54,12 @@ export function removeItemFromArrayById<T extends { id: number | string }>(key: 
 	});
 }
 
+export function removeItemsFromArrayByIds<T extends { id: number | string }>(key: string, ids: Array<T['id']>) {
+	modify(key, (storage: T[] = []) => {
+		return storage.filter(s => !ids.includes(s.id));
+	})
+}
+
 export function saveItemToObject<T>(key: string, item: T) {
 	modify(key, (storage: Record<string, T> = {}) => {
 		return { ...storage, item };
