@@ -1,20 +1,20 @@
 # Google Calendar Clone
-
-Built with React + TypeScript
+Written in TypeScript.
 
 ## Available Features
 
-- [x] Calendar List
-- [x] Mini Calendar
-- [x] Schedule types: Event and Task
-- [x] Calendar types: Day, Week, and last 4 days
-- [ ] CRUD w/ Firebase
-- [ ] Firebase Authentication with Google account
-- [x] Draggable dialog w/ position readjustment
-- [ ] Integrating Google Calendar Holiday Events to additional list of calendars
-- [ ] Time Indication with a red line style
+- [x] CRUD w/ Calendars
+- [x] User interaction w/ Mini Calendar
+- [x] CRUD w/ Schedules: Event and Task
+- [x] Calendar View Selection: Day, Week, and last 4 days
+- [x] Draggable dialog w/ readjustable position
+- [ ] Time Indicator (fully displayed in the current day column)
+- [x] External Holiday Events
+- [x] User Settings
+- [x] Google Authentication
+- [ ] Firebase Firestore
 
-### Optional Configuration for .env Variables
+### Required configuration for .env Variables
 
 **Client-side Configuration**
 
@@ -30,7 +30,7 @@ REACT_APP_HOLIDAY_API_URL=https://your-holiday-api-url.com
 3. Create the following .env variables under /server:
 
 - `API_KEY`: Generate your API key [here](https://console.cloud.google.com/)
-- `CALENDAR_REGION`: If you're unsure about the value to initialize, use the following value: `en.usa`. To find the available options, refer to the list of supported regions in the `/server/data/google-calendar-list.txt` file.
+- `CALENDAR_REGION`: If you're unsure about the value to initialize, use the following value: `en.usa`. To find the available options, refer to the list of supported regions in the `./server/data/google-calendar-list.txt` file.
 - `CALENDAR_ID`: By default, the value should be always `holiday@group.v.calendar.google.com`
 
 _For example_
@@ -48,13 +48,13 @@ CALENDAR_ID=holiday@group.v.calendar.google.com
 - React Select (UI library)
 - Firebase (BaaS)
 - Dayjs (Date and time API)
-- Typescript (A superset lang of JS)
+- Typescript (A superset language of JS)
 - Sass (Stylesheet Lanuage)
 
 ### Credits
 
 - Thanks to [drewbot](https://github.com/drewbot/sass-flexbox-grid) for the sass flexbox grid stylesheet
-- Thanks to [mattn](https://github.com/mattn) for the holiday events by region list
+- Thanks to [mattn](https://github.com/mattn) for the available set of holiday events list by region
 - Thanks to [icons8] for their icons
 
 ### Screenshots
