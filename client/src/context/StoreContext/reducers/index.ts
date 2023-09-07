@@ -9,6 +9,7 @@ const {
 	appendArrayItemToArray,
 	editItemInArray,
 	removeItemFromArrayById,
+	removeItemsFromArrayByIds,
 	remove,
 } = LocalStorageHelper;
 
@@ -69,6 +70,15 @@ export default function executeAction<
 				: remove(propKey);
 
 			return reducedArr;
+		case UserAction.REMOVE_MULTIPLE:
+			const objectIdsToRemove = action.payload.map(ap => ap.id);
+			const objectsToKeep = state.filter((obj: State) => {
+				return !objectIdsToRemove.includes(obj.id);
+			});
+
+			removeItemsFromArrayByIds<State>(propKey, objectIdsToRemove);
+
+			return objectsToKeep;
 		default:
 			throw new Error('The user made an unknown action');
 	}

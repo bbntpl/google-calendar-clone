@@ -50,4 +50,5 @@ export type ScheduleActions =
 	| { type: UserAction.ADD, payload: Schedule }
 	| { type: UserAction.ADD_MULTIPLE, payload: UserActionAddMultiplePayload }
 	| { type: UserAction.EDIT, payload: SchedulePayload | Partial<Schedule> }
-	| { type: UserAction.REMOVE, payload: ScheduleId };
+	| { type: UserAction.REMOVE, payload: ScheduleId }
+	| { type: UserAction.REMOVE_MULTIPLE, payload: ScheduleId[] }

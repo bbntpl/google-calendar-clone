@@ -13,13 +13,8 @@ import Header from '../Header';
 import Calendar from '../Calendar';
 import Sidebar from '../Sidebar/index';
 
-import { getHolidayEventsByRegion } from '../../api/holiday';
-import { uniqueID } from '../../util/reusable-funcs';
+import { convertExternalEventToSchedule, getHolidayEventsByRegion } from '../../api/holiday';
 import { UserAction } from '../../context/StoreContext/index.model';
-import { ScheduleType } from '../../context/StoreContext/types/schedule';
-import { getColorOption } from '../../util/color-options';
-import { CalendarType } from '../../context/StoreContext/types/calendar';
-import { DateTimeInputs } from '../../context/CalendarConfigContext/index.model';
 
 const CreateSchedule = withScheduleDialogToggle(MiniScheduleButton);
 
@@ -89,39 +84,7 @@ export default function MainContent(props: MainContentProps):
     }
   }
 
-  // Extract values from holiday event properties and
-  // set it as values for holiday schedule event
-  const convertExternalEventToSchedule = (externalEvent: ExternalHolidayEvent) => {
-    let date, locationName: string = '';
-
-    if (externalEvent.organizer && externalEvent.organizer.displayName) {
-      const calenadarName = externalEvent.organizer.displayName;
-      locationName = calenadarName.split('in')[1].trim();
-    }
-
-    if (externalEvent.start && externalEvent.start.date) {
-      const [year, month, day] = externalEvent.start.date.split('-');
-      date = `${year}${month}${day}`;
-    }
-
-    return {
-      id: uniqueID(),
-      title: externalEvent.summary || '',
-      description: externalEvent.description || '',
-      calendarId: externalEvent.calendarId,
-      calendarType: 'holiday' as CalendarType,
-      dateTime: {
-        allDay: false,
-        once: true,
-        date,
-        time: { start: -1, end: -1 },
-      } as DateTimeInputs,
-      type: 'event' as ScheduleType,
-      isExternal: true,
-      location: locationName,
-      colorOption: getColorOption(),
-    }
-  }
+  
 
   useEffect(() => {
     if (isInitialDataFetched) return;

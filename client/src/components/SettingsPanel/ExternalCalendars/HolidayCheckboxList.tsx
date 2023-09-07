@@ -1,76 +1,117 @@
-import {
-  ReactElement,
-  useEffect,
-  useState,
-} from 'react';
+import { useEffect, useState } from 'react';
+
+import { UserAction } from '../../../context/StoreContext/index.model';
+import { calendar_v3 } from '@googleapis/calendar';
+import { Calendar, HolidayCalendarItem } from '../../../context/StoreContext/types/calendar';
+import { HolidayItem, RenderCboxItemsProps, RenderCboxListProps } from './index.model';
 
 import regionListFile from '../../../data/localized-holiday-events.txt';
-import { readTextFile } from '../../../util/reusable-funcs';
-import { HolidayItem } from './index.model';
-import { useStore } from '../../../context/StoreContext';
+import { readTextFile, uniqueID } from '../../../util/reusable-funcs';
+import { useStore, useStoreUpdater } from '../../../context/StoreContext';
+import { convertExternalEventToSchedule, convertExternalEventsToCalendar, getHolidayEventsByRegion } from '../../../api/holiday';
+
 import CheckboxItem from './CheckboxItem';
 
-
-interface RenderCboxItemsProps {
-  filterBySelected?: boolean;
-  displayAll?: boolean
-}
-
-interface RenderCboxListProps extends RenderCboxItemsProps {
-  listDesc: ReactElement;
-}
-
-
 export default function HolidayCheckboxList() {
-  const { calendars } = useStore();
-  const selectedHolidayCalendars: string[] | []
-    = calendars.filter(calendar => Object.hasOwn(calendar, 'region'))
-      .map(calendar => {
-        if ('region' in calendar) {
-          return calendar.region;
-        }
-        return '';
-      })
-  const [regionalHolidays, setRegionalHolidays]
-    = useState<Array<HolidayItem> | []>([]);
+  const { calendars, savedSchedules } = useStore();
+  const { dispatchCalendars, dispatchSchedules } = useStoreUpdater();
+  const [regionalHolidays, setRegionalHolidays] = useState<Array<HolidayItem> | []>([]);
+  const [fullViewCheckList, setFullViewCheckList] = useState(false);
 
-  const [fullViewCheckList, setFullViewCheckList]
-    = useState(false);
+  const savedHolidayCalendars: HolidayCalendarItem[] = calendars
+    .filter(calendar => calendar.type === 'holiday')
+    .map((calendar: Calendar) => {
+      if (calendar.type === 'holiday') {
+        return calendar as HolidayCalendarItem;
+      }
+      return {} as HolidayCalendarItem;
+    });
+  const savedHolidayRegions: string[]
+    = savedHolidayCalendars.map(calendar => calendar.region || '');
 
   const convertFileOutputToArr = (result: Array<string>) => {
     return result.map(element => {
-      const elementTuple = element.split(',');
-      const holidayRegionName = elementTuple[0];
-      const calendarRegion = elementTuple[1];
-
+      const [holidayCalendarName, regionCode] = element.split(',');
       return {
-        name: holidayRegionName,
-        region: calendarRegion,
-        selected: selectedHolidayCalendars.includes(calendarRegion),
+        name: holidayCalendarName,
+        region: regionCode,
+        selected: savedHolidayRegions.includes(regionCode),
       }
     })
   }
 
   useEffect(() => {
     readTextFile(regionListFile)
-      .then((output) => {
-        const result: Array<HolidayItem> = convertFileOutputToArr(output)
-        setRegionalHolidays(result);
-      });
+      .then((output) => setRegionalHolidays(convertFileOutputToArr(output)));
   }, [])
 
   useEffect(() => {
-    console.log(regionalHolidays.filter(h => h.selected));
+    const selectedRegionalHolidays = regionalHolidays.filter(rh => rh.selected);
+
+    // Add the calendar/events when a new regional holidays is toggled
+    if (savedHolidayCalendars.length < selectedRegionalHolidays.length) {
+      const newlyAddedRegion = selectedRegionalHolidays
+        .filter(rh => !savedHolidayRegions.includes(rh.region))[0].region;
+
+      getHolidayEventsByRegion(newlyAddedRegion)
+        .then((holidayCalendar: calendar_v3.Schema$Events) => {
+          const calendarId = uniqueID();
+          dispatchCalendars({
+            type: UserAction.ADD,
+            payload: convertExternalEventsToCalendar({
+              calendarId,
+              regionCode: newlyAddedRegion,
+              holidayCalendar,
+            }),
+          })
+
+          if (holidayCalendar && holidayCalendar.items) {
+            holidayCalendar.items.forEach(event => {
+              const eventWithCalendarId = { ...event, calendarId }
+              dispatchSchedules({
+                type: UserAction.ADD,
+                payload: convertExternalEventToSchedule(eventWithCalendarId),
+              })
+            })
+          }
+        })
+        .catch(error => {
+          throw new Error(error);
+        })
+      return;
+    }
+
+    // Remove the calendar/events when a new regional holidays is untoggled
+    if (savedHolidayCalendars.length > selectedRegionalHolidays.length) {
+      const newlyRemovedRegion = savedHolidayCalendars
+        .filter(holidayCalendar => {
+          const { region } = holidayCalendar;
+          const mappedRegionalHolidaysCode =
+            selectedRegionalHolidays.map(rh => rh.region);
+          return mappedRegionalHolidaysCode.includes(region);
+        })[0] || [];
+        
+      const calendarEventsIds = savedSchedules
+        .filter(schedule => schedule.calendarId === newlyRemovedRegion.id)
+        .map(schedule => ({ id: schedule.id }));
+
+      dispatchCalendars({
+        type: UserAction.REMOVE,
+        payload: { id: newlyRemovedRegion.id },
+      })
+      dispatchSchedules({
+        type: UserAction.REMOVE_MULTIPLE,
+        payload: calendarEventsIds,
+      })
+
+    }
   }, [regionalHolidays])
 
-  const toggleIsHolidaySelected = (regionName: string) => () => {
+  const toggleIsHolidaySelected = (regionCode: string) => () => {
     setRegionalHolidays(prevRegionalHolidays => {
       return prevRegionalHolidays.map(holiday => {
-        if (regionName === holiday.region) {
-          return {
-            ...holiday,
-            selected: !holiday.selected,
-          }
+        if (regionCode === holiday.region) {
+          return { ...holiday, selected: !holiday.selected }
         }
         return holiday;
       })
@@ -85,7 +126,7 @@ export default function HolidayCheckboxList() {
         <CheckboxItem
           key={holiday.name}
           holidayItem={holiday}
-          handleCboxToggle={toggleIsHolidaySelected}
+          handleCboxToggle={toggleIsHolidaySelected(holiday.region)}
         />
       ))
   }
@@ -96,9 +137,7 @@ export default function HolidayCheckboxList() {
     filterBySelected = false,
   }: RenderCboxListProps) => {
     return <ul className='checkbox-list'>
-      <li>
-        {listDesc}
-      </li>
+      <li>{listDesc}</li>
       {renderCboxItems({ filterBySelected, displayAll })}
     </ul>
   }
