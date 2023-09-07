@@ -97,28 +97,32 @@ export default function CalendarList({
 						handleToggleAccordion();
 					}}>
 					<h5 className='row'>{`${title} ${calendars.length}/${limit}`}</h5>
+
 					<span className='row end-xs middle-xs'>
-						<button
-							className='clear-btn--no-effects'
-							onClick={handleToggleInput}
-						>
-							<img className='icon--medium' src={PlusIcon} />
-						</button>
+						{
+							type === 'default' ?
+							<button
+								className='clear-btn--no-effects'
+								onClick={handleToggleInput}
+							>
+								<img className='icon--medium' src={PlusIcon} />
+							</button>
+							: null
+						}
 						<img src={isCollapsed ? ChevronUp : ChevronBottom} />
 					</span>
 				</div>
 				<ul className={`accordion__panel ${isCollapsed ? 'show' : 'hide'}`}>
 					<CalendarItemList
-						calendarList={calendars}
-						dispatchCalendarList={dispatchCalendars}
+						calendars={calendars}
+						dispatchCalendars={dispatchCalendars}
 						recordPosition={recordPosition}
 					/>
 					{
 						showAddLblBtn
 							? <NewCalendar
 								setShowAddLblBtn={setShowAddLblBtn}
-								dispatchCalendarList={dispatchCalendars}
-								calendarList={calendars}
+								dispatchCalendars={dispatchCalendars}
 								recordPosition={recordPosition}
 							/> : null
 					}

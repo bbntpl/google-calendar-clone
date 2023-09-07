@@ -15,7 +15,7 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-	<React.StrictMode>
+	// <React.StrictMode>
 		<FirebaseAuthProvider>
 			<AppConfigProvider>
 				<CalendarConfigProvider>
@@ -24,6 +24,6 @@ root.render(
 					</StoreProvider>,
 				</CalendarConfigProvider>
 			</AppConfigProvider>
-		</FirebaseAuthProvider>
-	</React.StrictMode>,
+		</FirebaseAuthProvider>,
+	// </React.StrictMode>,
 );

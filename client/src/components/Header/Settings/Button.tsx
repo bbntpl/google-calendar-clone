@@ -13,23 +13,26 @@ export default function SettingsButton() {
   ] = useComponentVisible();
 
   const settingsDialogContentProps = {
-    componentProps: {
-
-    },
+    isCloseable: false,
     Component: SettingsDialogContent,
     delta: { x: 0, y: 0 },
     isDraggable: false,
     isSelfAdjustable: false,
     hasInitTransition: false,
-    positionOffset: { x: 10, y: 50 },
+    positionOffset: { x: -100, y: 50 },
     isDialogVisible: isSettingsDialogVisible,
     setIsDialogVisible: setIsSettingsDialogVisible,
     stylePosition: 'absolute' as const,
   };
 
+  const handleClick = () => {
+    setIsSettingsDialogVisible(prevVisibility => !prevVisibility);
+  }
+
   return <div>
     <button
       className='clear-btn--no-effects settings-icon-wrapper'
+      onClick={handleClick}
       ref={linkRef}
     >
       <img className='user-image' src={SettingsIcon} />

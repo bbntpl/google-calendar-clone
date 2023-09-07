@@ -164,14 +164,18 @@ export function ScheduleView(props: ScheduleViewProps) {
 					}
 				</div>
 			</div>
-			<div className='schedule-btn-list'>
-				<button onClick={editSchedule}>
-					<img src={EditIcon} />
-				</button>
-				<button onClick={() => setIsAlertVisible(visible => !visible)}>
-					<img src={DeleteIcon} />
-				</button>
-			</div>
+			{
+				scheduleProps.calendarType === 'default' ? 
+				<div className='schedule-btn-list'>
+					<button onClick={editSchedule}>
+						<img src={EditIcon} />
+					</button>
+					<button onClick={() => setIsAlertVisible(visible => !visible)}>
+						<img src={DeleteIcon} />
+					</button>
+				</div>
+				: null
+			}
 		</div>
 		{
 			createPortal(

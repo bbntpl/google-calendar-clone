@@ -47,6 +47,12 @@ export default function TimeRowUnset(props: TimeRowProps) {
 		filteredSchedulesByTime,
 	} = props;
 
+	const totalHolidayEvents = filteredSchedulesByTime
+		.slice(0, filteredSchedulesByTime.length - 1)
+		.map(event => event.calendarType == 'holiday').length;
+	const totalDefaultSchedules
+		= filteredSchedulesByTime.length - 1 - totalHolidayEvents;
+
 	const {
 		setSelectedDate,
 		setIsScheduleDialogVisible,
@@ -112,7 +118,9 @@ export default function TimeRowUnset(props: TimeRowProps) {
 						className='schedule-tasks-counter'
 						onClick={() => setIsSlotListVisible(visible => !visible)}
 					>
-						{`${filteredSchedulesByTime.length - 1} more tasks`}
+						{totalHolidayEvents ? `${totalHolidayEvents} more holiday events` : ''}
+						{totalHolidayEvents && totalDefaultSchedules ? ' - ' : ''}
+						{totalDefaultSchedules ? `${totalDefaultSchedules} more schedules` : ''}
 					</button>
 				}
 				<Dialog ref={slotListRef} {...slotListProps} />

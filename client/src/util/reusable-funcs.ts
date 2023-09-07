@@ -27,5 +27,13 @@ export const truncateString = (string: string, limit: number) => {
 	return string
 }
 
+
+export const readTextFile = async (file: string) => {
+	const response = await fetch(file);
+	const text = await response.text();
+	const lines = text.split('\n')
+	return lines;
+}
+
 export const uniqueID = () =>
 	Math.floor(Math.random() * Math.floor(Math.random() * Date.now()));

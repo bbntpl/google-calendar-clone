@@ -1,16 +1,18 @@
 import executeAction from '.';
 import { Schedule, ScheduleActions } from '../types/schedule';
 
+import { getLocalStorageNamespace } from '..';
+
 const scheduleReducer = (
 	state: Array<Schedule> | [],
 	action: ScheduleActions,
 ):
 	Array<Schedule> => {
-	const updatedState = [...state, action.payload as Schedule];
-	const stateName = 'savedSchedules';
+	const namespace = getLocalStorageNamespace();
+	const propKey = `${namespace}_savedSchedules`;
 
 	return executeAction<Schedule, ScheduleActions>
-		({ state, action, updatedState, stateName });
+		({ state, action, propKey });
 }
 
 export default scheduleReducer;

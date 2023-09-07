@@ -33,8 +33,7 @@ const initCalendarItemProps: InitCalendarItemProps = {
 export default function NewCalendar(props: AddNewCalendarProps) {
 	const {
 		setShowAddLblBtn,
-		calendarList,
-		dispatchCalendarList,
+		dispatchCalendars,
 		recordPosition,
 	} = props;
 
@@ -47,7 +46,7 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 	] = useComponentVisible();
 
 	const addCalendar = () => {
-		dispatchCalendarList({
+		dispatchCalendars({
 			type: UserAction.ADD,
 			payload: { ...newCalendar, id: uniqueID() },
 		})
@@ -75,10 +74,6 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 	const componentProps = {
 		flags: { options: false, colors: true },
 		calendarProps: newCalendar,
-		globalContextProps: {
-			calendarList,
-			dispatchCalendarList,
-		},
 		eventHandlers: {
 			setNewCalendar,
 			handleColorChange,

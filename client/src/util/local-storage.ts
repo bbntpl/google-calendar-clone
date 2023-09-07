@@ -1,51 +1,61 @@
-interface StorageItemProps<T> {
-	storageKey: string
-	itemKey: string
-	updatedArr: Array<T>
+// Check if key exists in local storage
+export function has(key: string): boolean {
+	return localStorage.hasOwnProperty(key);
 }
 
-function updateLocalStorage<S>(name: string, object: S) {
-	return localStorage.setItem(name, JSON.stringify(object))
+// Get the value from local storage
+export function get<T>(key: string): T | undefined {
+	const storedItem = localStorage.getItem(key);
+	return storedItem === null ? undefined : JSON.parse(storedItem);
 }
 
-function updateStorageItem<T>(props: StorageItemProps<T>) {
-	const { storageKey, itemKey, updatedArr } = props;
-	const state = getItemFromLocal(storageKey);
-
-	const updatedState = {
-		[itemKey]: updatedArr,
-		...state,
-	}
-
-	return updateLocalStorage<T>(storageKey, updatedState);
+// Set item to local storage
+export function set<T>(key: string, value: T): void {
+	localStorage.setItem(key, JSON.stringify(value))
 }
 
-function getItemFromLocal(name: string) {
-	return JSON.parse(localStorage.getItem(name) || '{}');
+// Remove item from lcoal storage
+export function remove(key: string) {
+	localStorage.removeItem(key);
 }
 
-function deleteLocalStorage(name: string) {
-	return localStorage.removeItem(name);
+export function modify<T>(key: string, fn: (existingValue: T | undefined) => T): void {
+	const existingValue = get<T>(key);
+	const modifiedValue = fn(existingValue);
+	set(key, modifiedValue);
 }
 
-function deleteStorageItem<T>(props: Omit<StorageItemProps<T>, 'updatedArr'>) {
-	const { storageKey, itemKey } = props;
-	const state = getItemFromLocal(storageKey);
-
-	const copiedState = { ...state };
-	delete copiedState[itemKey];
-
-	if (Object.keys(copiedState).length === 0) {
-		return deleteLocalStorage(storageKey)
-	} else {
-		return updateLocalStorage(storageKey, copiedState);
-	}
+export function appendArrayItemToArray<T>(key: string, item: T[]) {
+	modify<T[]>(key, (storage: T[] = []) => {
+		return [...storage, ...item];
+	});
 }
 
-export {
-	updateLocalStorage,
-	updateStorageItem,
-	getItemFromLocal,
-	deleteLocalStorage,
-	deleteStorageItem,
+export function appendItemToArray<T>(key: string, item: T) {
+	modify<T[]>(key, (storage: T[] = []) => {
+		return [...storage, item];
+	});
+}
+
+export function editItemInArray<T extends { id: string | number }>(key: string, updatedItem: T): void {
+	modify<T[]>(key, (storage: T[] = []) => {
+		return storage.map((item) => {
+			if (item.id === updatedItem.id) {
+				return { ...item, ...updatedItem };
+			}
+			return item;
+		});
+	});
+}
+
+export function removeItemFromArrayById<T extends { id: number | string }>(key: string, item: T) {
+	modify(key, (storage: T[] = []) => {
+		return storage.filter(s => s.id !== item.id);
+	});
+}
+
+export function saveItemToObject<T>(key: string, item: T) {
+	modify(key, (storage: Record<string, T> = {}) => {
+		return { ...storage, item };
+	});
 }

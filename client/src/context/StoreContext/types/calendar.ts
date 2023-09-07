@@ -1,5 +1,5 @@
 import { ColorOption } from '../../../util/color-options';
-import { UserAction } from '../index.model';
+import { UserAction, UserActionAddMultiplePayload } from '../index.model';
 
 export type CalendarType = 'default' | 'holiday';
 export interface CalendarItem {
@@ -14,6 +14,7 @@ export interface CalendarItem {
 export interface HolidayCalendarItem extends CalendarItem {
 	description: string
 	timeZone: string
+	region: string
 }
 
 export type Calendar = CalendarItem | HolidayCalendarItem;
@@ -24,5 +25,6 @@ type CalendarId = {
 
 export type CalendarListActions =
 	| { type: UserAction.ADD, payload: Calendar }
+	| { type: UserAction.ADD_MULTIPLE, payload: UserActionAddMultiplePayload }
 	| { type: UserAction.EDIT, payload: Calendar | Partial<Calendar> }
 	| { type: UserAction.REMOVE, payload: CalendarId };
