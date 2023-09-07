@@ -7,13 +7,16 @@ import useComponentVisible from '../../../hooks/useComponentVisible';
 
 import Dialog from '../../../lib/Dialog';
 import AuthDialogContent from './AuthDialog';
+import { useState } from 'react';
 
 const provider = new GoogleAuthProvider();
 auth.useDeviceLanguage();
 
 export default function UserAuthButton() {
   const user = useFirebaseAuth();
-  const profilePictureSrc = user && user.photoURL ? user.photoURL : UserImage;
+  const [photoSrc, setPhotoSrc] = useState(
+    user && user.photoURL ? user.photoURL : UserImage,
+  );
 
   const [
     authDialogRef,
@@ -25,7 +28,12 @@ export default function UserAuthButton() {
   const authDialogContentProps = {
     isCloseable: false,
     componentProps: {
-      signOutUser: () => auth.signOut(),
+      signOutUser: () => {
+        auth.signOut()
+          .then(() => {
+            setPhotoSrc(UserImage);
+          })
+      },
       userEmail: user?.email,
     },
     Component: AuthDialogContent,
@@ -42,10 +50,12 @@ export default function UserAuthButton() {
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
+        if (result && result.user.photoURL) {
+          setPhotoSrc(result.user.photoURL);
+        }
         // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential?.accessToken;
-        console.log(token);
+        // const credential = GoogleAuthProvider.credentialFromResult(result);
+        // const token = credential?.accessToken;
         // The signed-in user info.
 
         // IdP data available using getAdditionalUserInfo(result)
@@ -79,7 +89,7 @@ export default function UserAuthButton() {
       ref={linkRef}
     >
       <span>
-        <img className='user-image' src={profilePictureSrc} />
+        <img className='user-image' src={photoSrc} />
       </span>
     </button>
     <Dialog ref={authDialogRef} {...authDialogContentProps} />

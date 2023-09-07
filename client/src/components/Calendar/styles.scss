@@ -173,8 +173,8 @@ $time-label-width: 4rem;
 }
 
 .slot-list {
-	height: 400px;
-	max-height: 90%;
+	min-height: min-content;
+	max-height: max-content;
 	width: calc(120px - 10px);
 	margin: 0 5px;
 	overflow-y: auto;
@@ -182,6 +182,7 @@ $time-label-width: 4rem;
 	& > button {
 		position: static;
 	}
+	padding: 0 0 1rem 0;
 }
 .schedule-tasks-counter {
 	position: absolute;
