@@ -21,7 +21,7 @@ import DescIcon from '../../../assets/icons/desc.png';
 import EditIcon from '../../../assets/icons/edit.png';
 import LocationIcon from '../../../assets/icons/location.png';
 
-import Alert from '../../../lib/Alert/Alert';
+import Alert from '../../../lib/Alert';
 import DataItem from './DataItem';
 import { createPortal } from 'react-dom';
 import {

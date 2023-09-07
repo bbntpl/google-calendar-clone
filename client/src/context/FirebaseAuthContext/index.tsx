@@ -17,7 +17,7 @@ export default function FirebaseAuthProvider({ children }:
 	JSX.Element {
 	const [user, setUser] = useState<FirebaseAuth.User | null>(null);
 	const contextValues = { user };
-
+	
 	useEffect(() => {
 		const unsubscribe = auth.onAuthStateChanged(setUser);
 		return unsubscribe;

@@ -13,7 +13,7 @@ import { HamburgerLogo } from './HamburgerLogo';
 import CalendarUnitSelector from './CalendarUnitSelector';
 import { CalendarDate } from './CalendarDate';
 import SettingsButton from './Settings/Button';
-import UserAuthButton from './UserAuthButton';
+import UserAuthButton from './UserAuth/Button';
 
 import {
 	useCalendarConfig,

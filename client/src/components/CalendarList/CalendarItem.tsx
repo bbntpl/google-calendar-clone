@@ -6,7 +6,7 @@ import './styles.scss';
 import MenuVertical from '../../assets/icons/menu-vertical.png';
 import MultiplyIcon from '../../assets/icons/multiply.png';
 
-import Alert from '../../lib/Alert/Alert';
+import Alert from '../../lib/Alert';
 import { DialogProps } from '../../lib/Dialog/index.model';
 import Dialog from '../../lib/Dialog';
 import Options from './Options';
