@@ -1,0 +1,9 @@
+@import '../../../styles/variables';
+
+.current-time-indicator {
+  background-color: red;
+  height: 3px;
+  width: 100%;
+  position: absolute;
+  pointer-events: none;
+}

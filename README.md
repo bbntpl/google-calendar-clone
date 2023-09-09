@@ -8,11 +8,11 @@ Written in TypeScript.
 - [x] CRUD w/ Schedules: Event and Task
 - [x] Calendar View Selection: Day, Week, and last 4 days
 - [x] Draggable dialog w/ readjustable position
-- [ ] Time Indicator (fully displayed in the current day column)
+- [X] Time Indicator (fully displayed in the current day column)
 - [x] External Holiday Events
 - [x] User Settings
 - [x] Google Authentication
-- [ ] Firebase Firestore
+- [X] Firebase Firestore
 
 ### Required configuration for .env Variables
 

@@ -7,16 +7,19 @@ import '../styles.scss';
 import { DayHeader } from '../Day';
 import { TimeBlockCol, TimeLabelCol, TimeLabel } from '../Time';
 import { useCalendarConfig } from '../../../contexts/CalendarConfigContext';
+import { useRef } from 'react';
+import { CurrentTimeIndicator } from '../Time/CurrentTimeIndicator';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 const timezoneGMT = dayjs().format('ZZ');
 
 export default function CalendarDays({ numOfDays }: { numOfDays: number }) {
-	const { 
-		selectedDate, 
-		selectedCalendarUnit, 
+	const {
+		selectedDate,
+		selectedCalendarUnit,
 	} = useCalendarConfig();
+	const dayColumnEl = useRef<HTMLDivElement>(null);
 
 	const dateObj = (index: number) => {
 		return dayjsObjByDay({
@@ -53,10 +56,15 @@ export default function CalendarDays({ numOfDays }: { numOfDays: number }) {
 							return (
 								<div
 									key={`time-col-${dayIndex + 1}`}
-									className='calendar__date-cols'>
+									className='calendar__date-cols'
+									ref={dayColumnEl}
+								>
 									<TimeBlockCol
 										dayIndex={dayIndex}
 										dateObj={dateObj(dayIndex)}
+									/>
+									<CurrentTimeIndicator
+										parentHeight={dayColumnEl.current?.clientHeight ?? 1248}
 									/>
 								</div>
 							)
