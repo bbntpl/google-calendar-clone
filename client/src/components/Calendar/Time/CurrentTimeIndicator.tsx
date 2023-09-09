@@ -1,8 +1,10 @@
 import React from 'react';
 
-export function CurrentTimeLine() {
+export function CurrentTimeIndicator() {
 	return (
-		<div style={{
+		<div
+		className='current-time-indicator'
+			style={{
 			backgroundColor: 'red',
 			height: '3px',
 			width: '100%',

@@ -20,3 +20,8 @@ export const getColorOption = (color: ColorOption['color'] = 'black') => {
 	const colorOption = colorOptions.find(option => option.color === color);
 	return colorOption || colorOptions[1];
 }
+
+export const getRandomColorOption = () => {
+	const randomIndex = Math.ceil(Math.random() * colorOptions.length) - 1;
+	return colorOptions[randomIndex];
+}

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch, SetStateAction } from 'react';
 import { DraggableProps } from 'react-draggable';
-import { Position } from '../../context/index.model';
+import { Position } from '../../contexts/index.model';
 
 type CommonTypes = string | number | boolean | null;
 

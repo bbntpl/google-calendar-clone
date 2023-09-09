@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import FirebaseAuthProvider from './context/FirebaseAuthContext';
-import StoreProvider from './context/StoreContext/index';
-import AppConfigProvider from './context/AppConfigContext';
-import CalendarConfigProvider from './context/CalendarConfigContext';
+import FirebaseAuthProvider from './contexts/FirebaseAuthContext';
+import StoreProvider from './contexts/StoreContext/index';
+import AppConfigProvider from './contexts/AppConfigContext';
+import CalendarConfigProvider from './contexts/CalendarConfigContext';
 
 import './styles/index.css';
 

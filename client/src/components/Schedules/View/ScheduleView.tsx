@@ -28,12 +28,12 @@ import {
 	Event,
 	Schedule,
 	ScheduleType,
-} from '../../../context/StoreContext/types/schedule';
-import { DateTimeInputs } from '../../../context/CalendarConfigContext/index.model';
-import { Calendar } from '../../../context/StoreContext/types/calendar';
-import { useStore, useStoreUpdater } from '../../../context/StoreContext';
-import { useCalendarConfigUpdater } from '../../../context/CalendarConfigContext';
-import { UserAction } from '../../../context/StoreContext/index.model';
+} from '../../../contexts/StoreContext/types/schedule';
+import { DateTimeInputs } from '../../../contexts/CalendarConfigContext/index.model';
+import { Calendar } from '../../../contexts/StoreContext/types/calendar';
+import { useStore, useStoreUpdater } from '../../../contexts/StoreContext';
+import { useCalendarConfigUpdater } from '../../../contexts/CalendarConfigContext';
+import { UserAction } from '../../../contexts/StoreContext/index.model';
 
 interface ScheduleViewProps {
 	readonly scheduleProps: Schedule;

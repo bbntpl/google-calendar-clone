@@ -1,8 +1,8 @@
-import { ScheduleType } from '../../../context/StoreContext/types/schedule';
+import { ScheduleType } from '../../../contexts/StoreContext/types/schedule';
 import {
 	useCalendarConfig,
 	useCalendarConfigUpdater,
-} from '../../../context/CalendarConfigContext';
+} from '../../../contexts/CalendarConfigContext';
 
 interface ScheduleTypeSelectorProps {
 	scheduleType: ScheduleType | null | undefined;

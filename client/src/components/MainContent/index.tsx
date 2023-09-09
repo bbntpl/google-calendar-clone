@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
-import { useAppConfig } from '../../context/AppConfigContext';
-import { useStore, useStoreUpdater } from '../../context/StoreContext';
+import { useAppConfig } from '../../contexts/AppConfigContext';
+import { useStore, useStoreUpdater } from '../../contexts/StoreContext';
 import { ExternalHolidayEvent, SelectedHoliday } from './index.model';
 import { calendar_v3 } from '@googleapis/calendar';
 
@@ -14,7 +14,7 @@ import Calendar from '../Calendar';
 import Sidebar from '../Sidebar/index';
 
 import { convertExternalEventToSchedule, getHolidayEventsByRegion } from '../../api/holiday';
-import { UserAction } from '../../context/StoreContext/index.model';
+import { UserAction } from '../../contexts/StoreContext/index.model';
 
 const CreateSchedule = withScheduleDialogToggle(MiniScheduleButton);
 
@@ -50,7 +50,7 @@ export default function MainContent(props: MainContentProps):
           region: '',
         };
       })
-
+  console.log('selected holidays: ', selectedHolidays);
   const fetchExternalHolidayEvents = async () => {
     const holidaysWithPromiseEvents = selectedHolidays.map(({ calendarId, region }) => {
       const promise = getHolidayEventsByRegion(region);
@@ -84,7 +84,7 @@ export default function MainContent(props: MainContentProps):
     }
   }
 
-  
+
 
   useEffect(() => {
     if (isInitialDataFetched) return;
@@ -92,6 +92,7 @@ export default function MainContent(props: MainContentProps):
     fetchExternalHolidayEvents()
       .then((externalEvents) => {
         const schedules = externalEvents.map(convertExternalEventToSchedule);
+        console.log('Converted Schedules: ', schedules);
         dispatchSchedules({
           type: UserAction.ADD_MULTIPLE,
           payload: {
@@ -106,7 +107,7 @@ export default function MainContent(props: MainContentProps):
       .finally(() => {
         toggleIsDataFetched();
       })
-  }, [])
+  }, [isInitialDataFetched])
 
   if (isInitialDataFetched) {
     return (

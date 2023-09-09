@@ -5,10 +5,10 @@ import { dateToday, getDateValues, convertDateUnitsToString } from '../../../uti
 import TimeRowUnset from '../Time/TimeRowUnset';
 
 import '../styles.scss';
-import { useStore } from '../../../context/StoreContext';
-import { useCalendarConfig, useCalendarConfigUpdater } from '../../../context/CalendarConfigContext';
-import { Schedule } from '../../../context/StoreContext/types/schedule';
-import { DateUnits } from '../../../context/CalendarConfigContext/index.model';
+import { useStore } from '../../../contexts/StoreContext';
+import { useCalendarConfig, useCalendarConfigUpdater } from '../../../contexts/CalendarConfigContext';
+import { Schedule } from '../../../contexts/StoreContext/types/schedule';
+import { DateUnits } from '../../../contexts/CalendarConfigContext/index.model';
 
 interface DayHeaderProps {
 	dateObj: Dayjs,

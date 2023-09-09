@@ -4,7 +4,7 @@ import MiniCalendar from '../MiniCalendar';
 import CalendarList from '../CalendarList';
 import withScheduleDialogToggle from '../Schedules/ScheduleHOC';
 import { DefaultScheduleButton } from '../Schedules/Buttons';
-import { useStore } from '../../context/StoreContext';
+import { useStore } from '../../contexts/StoreContext';
 
 const CreateSchedule
 	= withScheduleDialogToggle(DefaultScheduleButton);

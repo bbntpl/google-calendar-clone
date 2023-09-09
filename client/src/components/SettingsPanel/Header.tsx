@@ -1,6 +1,6 @@
 import Switcher from '../../lib/Switcher';
-import { useAppConfigUpdater } from '../../context/AppConfigContext/index';
-import UserAuthButton from '../Header/UserAuth/Button';
+import { useAppConfigUpdater } from '../../contexts/AppConfigContext/index';
+import UserAuthButton from '../Header/UserAuth';
 
 export default function Header() {
   const { setVisibilities } = useAppConfigUpdater();

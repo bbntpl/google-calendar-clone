@@ -5,8 +5,8 @@ import { getMonth, convertDateUnitsToString, dateToday } from '../../util/calend
 import './styles.scss';
 
 import Switcher from '../../lib/Switcher';
-import { DateUnits } from '../../context/CalendarConfigContext/index.model';
-import { useCalendarConfig, useCalendarConfigUpdater } from '../../context/CalendarConfigContext';
+import { DateUnits } from '../../contexts/CalendarConfigContext/index.model';
+import { useCalendarConfig, useCalendarConfigUpdater } from '../../contexts/CalendarConfigContext';
 
 type RootElementModifier = 'static' | 'by-content';
 interface MiniCalendarProps {

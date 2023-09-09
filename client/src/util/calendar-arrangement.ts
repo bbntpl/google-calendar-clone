@@ -4,7 +4,7 @@ import { hasOnlyDigits, objKeysToArr } from './reusable-funcs';
 import {
 	CalendarUnits,
 	DateUnits,
-} from '../context/CalendarConfigContext/index.model';
+} from '../contexts/CalendarConfigContext/index.model';
 
 // An array that contains three or more elements
 type ArrayThreeOrMore<T> = [T, T, ...T[]];

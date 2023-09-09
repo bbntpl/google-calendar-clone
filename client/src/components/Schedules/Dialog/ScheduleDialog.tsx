@@ -10,12 +10,12 @@ import TaskBlock from '../Task/TaskBlock';
 import EventBlock from '../Event/EventBlock';
 
 import { ScheduleStates } from '../index.model';
-import { SetState } from '../../../context/index.model';
-import { SelectedSchedule } from '../../../context/StoreContext/types/schedule';
-import { UserAction } from '../../../context/StoreContext/index.model';
-import { useStore, useStoreUpdater } from '../../../context/StoreContext';
-import { useCalendarConfig, useCalendarConfigUpdater } from '../../../context/CalendarConfigContext';
-import { CalendarType } from '../../../context/StoreContext/types/calendar';
+import { SetState } from '../../../contexts/index.model';
+import { SelectedSchedule } from '../../../contexts/StoreContext/types/schedule';
+import { UserAction } from '../../../contexts/StoreContext/index.model';
+import { useStore, useStoreUpdater } from '../../../contexts/StoreContext';
+import { useCalendarConfig, useCalendarConfigUpdater } from '../../../contexts/CalendarConfigContext';
+import { CalendarType } from '../../../contexts/StoreContext/types/calendar';
 
 interface ScheduleDialogProps {
 	setIsScheduleDialogVisible: SetState<boolean>;

@@ -4,8 +4,8 @@ import useComponentVisible from '../../hooks/useComponentVisible';
 import MiniCalendar from '../MiniCalendar';
 import Dialog from '../../lib/Dialog';
 import { dayjsObj } from '../../util/calendar-arrangement';
-import { useCalendarConfig } from '../../context/CalendarConfigContext';
-import { useAppConfig } from '../../context/AppConfigContext';
+import { useCalendarConfig } from '../../contexts/CalendarConfigContext';
+import { useAppConfig } from '../../contexts/AppConfigContext';
 
 export function CalendarDate() {
 	const {

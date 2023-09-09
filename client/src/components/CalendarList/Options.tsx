@@ -9,8 +9,8 @@ import {
 	ColorOption,
 	colorOptions,
 } from '../../util/color-options';
-import { UserAction } from '../../context/StoreContext/index.model';
-import { useStore, useStoreUpdater } from '../../context/StoreContext';
+import { UserAction } from '../../contexts/StoreContext/index.model';
+import { useStore, useStoreUpdater } from '../../contexts/StoreContext';
 
 export default function Options(props: WrappedComponentProps) {
 	const {

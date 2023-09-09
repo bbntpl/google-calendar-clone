@@ -1,13 +1,13 @@
 
-import { DateUnits } from '../../../context/CalendarConfigContext/index.model';
-import { Schedule } from '../../../context/StoreContext/types/schedule';
+import { DateUnits } from '../../../contexts/CalendarConfigContext/index.model';
+import { Schedule } from '../../../contexts/StoreContext/types/schedule';
 
 import '../styles.scss';
 
 import { convertDateUnitsToString } from '../../../util/calendar-arrangement';
 import Slot from '../Slot/Slot';
-import { useCalendarConfigUpdater } from '../../../context/CalendarConfigContext/index';
-import { useAppConfigUpdater } from '../../../context/AppConfigContext';
+import { useCalendarConfigUpdater } from '../../../contexts/CalendarConfigContext/index';
+import { useAppConfigUpdater } from '../../../contexts/AppConfigContext';
 
 interface TimeRowProps {
 	dayIndex: number,

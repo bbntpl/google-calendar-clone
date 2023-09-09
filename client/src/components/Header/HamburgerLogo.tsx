@@ -1,8 +1,8 @@
 import GoogleCalendar from '../../assets/icons/google-calendar.png';
 import Hamburger from '../../assets/icons/hamburger.png';
 
-import { useAppConfigUpdater } from '../../context/AppConfigContext';
-import { BooleansOnlyObj } from '../../context/AppConfigContext/index.model';
+import { useAppConfigUpdater } from '../../contexts/AppConfigContext';
+import { BooleansOnlyObj } from '../../contexts/AppConfigContext/index.model';
 
 export function HamburgerLogo() {
 	const { setVisibilities } = useAppConfigUpdater();

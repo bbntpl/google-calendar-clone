@@ -16,8 +16,8 @@ import Dialog from '../../../lib/Dialog';
 import CustomSelect from './CustomInputs/CustomSelect';
 
 import { Option } from '../index.model';
-import { DateTimeInputs, DateUnits } from '../../../context/CalendarConfigContext/index.model';
-import { useCalendarConfig } from '../../../context/CalendarConfigContext';
+import { DateTimeInputs, DateUnits } from '../../../contexts/CalendarConfigContext/index.model';
+import { useCalendarConfig } from '../../../contexts/CalendarConfigContext';
 
 export interface DateTimeBlockProps {
 	dateTime: DateTimeInputs;

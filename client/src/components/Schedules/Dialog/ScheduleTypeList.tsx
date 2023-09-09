@@ -1,4 +1,4 @@
-import { useCalendarConfigUpdater } from '../../../context/CalendarConfigContext';
+import { useCalendarConfigUpdater } from '../../../contexts/CalendarConfigContext';
 import { DialogProps } from '../../../lib/Dialog/index.model';
 
 export default function ScheduleTypeList(props: DialogProps) {

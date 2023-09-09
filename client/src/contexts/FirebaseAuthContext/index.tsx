@@ -7,7 +7,8 @@ import React, {
 
 import * as FirebaseAuth from './index.model';
 import * as GlobalContext from '../index.model';
-import { auth } from '../../firebase';
+import { auth } from '../../firebase.config';
+import { getLocalStorageNamespace } from '../StoreContext';
 
 const FirebaseAuthContext =
 	createContext<FirebaseAuth.ContextState | null>(null);
@@ -18,16 +19,25 @@ export default function FirebaseAuthProvider({ children }:
 	const [user, setUser] = useState<FirebaseAuth.User | null>(null);
 	const contextValues = { user };
 	
-	useEffect(() => {
-		const unsubscribe = auth.onAuthStateChanged(setUser);
-		return unsubscribe;
-	}, []);
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((newUser) => {
+      if (!newUser) {
+        const localStorageNamespace = getLocalStorageNamespace();
+        localStorage.removeItem(`${localStorageNamespace}_authenticatedUserId`);
+				setUser(null);
+      } else {
+        setUser(newUser);
+      }
+    });
 
-	return (
-		<FirebaseAuthContext.Provider value={contextValues} >
-			{children}
-		</FirebaseAuthContext.Provider>
-	)
+    return unsubscribe;
+  }, []);
+
+  return (
+    <FirebaseAuthContext.Provider value={contextValues}>
+      {children}
+    </FirebaseAuthContext.Provider>
+  );
 };
 
 export function useFirebaseAuth() {

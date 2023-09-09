@@ -9,9 +9,9 @@ import useComponentVisible from '../../../hooks/useComponentVisible';
 import { ScheduleView } from '../../Schedules/View/ScheduleView';
 import Dialog from '../../../lib/Dialog';
 import { DialogProps } from '../../../lib/Dialog/index.model';
-import { Schedule } from '../../../context/StoreContext/types/schedule';
-import { useStore } from '../../../context/StoreContext';
-import { useAppConfigUpdater } from '../../../context/AppConfigContext';
+import { Schedule } from '../../../contexts/StoreContext/types/schedule';
+import { useStore } from '../../../contexts/StoreContext';
+import { useAppConfigUpdater } from '../../../contexts/AppConfigContext';
 import { createPortal } from 'react-dom';
 
 type SlotProps = {

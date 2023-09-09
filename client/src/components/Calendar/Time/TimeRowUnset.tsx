@@ -6,10 +6,10 @@ import '../styles.scss';
 
 import Slot from '../Slot/Slot';
 import Dialog from '../../../lib/Dialog';
-import { DateUnits } from '../../../context/CalendarConfigContext/index.model';
-import { Schedule } from '../../../context/StoreContext/types/schedule';
-import { useCalendarConfigUpdater } from '../../../context/CalendarConfigContext';
-import { useAppConfigUpdater } from '../../../context/AppConfigContext';
+import { DateUnits } from '../../../contexts/CalendarConfigContext/index.model';
+import { Schedule } from '../../../contexts/StoreContext/types/schedule';
+import { useCalendarConfigUpdater } from '../../../contexts/CalendarConfigContext';
+import { useAppConfigUpdater } from '../../../contexts/AppConfigContext';
 
 interface SlotListProps {
 	dateValues: DateUnits;

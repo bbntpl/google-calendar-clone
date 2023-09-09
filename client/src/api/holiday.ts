@@ -1,10 +1,10 @@
 import { calendar_v3 } from '@googleapis/calendar';
-import { CalendarType } from '../context/StoreContext/types/calendar';
-import { ScheduleType } from '../context/StoreContext/types/schedule';
-import { DateTimeInputs } from '../context/CalendarConfigContext/index.model';
+import { CalendarType } from '../contexts/StoreContext/types/calendar';
+import { ScheduleType } from '../contexts/StoreContext/types/schedule';
+import { DateTimeInputs } from '../contexts/CalendarConfigContext/index.model';
 
 import { uniqueID } from '../util/reusable-funcs';
-import { colorOptions, getColorOption } from '../util/color-options';
+import { getRandomColorOption } from '../util/color-options';
 
 import { ExternalHolidayEvent } from '../components/MainContent/index.model';
 
@@ -42,7 +42,7 @@ export function convertExternalEventsToCalendar(props: ConvertExternalEventsToCa
 	return {
 		id: calendarId,
 		name: summary || '',
-		colorOption: getColorOption(),
+		colorOption: getRandomColorOption(),
 		selected: true,
 		removable: true,
 		type: 'holiday' as CalendarType,
@@ -65,16 +65,12 @@ export function convertExternalEventToSchedule(
 		if (splitResult.length > 1) {
 			locationName = splitResult[1].trim();
 		}
-
 	}
 
 	if (externalEvent.start && externalEvent.start.date) {
 		const [year, month, day] = externalEvent.start.date.split('-');
 		date = `${year}${month}${day}`;
 	}
-
-	const randomIndex = Math.ceil(Math.random() * colorOptions.length) - 1;
-	const randomColorOption = colorOptions[randomIndex];
 
 	return {
 		id: uniqueID(),
@@ -91,6 +87,6 @@ export function convertExternalEventToSchedule(
 		type: 'event' as ScheduleType,
 		isExternal: true,
 		location: locationName,
-		colorOption: getColorOption(randomColorOption.color),
+		colorOption: getRandomColorOption(),
 	}
 }
