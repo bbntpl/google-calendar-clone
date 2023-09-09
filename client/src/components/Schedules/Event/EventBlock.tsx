@@ -15,7 +15,7 @@ import DescInputBlock from '../Dialog/DescInputBlock';
 import CustomInput from '../Dialog/CustomInputs/CustomInput';
 
 import { convertDateUnitsToString } from '../../../util/calendar-arrangement';
-import { DateUnits } from '../../../context/CalendarConfigContext/index.model';
+import { DateUnits } from '../../../contexts/CalendarConfigContext/index.model';
 import { ColorOption } from '../../../util/color-options';
 
 export default function EventBlock(props: ScheduleEventProps): JSX.Element {

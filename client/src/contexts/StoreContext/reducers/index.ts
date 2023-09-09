@@ -3,6 +3,18 @@ import { Calendar, CalendarListActions } from '../types/calendar';
 import { Schedule, ScheduleActions } from '../types/schedule';
 
 import * as LocalStorageHelper from '../../../util/local-storage';
+import { getLocalStorageNamespace } from '..';
+import {
+	addDocument,
+	addMultipleDocuments,
+} from '../../../functions/firestore/add';
+import {
+	editDocument,
+} from '../../../functions/firestore/edit'
+import {
+	removeDocument,
+	removeMultipleDocuments,
+} from '../../../functions/firestore/remove';
 
 const {
 	appendItemToArray,
@@ -11,7 +23,9 @@ const {
 	removeItemFromArrayById,
 	removeItemsFromArrayByIds,
 	remove,
+	get,
 } = LocalStorageHelper;
+
 
 interface ExecuteActionProps<S, A> {
 	state: S[] | []
@@ -29,24 +43,43 @@ export default function executeAction<
 		action,
 		propKey,
 	} = props;
+	const namespace = getLocalStorageNamespace();
+	const authenticatedUserId: string | undefined = get(`${namespace}_authenticatedUserId`);
 
 	switch (action.type) {
 		case UserAction.ADD:
-			appendItemToArray<State>(
-				propKey,
-				action.payload as State,
-			);
+			if (authenticatedUserId) {
+				addDocument({
+					collectionName: propKey,
+					item: action.payload,
+					userId: authenticatedUserId,
+				})
+			} else {
+				appendItemToArray<State>(
+					propKey,
+					action.payload as State,
+				);
+			}
 
 			return [...state, action.payload as State];
 		case UserAction.ADD_MULTIPLE:
 			const { addedItems, whereTo } = action.payload;
 			const addedArr = [...state, ...addedItems] as State[];
 			if (whereTo === 'storage' || whereTo === 'both') {
-				appendArrayItemToArray<State>(
-					propKey,
-					addedItems as Array<State>,
-				);
+				if (authenticatedUserId) {
+					addMultipleDocuments({
+						collectionName: propKey,
+						items: addedItems,
+						userId: authenticatedUserId,
+					})
+				} else {
+					appendArrayItemToArray<State>(
+						propKey,
+						addedItems as Array<State>,
+					);
+				}
 			}
+			console.log('Dispatching schedules: ', addedItems);
 			return whereTo === 'memory' || whereTo === 'both'
 				? addedArr : state;
 		case UserAction.EDIT:
@@ -56,6 +89,13 @@ export default function executeAction<
 				}
 				return object;
 			})];
+			if (authenticatedUserId) {
+				editDocument({
+					collectionName: propKey,
+					updatedItem: action.payload,
+					userId: authenticatedUserId,
+				})
+			}
 			editItemInArray<State>(propKey, action.payload as State);
 
 			return editedArr;
@@ -65,9 +105,21 @@ export default function executeAction<
 			});
 			const itemToBeRemoved = state.find(obj => action.payload.id === obj.id);
 			if (!itemToBeRemoved) return reducedArr;
-			reducedArr.length > 0
-				? removeItemFromArrayById<State>(propKey, itemToBeRemoved)
-				: remove(propKey);
+			if (reducedArr.length > 0) {
+				if (authenticatedUserId) {
+					removeDocument({
+						collectionName: propKey,
+						docId: action.payload.id,
+						userId: authenticatedUserId,
+					});
+				} else {
+					removeItemFromArrayById<State>(propKey, itemToBeRemoved);
+				}
+			} else {
+				if (!authenticatedUserId) {
+					remove(propKey);
+				}
+			}
 
 			return reducedArr;
 		case UserAction.REMOVE_MULTIPLE:
@@ -76,9 +128,21 @@ export default function executeAction<
 				return !objectIdsToRemove.includes(obj.id);
 			});
 
-			removeItemsFromArrayByIds<State>(propKey, objectIdsToRemove);
+			if (authenticatedUserId) {
+				removeMultipleDocuments({
+					collectionName: propKey,
+					ids: objectIdsToRemove,
+					userId: authenticatedUserId,
+				});
+			} else {
+				removeItemsFromArrayByIds<State>(propKey, objectIdsToRemove);
+			}
 
 			return objectsToKeep;
+		case UserAction.CLEAR:
+			return [];
+		case UserAction.REPLACE_ALL:
+			return action.payload as State[];
 		default:
 			throw new Error('The user made an unknown action');
 	}

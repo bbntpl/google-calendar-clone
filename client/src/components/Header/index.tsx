@@ -13,13 +13,13 @@ import { HamburgerLogo } from './HamburgerLogo';
 import CalendarUnitSelector from './CalendarUnitSelector';
 import { CalendarDate } from './CalendarDate';
 import SettingsButton from './Settings/Button';
-import UserAuthButton from './UserAuth/Button';
+import UserAuthButton from './UserAuth';
 
 import {
 	useCalendarConfig,
 	useCalendarConfigUpdater,
-} from '../../context/CalendarConfigContext';
-import { DateUnits } from '../../context/CalendarConfigContext/index.model';
+} from '../../contexts/CalendarConfigContext';
+import { DateUnits } from '../../contexts/CalendarConfigContext/index.model';
 
 
 export default function Header(): JSX.Element {

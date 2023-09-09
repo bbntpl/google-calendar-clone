@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 import useComponentVisible from '../../hooks/useComponentVisible';
-import { Calendar } from '../../context/StoreContext/types/calendar';
-import { UserAction } from '../../context/StoreContext/index.model';
+import { Calendar } from '../../contexts/StoreContext/types/calendar';
+import { UserAction } from '../../contexts/StoreContext/index.model';
 import {
 	AddNewCalendarProps,
 	InitCalendarItemProps,

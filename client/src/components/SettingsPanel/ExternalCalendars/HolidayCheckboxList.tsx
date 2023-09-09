@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 
-import { UserAction } from '../../../context/StoreContext/index.model';
+import { UserAction } from '../../../contexts/StoreContext/index.model';
 import { calendar_v3 } from '@googleapis/calendar';
-import { Calendar, HolidayCalendarItem } from '../../../context/StoreContext/types/calendar';
+import { Calendar, HolidayCalendarItem } from '../../../contexts/StoreContext/types/calendar';
 import { HolidayItem, RenderCboxItemsProps, RenderCboxListProps } from './index.model';
 
 import regionListFile from '../../../data/localized-holiday-events.txt';
 import { readTextFile, uniqueID } from '../../../util/reusable-funcs';
-import { useStore, useStoreUpdater } from '../../../context/StoreContext';
+import { useStore, useStoreUpdater } from '../../../contexts/StoreContext';
 import { convertExternalEventToSchedule, convertExternalEventsToCalendar, getHolidayEventsByRegion } from '../../../api/holiday';
 
 import CheckboxItem from './CheckboxItem';

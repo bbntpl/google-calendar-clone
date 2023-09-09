@@ -8,8 +8,8 @@ import {
 import { convertDateUnitsToString } from '../../../util/calendar-arrangement';
 
 import TimeRow from './TimeRow'
-import { useStore } from '../../../context/StoreContext';
-import { Schedule } from '../../../context/StoreContext/types/schedule';
+import { useStore } from '../../../contexts/StoreContext';
+import { Schedule } from '../../../contexts/StoreContext/types/schedule';
 
 interface TimeBlockColProps {
 	dayIndex: number,

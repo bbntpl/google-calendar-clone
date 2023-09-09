@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { useCalendarConfig, useCalendarConfigUpdater } from '../../context/CalendarConfigContext';
-import { CalendarUnits } from '../../context/CalendarConfigContext/index.model';
+import { useCalendarConfig, useCalendarConfigUpdater } from '../../contexts/CalendarConfigContext';
+import { CalendarUnits } from '../../contexts/CalendarConfigContext/index.model';
 
 export default function CalendarUnitSelector() {
 	const { selectedCalendarUnit } = useCalendarConfig();

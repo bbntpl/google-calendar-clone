@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import {
   createContext,
   useContext,
@@ -8,18 +9,17 @@ import {
 
 import * as StoreModel from './index.model';
 import * as GlobalContextTypes from '../index.model';
-import { Calendar, CalendarType } from './types/calendar';
 import { Schedule } from './types/schedule';
 
 import { useFirebaseAuth } from '../FirebaseAuthContext';
 import calendarListReducer from './reducers/calendar-reducer';
 import scheduleReducer from './reducers/schedule-reducer';
 
+import useStoreData from './hooks/useFetchStoredData';
 import { uniqueID } from '../../util/reusable-funcs';
-import { getColorOption } from '../../util/color-options';
-import * as LocalStorageHelper from '../../util/local-storage';
-
-const { get } = LocalStorageHelper;
+import { getColorOption, getRandomColorOption } from '../../util/color-options';
+import { Calendar, CalendarType } from './types/calendar';
+import { has } from '../../util/local-storage';
 
 const StoreContext =
   createContext<StoreModel.ContextState | null>(null);
@@ -28,6 +28,8 @@ const StoreDispatchContext =
   createContext<StoreModel.DispatchContextState | null>(null);
 
 const localStorageNamespace = 'gccbvrbryn445-storage';
+
+export const getLocalStorageNamespace = () => localStorageNamespace;
 
 const initialCalendars: Array<Calendar> = [
   {
@@ -41,7 +43,7 @@ const initialCalendars: Array<Calendar> = [
   {
     id: uniqueID(),
     name: 'Holidays in United States',
-    colorOption: getColorOption(),
+    colorOption: getRandomColorOption(),
     selected: true,
     removable: true,
     type: 'holiday' as CalendarType,
@@ -51,53 +53,55 @@ const initialCalendars: Array<Calendar> = [
   },
 ];
 
-export const getLocalStorageNamespace = () => localStorageNamespace;
-
-const getStoreData = (user: unknown) => {
-  console.log(user);
-  const savedSchedules
-    = get<Array<Schedule>>(`${localStorageNamespace}_savedSchedules`) || [];
-  const calendars
-    = get<Array<Calendar>>(`${localStorageNamespace}_calendars`) || [];
-
-  return { savedSchedules, calendars }
-}
-
 export default function StoreProvider({ children }:
   GlobalContextTypes.ContextProviderProps):
   JSX.Element {
   const user = useFirebaseAuth();
-  const storeData = getStoreData(user);
+  const fetchedData = useStoreData({ user, localStorageNamespace });
+  const [savedSchedules, dispatchSchedules] = useReducer(scheduleReducer, [])
+  const [calendars, dispatchCalendars] = useReducer(calendarListReducer, []);
 
-  const getInitialCalendars = (calendars: Array<Calendar>) => {
-    return calendars && calendars.length > 0 ? calendars : initialCalendars;
+  const initializeCalendars = () => {
+    dispatchCalendars({
+      type: StoreModel.UserAction.ADD_MULTIPLE,
+      payload: {
+        addedItems: initialCalendars,
+        whereTo: 'both',
+      },
+    })
   }
 
-  const getInitialSchedules = (schedules: Array<Schedule>) => {
-    return schedules && schedules.length > 0 ? schedules : [];
-  };
+  const replaceCalendars = (arr: Calendar[]) => {
+    dispatchCalendars({
+      type: StoreModel.UserAction.REPLACE_ALL,
+      payload: arr,
+    });
+  }
 
-  const [savedSchedules, dispatchSchedules] = useReducer(
-    scheduleReducer,
-    getInitialSchedules(storeData.savedSchedules),
-  )
-
-  const [calendars, dispatchCalendars] = useReducer(
-    calendarListReducer,
-    getInitialCalendars(storeData.calendars),
-  )
+  const replaceSchedules = (arr: Schedule[]) => {
+    dispatchSchedules({
+      type: StoreModel.UserAction.REPLACE_ALL,
+      payload: arr,
+    });
+  }
 
   useEffect(() => {
-    if (!(storeData.calendars && storeData.calendars.length > 0)) {
-      dispatchCalendars({
-        type: StoreModel.UserAction.ADD_MULTIPLE,
-        payload: {
-          addedItems: getInitialCalendars(storeData.calendars),
-          whereTo: 'storage',
-        },
-      })
+    const areCalendarsInLocalStorage = has(`${localStorageNamespace}_calendars`);
+    // Initialize the calendars with default ones if no documents were
+    // fetched from either cloud firestore or local storage
+    if (!fetchedData.isFetching
+      && !areCalendarsInLocalStorage
+      && !calendars.length) {
+      initializeCalendars();
     }
-  }, [])
+  }, [fetchedData.isFetching, calendars])
+
+  useEffect(() => {
+    if (!fetchedData.isFetching) {
+      replaceCalendars(fetchedData.calendars);
+      replaceSchedules(fetchedData.savedSchedules);
+    }
+  }, [user]);
 
   const filteredSchedules = useMemo(() => {
     const calendarIds = calendars

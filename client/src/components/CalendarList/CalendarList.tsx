@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 
-import { Calendar, CalendarType } from '../../context/StoreContext/types/calendar';
-import { useAppConfigUpdater } from '../../context/AppConfigContext';
-import { useStore, useStoreUpdater } from '../../context/StoreContext';
-import { UserAction } from '../../context/StoreContext/index.model';
-import { Schedule } from '../../context/StoreContext/types/schedule';
+import { Calendar, CalendarType } from '../../contexts/StoreContext/types/calendar';
+import { useAppConfigUpdater } from '../../contexts/AppConfigContext';
+import { useStore, useStoreUpdater } from '../../contexts/StoreContext';
+import { UserAction } from '../../contexts/StoreContext/index.model';
+import { Schedule } from '../../contexts/StoreContext/types/schedule';
 
 import NewCalendar from './NewCalendar';
 import CalendarItemList from './CalendarItemList';

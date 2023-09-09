@@ -5,7 +5,7 @@ import ScheduleDialog from './Dialog';
 import {
 	useCalendarConfig,
 	useCalendarConfigUpdater,
-} from '../../context/CalendarConfigContext';
+} from '../../contexts/CalendarConfigContext';
 
 // It controls the visibility of the schedule dialog
 export default function DialogController() {

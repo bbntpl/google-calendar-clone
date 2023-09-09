@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import { useAppConfigUpdater } from '../../context/AppConfigContext';
+import { useAppConfigUpdater } from '../../contexts/AppConfigContext';
 import useComponentVisible from '../../hooks/useComponentVisible';
 import { ScheduleTypeList } from './Dialog';
 import Dialog from '../../lib/Dialog';

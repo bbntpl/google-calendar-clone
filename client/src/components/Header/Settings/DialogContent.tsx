@@ -1,5 +1,5 @@
-import { useAppConfigUpdater } from '../../../context/AppConfigContext/index';
-import { BooleansOnlyObj } from '../../../context/AppConfigContext/index.model';
+import { useAppConfigUpdater } from '../../../contexts/AppConfigContext/index';
+import { BooleansOnlyObj } from '../../../contexts/AppConfigContext/index.model';
 
 import { DialogProps } from '../../../lib/Dialog/index.model';
 

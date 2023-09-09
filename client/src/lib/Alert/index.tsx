@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import './styles.scss';
-import { ElementsToRef } from '../../context/index.model';
+import { ElementsToRef } from '../../contexts/index.model';
 
 interface AlertProps {
 	handleHideComponent: () => void;

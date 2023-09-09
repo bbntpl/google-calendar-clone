@@ -7,8 +7,8 @@ import React, {
 import Draggable from 'react-draggable';
 
 import { WrappedDialogProps } from './index.model';
-import { ElementsToRef, Position } from '../../context/index.model';
-import { useAppConfig } from '../../context/AppConfigContext';
+import { ElementsToRef, Position } from '../../contexts/index.model';
+import { useAppConfig } from '../../contexts/AppConfigContext';
 
 import useDialogAdjuster from '../../hooks/useDialogAdjuster';
 import {

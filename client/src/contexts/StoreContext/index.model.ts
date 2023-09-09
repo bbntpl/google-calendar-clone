@@ -8,12 +8,17 @@ export enum UserAction {
 	ADD_MULTIPLE = 'ADD_MULTIPLE',
 	EDIT = 'EDIT',
 	REMOVE = 'REMOVE',
-	REMOVE_MULTIPLE = 'REMOVE_MULTIPLE'
+	REMOVE_MULTIPLE = 'REMOVE_MULTIPLE',
+	CLEAR = 'CLEAR',
+	REPLACE_ALL = 'REPLACE_ALL'
 }
 
-export interface ContextState {
+export interface StoreState {
 	savedSchedules: Array<Schedule> | []
 	calendars: Array<Calendar> | []
+}
+
+export interface ContextState extends StoreState {
 	filteredSchedules: Array<Schedule> | []
 }
 

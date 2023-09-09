@@ -4,7 +4,7 @@ import './styles/flexbox.css';
 import SettingsPanel from './components/SettingsPanel/index';
 import MainContent from './components/MainContent/index';
 
-import { useAppConfig } from './context/AppConfigContext';
+import { useAppConfig } from './contexts/AppConfigContext';
 import { useState } from 'react';
 
 function App(): JSX.Element {

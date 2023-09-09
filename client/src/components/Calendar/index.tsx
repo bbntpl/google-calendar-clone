@@ -1,8 +1,8 @@
 import './styles.scss';
 
 import CalendarDays from './Type/CalendarDays';
-import { CalendarUnits } from '../../context/CalendarConfigContext/index.model';
-import { useCalendarConfig } from '../../context/CalendarConfigContext';
+import { CalendarUnits } from '../../contexts/CalendarConfigContext/index.model';
+import { useCalendarConfig } from '../../contexts/CalendarConfigContext';
 
 function CalendarByType({ calendarType }: { calendarType: CalendarUnits }) {
 	switch (calendarType) {

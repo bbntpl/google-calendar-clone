@@ -6,7 +6,7 @@ import '../styles.scss';
 
 import { DayHeader } from '../Day';
 import { TimeBlockCol, TimeLabelCol, TimeLabel } from '../Time';
-import { useCalendarConfig } from '../../../context/CalendarConfigContext';
+import { useCalendarConfig } from '../../../contexts/CalendarConfigContext';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

@@ -1,7 +1,7 @@
 import { Option } from '../index.model';
 
 import CustomSelect from './CustomInputs/CustomSelect';
-import { useStore } from '../../../context/StoreContext';
+import { useStore } from '../../../contexts/StoreContext';
 
 interface CalendarSelectionProps {
 	calendarId: number;

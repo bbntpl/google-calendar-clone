@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Position } from '../context/index.model';
+import { Position } from '../contexts/index.model';
 
 interface Dimension {
 	width: number

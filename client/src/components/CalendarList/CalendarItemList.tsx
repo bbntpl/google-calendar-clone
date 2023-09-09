@@ -1,6 +1,6 @@
 import { CalendarItemsProps } from './index.model';
 import CalendarItem from './CalendarItem';
-import { Calendar } from '../../context/StoreContext/types/calendar';
+import { Calendar } from '../../contexts/StoreContext/types/calendar';
 
 export const CalendarItemList = (props: CalendarItemsProps): JSX.Element => {
 	const { calendars } = props;

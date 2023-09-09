@@ -11,10 +11,10 @@ import { DialogProps } from '../../lib/Dialog/index.model';
 import Dialog from '../../lib/Dialog';
 import Options from './Options';
 import { createPortal } from 'react-dom';
-import { UserAction } from '../../context/StoreContext/index.model';
+import { UserAction } from '../../contexts/StoreContext/index.model';
 import {
 	useAppConfigUpdater,
-} from '../../context/AppConfigContext';
+} from '../../contexts/AppConfigContext';
 
 export default function CalendarItem(props: LabelProps): JSX.Element {
 	const { recordPosition } = useAppConfigUpdater();

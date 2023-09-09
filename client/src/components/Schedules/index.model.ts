@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 import {
 	Event,
 	Task,
-} from '../../context/StoreContext/types/schedule';
+} from '../../contexts/StoreContext/types/schedule';
 
 export interface ScheduleStates extends Event, Task { }
 export interface ScheduleEventProps {

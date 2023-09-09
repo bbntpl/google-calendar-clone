@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 
 import { DialogViewState } from '../../lib/Dialog/index.model';
-import { Calendar, CalendarListActions } from '../../context/StoreContext/types/calendar';
+import { Calendar, CalendarListActions } from '../../contexts/StoreContext/types/calendar';
 import { ColorOption } from '../../util/color-options';
 
 interface CalendarListSetStateAction {
