@@ -63,9 +63,9 @@ const DialogCore = forwardRef<ElementsToRef, WrappedDialogProps>(
 
 		// State container for dom rect obj
 		const [rect, setRect] = useState<DOMRect | null>(null);
-		const [windowDim, setWindowDim] = useState({
-			width: window.innerWidth,
-			height: window.innerHeight,
+		const [viewportDim, setViewportDim] = useState({
+			width: document.documentElement.clientWidth,
+			height: document.documentElement.clientHeight,
 		});
 		const [classNames, setClassNames] = useState([
 			`dialog-inner--${stylePosition}`,
@@ -84,16 +84,15 @@ const DialogCore = forwardRef<ElementsToRef, WrappedDialogProps>(
 				dialogDim: componentRefSize,
 				initCursorPos: (positionOffset as Position || cursorPosition),
 				delta,
-				windowDim,
+				viewportDim,
 			});
 
 		// Update the height and width of window when it gets resized
 		useEffect(() => {
 			const resizeWatcher = () => {
-				const { innerWidth, innerHeight } = window;
-				setWindowDim({
-					width: innerWidth,
-					height: innerHeight,
+				setViewportDim({
+					width: document.documentElement.clientWidth,
+					height: document.documentElement.clientHeight,
 				});
 			};
 			window.addEventListener('resize', resizeWatcher);
@@ -129,7 +128,7 @@ const DialogCore = forwardRef<ElementsToRef, WrappedDialogProps>(
 				positionOffset={isSelfAdjustable ? adjustedDialogPos : positionOffset}
 				bounds={bounds}
 				nodeRef={ref as RefObject<ElementsToRef>}
-				defaultClassName={!isDraggable ? 'react-draggable-transform-none': ''}
+				defaultClassName={!isDraggable ? 'react-draggable-transform-none' : ''}
 			>
 				<div ref={ref} className={classNames.join(' ')}>
 					{

@@ -15,7 +15,7 @@ function App(): JSX.Element {
 	const toggleIsDataFetched = () => {
 		setIsInitialDataFetched(prevState => !prevState);
 	}	
-	
+
 	return (
 		<div className='app'>
 			{

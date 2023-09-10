@@ -31,7 +31,6 @@ export async function removeDocument(props: RemoveDocumentProps) {
 			&& docSnapshot.data().userId === userId;
 		if (areUserIdsMatched) {
 			await deleteDoc(docRef);
-			console.log('Document removed successfully');
 		}
 	} catch (e) {
 		const error: FirestoreError = e as FirestoreError;
