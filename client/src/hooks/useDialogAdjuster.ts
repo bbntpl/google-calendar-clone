@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 import { useEffect, useState } from 'react';
 import { Position } from '../contexts/index.model';
 import { UseBoundariesProps } from './index.model';
