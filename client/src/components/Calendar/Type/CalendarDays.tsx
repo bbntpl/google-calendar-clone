@@ -65,6 +65,7 @@ export default function CalendarDays({ numOfDays }: { numOfDays: number }) {
 									/>
 									<CurrentTimeIndicator
 										parentHeight={dayColumnEl.current?.clientHeight ?? 1248}
+										date={dateObj(dayIndex)}
 									/>
 								</div>
 							)

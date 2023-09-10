@@ -5,13 +5,16 @@ import './styles.scss';
 
 type CurrentTimeIndicatorProps = {
 	parentHeight: number;
+	date: dayjs.Dayjs
 }
 
-export function CurrentTimeIndicator({ parentHeight }: CurrentTimeIndicatorProps) {
+export function CurrentTimeIndicator({ parentHeight, date }: CurrentTimeIndicatorProps) {
 	const intervalRef = useRef<number | null>(null);
 
 	const MINUTE_IN_MS = 60 * 1000;
 	const hourHeight = parentHeight / 24;
+
+
 
 	const computePosition = () => {
 		const now = dayjs();
@@ -29,6 +32,7 @@ export function CurrentTimeIndicator({ parentHeight }: CurrentTimeIndicatorProps
 			return endOfDay.diff(now, 'millisecond');
 		};
 
+		// Compute the position of indicator every minute in real-time
 		const refreshIndicatorPos = () => {
 			const now = dayjs();
 			const isMidnight = now.hour() === 0 && now.minute() === 0;
@@ -51,6 +55,11 @@ export function CurrentTimeIndicator({ parentHeight }: CurrentTimeIndicatorProps
 			}
 		};
 	}, []);
+
+	// Hide the time indicator if the date is not "today"
+	if (date.format('YYYY-MM-DD') !== dayjs().format('YYYY-MM-DD')) {
+		return null;
+	}
 
 	return (
 		<div className='current-time-indicator' style={{ top: `${topPosition}px` }} />
