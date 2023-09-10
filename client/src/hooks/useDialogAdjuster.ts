@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Position } from '../contexts/index.model';
-
-interface Dimension {
-	width: number
-	height: number
-}
+import { UseBoundariesProps } from './index.model';
+import useBoundaries from './useBoundaries';
 
 interface QuadrantConfirmation {
 	left: boolean
@@ -13,21 +10,19 @@ interface QuadrantConfirmation {
 	top: boolean
 }
 
-interface UseDialogAdjusterProps {
-	dialogDim: Dimension
-	initCursorPos: Position
+interface UseDialogAdjusterProps extends UseBoundariesProps {
 	delta: Position
-	windowDim: Dimension
 }
 
-export default function useDialogAdjuster({
-	dialogDim,
-	initCursorPos,
-	delta,
-	windowDim,
-}: UseDialogAdjusterProps) {
+export default function useDialogAdjuster(props: UseDialogAdjusterProps) {
+	const { dialogDim, initCursorPos, delta, viewportDim } = props;
 	const { height, width } = dialogDim;
-	const { width: innerWidth, height: innerHeight } = windowDim;
+	const { width: viewportWidth, height: viewportHeight } = viewportDim;
+	const {
+		bounds,
+		computeBounds,
+		computeCenteredBounds,
+	} = useBoundaries({ dialogDim, initCursorPos, viewportDim })
 
 	const [adjustedDialogPos, setAdjustedDialogPos] = useState<Position>({
 		x: initCursorPos.x + delta.x,
@@ -36,22 +31,12 @@ export default function useDialogAdjuster({
 
 	const [isPosAdjusted, setIsPosAdjusted] = useState(false);
 
-	// The movement boundaries of the dialog element
-	const [bounds, setBounds] = useState({
-		// These properties are default left-top cursor position except
-		// for right/bottom as the dialog dim obj won't be update 'til later
-		left: initCursorPos.x * -1,
-		top: initCursorPos.y * -1,
-		right: windowDim.width - initCursorPos.x - dialogDim.width,
-		bottom: windowDim.height - initCursorPos.y - dialogDim.height,
-	})
-
-	// defines the quadrant site of the cursor position
+	// Defines the quadrant site of the cursor position
 	const positionedTo = ({ x, y }: Position) => ({
-		left: Math.round(x / innerWidth) * 100 < Math.round(innerWidth / 2) / 100,
-		right: Math.round(x / innerWidth) * 100 > Math.round(innerWidth / 2) / 100,
-		top: Math.round(y / innerHeight) * 100 < Math.round(innerHeight / 2) / 100,
-		bottom: Math.round(y / innerHeight) * 100 > Math.round(innerHeight / 2) / 100,
+		left: x < innerWidth / 2,
+		right: x >= innerWidth / 2,
+		top: y < innerHeight / 2,
+		bottom: y >= innerHeight / 2,
 	});
 
 	// Adjust the position of the dialog relative to 
@@ -63,65 +48,53 @@ export default function useDialogAdjuster({
 
 		// The gap between edge of the screen and 
 		// boundary of the viewport dimension;
-		const safeGap = 20;
-		const newX = initCursorPos.x - width
+		const safeGap = 10;
+		const newX = initCursorPos.x - width;
 		const newY = initCursorPos.y - height;
+
 		if (left && bottom) {
 			setAdjustedDialogPos({
-				x: ((windowDim.width - initCursorPos.x) - width) < 0 ? newX < 0 ? safeGap : newX : initCursorPos.x,
+				x: ((viewportWidth - initCursorPos.x) - width) < 0
+					? newX < 0
+						? safeGap
+						: newX
+					: initCursorPos.x,
 				y: newY < 0 ? safeGap : newY,
 			});
 		} else if (right && top) {
-			setAdjustedDialogPos(adjustedDialogPos => ({
-				...adjustedDialogPos,
-				x: (windowDim.width - initCursorPos.x) < 0 ? windowDim.width - safeGap - width : newX,
+			setAdjustedDialogPos(prevDialogPos => ({
+				...prevDialogPos,
+				x: (viewportWidth - initCursorPos.x) < 0
+					? viewportWidth - safeGap - width
+					: newX,
 			}));
 		} else if (right && bottom) {
 			setAdjustedDialogPos({
-				x: (windowDim.width - initCursorPos.x) < 0 ? windowDim.width - safeGap - width : newX,
+				x: (viewportWidth - initCursorPos.x) < 0
+					? viewportWidth - safeGap - width
+					: newX,
 				y: newY < 0 ? safeGap : newY,
 			});
 		} else {
-			setAdjustedDialogPos(adjustedDialogPos => ({
-				...adjustedDialogPos,
-				x: ((windowDim.width - initCursorPos.x) - width) < 0 ? newX < 0 ? safeGap : newX : initCursorPos.x,
+			setAdjustedDialogPos(prevDialogPos => ({
+				...prevDialogPos,
+				x: ((viewportWidth - initCursorPos.x) - width) < 0
+					? newX < 0
+						? safeGap
+						: newX
+					: initCursorPos.x,
 			}));
 		}
 	}
 
-	function adjustBounds(positionedTo: QuadrantConfirmation) {
-		const { left, right, top, bottom } = positionedTo;
+	function adjustDialogInTheCenter() {
+		const centerX = viewportWidth / 2;
+		const centerY = viewportHeight / 2;
 
-		// Adjust the position of the dialog relative
-		// to the location of the cursor positions
-		if (left && top) {
-			setBounds(bounds => ({
-				...bounds,
-				right: windowDim.width - initCursorPos.x - dialogDim.width,
-				bottom: windowDim.height - initCursorPos.y - dialogDim.height,
-			}));
-		} else if (left && bottom) {
-			setBounds(bounds => ({
-				...bounds,
-				top: initCursorPos.y * -1 + dialogDim.height,
-				bottom: windowDim.height - initCursorPos.y,
-				right: windowDim.width - initCursorPos.x - dialogDim.width,
-			}));
-		} else if (right && top) {
-			setBounds(bounds => ({
-				...bounds,
-				left: dialogDim.width - initCursorPos.x,
-				right: windowDim.width - initCursorPos.x,
-				bottom: windowDim.height - initCursorPos.y - dialogDim.height,
-			}));
-		} else if (right && bottom) {
-			setBounds({
-				right: windowDim.width - initCursorPos.x,
-				left: dialogDim.width - initCursorPos.x,
-				top: initCursorPos.y * -1 + dialogDim.height,
-				bottom: windowDim.height - initCursorPos.y,
-			});
-		}
+		setAdjustedDialogPos({
+			x: centerX - (dialogDim.width / 2),
+			y: centerY - (dialogDim.height / 2),
+		});
 	}
 
 	useEffect(() => {
@@ -131,10 +104,30 @@ export default function useDialogAdjuster({
 	}, [adjustedDialogPos]);
 
 	useEffect(() => {
+		const maxMobileDeviceWidlth = 768;
+		const bufferZone = viewportWidth * 0.10;
+		const halfScreenWidth = viewportWidth / 2;
 		const quadrantConfirmations = positionedTo(initCursorPos);
-		adjustDialogPosition(quadrantConfirmations);
-		adjustBounds(quadrantConfirmations);
-	}, [windowDim, initCursorPos, isPosAdjusted]);
+
+		// The buffer zone refers to the central area of the app where
+		// the dialog might overlap if dialog width exceeds half the viewport width.
+		// This determines if the user's click is within this buffer zone.
+		const isBufferZoneClicked = dialogDim.width > halfScreenWidth
+			&& (initCursorPos.x > halfScreenWidth - bufferZone
+				&& initCursorPos.x < halfScreenWidth + bufferZone);
+
+		// For mobile devices, the dialog must always be centered
+		if (viewportWidth <= maxMobileDeviceWidlth) {
+			adjustDialogInTheCenter();
+			computeCenteredBounds();
+		} else if (isBufferZoneClicked) {
+			adjustDialogInTheCenter();
+			computeCenteredBounds();
+		} else {
+			adjustDialogPosition(quadrantConfirmations);
+			computeBounds(quadrantConfirmations);
+		}
+	}, [viewportDim, initCursorPos, isPosAdjusted]);
 
 	return { adjustedDialogPos, bounds, isPosAdjusted };
 }
