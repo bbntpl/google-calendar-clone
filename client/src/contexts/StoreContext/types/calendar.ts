@@ -1,5 +1,9 @@
 import { ColorOption } from '../../../util/color-options';
-import { UserAction, UserActionAddMultiplePayload } from '../index.model';
+import {
+	ExtractPayload,
+	UserAction,
+	UserActionAddMultiplePayload,
+} from '../index.model';
 
 export type CalendarType = 'default' | 'holiday';
 export interface CalendarItem {
@@ -22,6 +26,8 @@ export type Calendar = CalendarItem | HolidayCalendarItem;
 type CalendarId = {
 	id: Calendar['id'];
 }
+
+export type CalendarPayloads = ExtractPayload<CalendarListActions>;
 
 export type CalendarListActions =
 	| { type: UserAction.ADD, payload: Calendar }

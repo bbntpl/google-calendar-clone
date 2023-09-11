@@ -1,6 +1,6 @@
 
 import { DateUnits } from '../../../contexts/CalendarConfigContext/index.model';
-import { Schedule } from '../../../contexts/StoreContext/types/schedule';
+import { Schedule, Task, Event } from '../../../contexts/StoreContext/types/schedule';
 
 import '../styles.scss';
 
@@ -16,6 +16,15 @@ interface TimeRowProps {
 	dateValues: DateUnits
 	filteredSchedulesByTime: Schedule[] | []
 }
+
+type SlotAdjustmentProps = {
+	width: number;
+	left: number;
+}
+
+type AdjustedEvent = Event & SlotAdjustmentProps
+type AdjustedTask = Task & SlotAdjustmentProps
+export type AdjustedSchedule = AdjustedEvent | AdjustedTask;
 
 export default function TimeRow(props: TimeRowProps) {
 	const {
@@ -35,6 +44,58 @@ export default function TimeRow(props: TimeRowProps) {
 		setDefaultDateTime,
 	} = useCalendarConfigUpdater();
 
+	const adjustSlotPositions = (schedules: Schedule[]): AdjustedSchedule[] => {
+		// Ascendingly sort schedules by start time then end time
+		const sortedSchedules = [...schedules].sort((a, b) => {
+			if (a.dateTime.time.start !== b.dateTime.time.start) {
+				return a.dateTime.time.start - b.dateTime.time.start;
+			}
+			return a.dateTime.time.end - b.dateTime.time.end;
+		});
+
+		const baseWidth = 98;
+		// const overlapReduction = 3;
+
+		const adjustedSchedules: AdjustedSchedule[]
+			= sortedSchedules.map(schedule => ({
+				...schedule,
+				width: baseWidth,
+				left: 0,
+			}));
+
+
+		for (let currentIndex = 0; currentIndex < adjustedSchedules.length; currentIndex++) {
+			const currentSchedule = adjustedSchedules[currentIndex];
+			const overlappingSchedules: AdjustedSchedule[] = [currentSchedule];
+
+			for (let comparedIndex = 0; comparedIndex < adjustedSchedules.length; comparedIndex++) {
+				const comparedSchedule = adjustedSchedules[comparedIndex];
+				const isScheduleNotCurrent = comparedSchedule !== currentSchedule;
+				const isComparedScheduleOverlapping =
+					comparedSchedule.dateTime.time.start < currentSchedule.dateTime.time.end &&
+					comparedSchedule.dateTime.time.end > currentSchedule.dateTime.time.start
+
+				if (isScheduleNotCurrent && isComparedScheduleOverlapping) {
+					overlappingSchedules.push(comparedSchedule);
+				}
+			}
+
+			const width = baseWidth / overlappingSchedules.length;
+			// const numberOfOverlaps = overlappingSchedules.length - 1;
+			// const widthReduction = overlapReduction * numberOfOverlaps;
+			// const reducedWidth = baseWidth - widthReduction;
+
+			overlappingSchedules.forEach((schedule, index) => {
+				schedule.width = width;
+				schedule.left = index * width;
+			});
+		}
+
+		return adjustedSchedules;
+	}
+
+
+	const adjustedSchedules = adjustSlotPositions(filteredSchedulesByTime);
 	return (
 		<div className='calendar-time__row'>
 			{
@@ -57,11 +118,11 @@ export default function TimeRow(props: TimeRowProps) {
 				}}
 			>
 				{
-					filteredSchedulesByTime.map((schedule) => {
+					adjustedSchedules.map((schedule) => {
 						return <Slot
 							key={`slot-${schedule.id}`}
 							stringifiedDate={convertDateUnitsToString(dateValues)}
-							scheduleProps={schedule}
+							schedule={schedule}
 						/>
 					})
 				}

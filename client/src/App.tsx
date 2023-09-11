@@ -5,26 +5,40 @@ import SettingsPanel from './components/SettingsPanel/index';
 import MainContent from './components/MainContent/index';
 
 import { useAppConfig } from './contexts/AppConfigContext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useStore } from './contexts/StoreContext';
 
 function App(): JSX.Element {
 	const { visibilities } = useAppConfig();
-	const [isInitialDataFetched, setIsInitialDataFetched]
-		= useState<boolean>(false);
+	const { status } = useStore();
+	const [isInitialLoad, setIsInitialLoad]
+		= useState<boolean>(true);
 
-	const toggleIsDataFetched = () => {
-		setIsInitialDataFetched(prevState => !prevState);
-	}	
+	useEffect(() => {
+		const {
+			isExternalEventsInitialized,
+			isFetchedDataInitialized,
+		} = status;
+
+		// If required dataset is initialized then unmount initial loading component
+		const storeIsReady = isExternalEventsInitialized && isFetchedDataInitialized;
+		const storeIsInResetMode = !isExternalEventsInitialized && !isFetchedDataInitialized;
+		if (storeIsReady && isInitialLoad) {
+			console.log('initial load component is unmounted');
+			setIsInitialLoad(false);
+		}
+		if (storeIsInResetMode && !isInitialLoad) {
+			console.log('initial loading component gets mounted again');
+			setIsInitialLoad(true);
+		}
+	}, [status])
 
 	return (
 		<div className='app'>
 			{
 				visibilities.settings
 					? <SettingsPanel />
-					: <MainContent
-						isInitialDataFetched={isInitialDataFetched}
-						toggleIsDataFetched={toggleIsDataFetched}
-					/>
+					: <MainContent isInitialLoad={isInitialLoad} />
 			}
 		</div>
 	);

@@ -5,103 +5,51 @@ import {
   useEffect,
   useMemo,
   useReducer,
+  useState,
 } from 'react';
 
 import * as StoreModel from './index.model';
 import * as GlobalContextTypes from '../index.model';
 import { Schedule } from './types/schedule';
 
-import { useFirebaseAuth } from '../FirebaseAuthContext';
+import { isInitial, isUser, useFirebaseAuth } from '../FirebaseAuthContext';
 import calendarListReducer from './reducers/calendar-reducer';
 import scheduleReducer from './reducers/schedule-reducer';
+import { Calendar } from './types/calendar';
 
-import useStoreData from './hooks/useFetchStoredData';
-import { uniqueID } from '../../util/reusable-funcs';
-import { getColorOption, getRandomColorOption } from '../../util/color-options';
-import { Calendar, CalendarType } from './types/calendar';
-import { has } from '../../util/local-storage';
+import { retrieveDocs } from '../../functions/firestore/retrieve-data';
+import { get } from '../../util/local-storage';
+import { useInitializeCalendars } from './hooks/useInitializeCalendars';
 
 const StoreContext =
   createContext<StoreModel.ContextState | null>(null);
-
 const StoreDispatchContext =
   createContext<StoreModel.DispatchContextState | null>(null);
 
 const localStorageNamespace = 'gccbvrbryn445-storage';
 
-export const getLocalStorageNamespace = () => localStorageNamespace;
-
-const initialCalendars: Array<Calendar> = [
-  {
-    id: uniqueID(),
-    name: 'Your Calendar',
-    colorOption: getColorOption(),
-    selected: true,
-    removable: false,
-    type: 'default' as CalendarType,
-  },
-  {
-    id: uniqueID(),
-    name: 'Holidays in United States',
-    colorOption: getRandomColorOption(),
-    selected: true,
-    removable: true,
-    type: 'holiday' as CalendarType,
-    timeZone: 'UTC',
-    description: 'Holidays and Observances in United States',
-    region: 'en.usa',
-  },
-];
+const initialStatus: StoreModel.StoreStatus = {
+  isUserChanged: false, // if user context is not 'INITIAL' anymore
+  isFetchedDataInitialized: false,
+  isCalendarsInitialized: false,
+  isExternalEventsInitialized: false,
+};
 
 export default function StoreProvider({ children }:
   GlobalContextTypes.ContextProviderProps):
   JSX.Element {
   const user = useFirebaseAuth();
-  const fetchedData = useStoreData({ user, localStorageNamespace });
   const [savedSchedules, dispatchSchedules] = useReducer(scheduleReducer, [])
   const [calendars, dispatchCalendars] = useReducer(calendarListReducer, []);
+  // If user is either null or User then the user is changed
+  const [status, setStatus] = useState<StoreModel.StoreStatus>(initialStatus);
 
-  const initializeCalendars = () => {
-    dispatchCalendars({
-      type: StoreModel.UserAction.ADD_MULTIPLE,
-      payload: {
-        addedItems: initialCalendars,
-        whereTo: 'both',
-      },
-    })
-  }
-
-  const replaceCalendars = (arr: Calendar[]) => {
-    dispatchCalendars({
-      type: StoreModel.UserAction.REPLACE_ALL,
-      payload: arr,
-    });
-  }
-
-  const replaceSchedules = (arr: Schedule[]) => {
-    dispatchSchedules({
-      type: StoreModel.UserAction.REPLACE_ALL,
-      payload: arr,
-    });
-  }
-
-  useEffect(() => {
-    const areCalendarsInLocalStorage = has(`${localStorageNamespace}_calendars`);
-    // Initialize the calendars with default ones if no documents were
-    // fetched from either cloud firestore or local storage
-    if (!fetchedData.isFetching
-      && !areCalendarsInLocalStorage
-      && !calendars.length) {
-      initializeCalendars();
-    }
-  }, [fetchedData.isFetching, calendars])
-
-  useEffect(() => {
-    if (!fetchedData.isFetching) {
-      replaceCalendars(fetchedData.calendars);
-      replaceSchedules(fetchedData.savedSchedules);
-    }
-  }, [user]);
+  useInitializeCalendars({
+    status,
+    localStorageNamespace,
+    setStatus,
+    dispatchCalendars,
+  });
 
   const filteredSchedules = useMemo(() => {
     const calendarIds = calendars
@@ -116,12 +64,118 @@ export default function StoreProvider({ children }:
     savedSchedules,
     calendars,
     filteredSchedules,
+    status,
   }
 
   const dispatchContextValues: StoreModel.DispatchContextState = {
     dispatchSchedules,
     dispatchCalendars,
+    setStatus,
   }
+
+  const saveLocalItemsToCloud = () => {
+    const savedSchedules = get<Array<Schedule>>(`${localStorageNamespace}_savedSchedules`) || [];
+    const calendars = get<Array<Calendar>>(`${localStorageNamespace}_calendars`) || [];
+    dispatchSchedules({
+      type: StoreModel.UserAction.ADD_MULTIPLE,
+      payload: { addedItems: savedSchedules, whereTo: 'storage' },
+    })
+    dispatchCalendars({
+      type: StoreModel.UserAction.ADD_MULTIPLE,
+      payload: { addedItems: calendars, whereTo: 'storage' },
+    })
+
+    return calendars.length > 0;
+  }
+
+  const initializeLocalItems = () => {
+    const savedSchedules = get<Array<Schedule>>(`${localStorageNamespace}_savedSchedules`) || [];
+    const calendars = get<Array<Calendar>>(`${localStorageNamespace}_calendars`) || [];
+    dispatchSchedules({
+      type: StoreModel.UserAction.REPLACE_ALL,
+      payload: savedSchedules,
+    })
+    dispatchCalendars({
+      type: StoreModel.UserAction.REPLACE_ALL,
+      payload: calendars,
+    })
+
+    return calendars.length > 0;
+  }
+
+  function initializeCalendarsAndUpdateStatus(initializeFn: () => boolean) {
+    const isCalendarsInitialized = initializeFn();
+    setStatus(prevStatus => ({
+      ...prevStatus,
+      ...(isCalendarsInitialized ? { isCalendarsInitialized } : {}),
+      isFetchedDataInitialized: true,
+    }));
+  }
+
+  // It monitor changes in the user object and set the isUserChanged 
+  // flag accordingly
+  useEffect(() => {
+    if (isInitial(user)) return;
+    console.log('User has changed to null or User object');
+    setStatus(prevStatus => ({ ...prevStatus, isUserChanged: true }));
+  }, [user])
+
+  // It responds to user changes by resetting various statuses
+  // State user changes when the user signed out or signed in.
+  useEffect(() => {
+    if (!status.isUserChanged) return;
+    console.log('User has signed in/out');
+    setStatus(prevStatus => ({
+      ...prevStatus,
+      isFetchedDataInitialized: false,
+      isCalendarsInitialized: false,
+      isExternalEventsInitialized: false,
+    }))
+  }, [user])
+
+  // It handles data fetching and initialization based on user change and
+  // the first initialization of data when the user has accessed this website
+  useEffect(() => {
+    if (!status.isUserChanged) return;
+    console.log('Initializing the fetched data (either local storage/firestore');
+    if (isUser(user)) {
+      Promise.all([
+        retrieveDocs({
+          collectionName: `${localStorageNamespace}_savedSchedules`,
+          userId: user.uid,
+        }),
+        retrieveDocs({
+          collectionName: `${localStorageNamespace}_calendars`,
+          userId: user.uid,
+        }),
+      ]).then(([fetchedSchedules, fetchedCalendars]) => {
+        if (fetchedCalendars && fetchedCalendars.length === 0) {
+          initializeCalendarsAndUpdateStatus(saveLocalItemsToCloud);
+        } else {
+          if (fetchedSchedules && fetchedCalendars) {
+            dispatchSchedules({
+              type: StoreModel.UserAction.REPLACE_ALL,
+              payload: fetchedSchedules as Schedule[],
+            })
+            dispatchCalendars({
+              type: StoreModel.UserAction.REPLACE_ALL,
+              payload: fetchedCalendars as Calendar[],
+            })
+            setStatus(prevStatus => ({
+              ...prevStatus,
+              isCalendarsInitialized: true,
+              isFetchedDataInitialized: true,
+            }));
+          }
+        }
+        setStatus(prevStatus => ({ ...prevStatus, isFetchedDataInitialized: true }));
+      }).catch(error => {
+        console.error('Error retrieving documents:', error);
+      });
+    } else {
+      initializeCalendarsAndUpdateStatus(initializeLocalItems);
+    }
+  }, [user, status.isUserChanged]);
 
   return (
     <StoreContext.Provider value={contextValues}>
@@ -139,7 +193,6 @@ export function useStore() {
   }
   return context;
 }
-
 export function useStoreUpdater() {
   const context = useContext(StoreDispatchContext);
   if (!context) {
@@ -147,3 +200,4 @@ export function useStoreUpdater() {
   }
   return context;
 }
+export const getLocalStorageNamespace = () => localStorageNamespace;

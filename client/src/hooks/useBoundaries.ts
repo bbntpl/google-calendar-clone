@@ -8,7 +8,6 @@ export default function useBoundaries(props: UseBoundariesProps) {
 	const { dialogDim, viewportDim, initCursorPos } = props;
 	const { width: viewportWidth, height: viewportHeight } = viewportDim;
 
-	console.log('useDialogAdjuster')
 	// The movement boundaries of the dialog element
 	const [bounds, setBounds] = useState({
 		// These properties are default left-top cursor position except

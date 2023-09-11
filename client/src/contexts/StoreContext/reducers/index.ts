@@ -65,6 +65,7 @@ export default function executeAction<
 		case UserAction.ADD_MULTIPLE:
 			const { addedItems, whereTo } = action.payload;
 			const addedArr = [...state, ...addedItems] as State[];
+			console.log(addedItems, whereTo);
 			if (whereTo === 'storage' || whereTo === 'both') {
 				if (authenticatedUserId) {
 					addMultipleDocuments({
@@ -79,7 +80,6 @@ export default function executeAction<
 					);
 				}
 			}
-			console.log('Dispatching schedules: ', addedItems);
 			return whereTo === 'memory' || whereTo === 'both'
 				? addedArr : state;
 		case UserAction.EDIT:

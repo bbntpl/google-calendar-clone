@@ -32,7 +32,7 @@ function SlotList(props: SlotListProps) {
 					return <Slot
 						key={`slot-list-item-${index}`}
 						stringifiedDate={convertDateUnitsToString(dateValues)}
-						scheduleProps={schedule}
+						schedule={schedule}
 						scheduleViewPosition='absolute'
 					/>
 				})}
@@ -49,7 +49,7 @@ export default function TimeRowUnset(props: TimeRowProps) {
 
 	const totalHolidayEvents = filteredSchedulesByTime
 		.slice(0, filteredSchedulesByTime.length - 1)
-		.map(event => event.calendarType == 'holiday').length;
+		.filter(event => event.calendarType == 'holiday').length;
 	const totalDefaultSchedules
 		= filteredSchedulesByTime.length - 1 - totalHolidayEvents;
 
@@ -107,7 +107,7 @@ export default function TimeRowUnset(props: TimeRowProps) {
 						return <Slot
 							key={`slot-${schedule.id}`}
 							stringifiedDate={convertDateUnitsToString(dateValues)}
-							scheduleProps={schedule}
+							schedule={schedule}
 						/>
 					})
 				}

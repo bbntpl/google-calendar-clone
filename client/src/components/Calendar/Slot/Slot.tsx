@@ -2,6 +2,7 @@ import {
 	MouseEvent,
 	useState,
 } from 'react';
+import { createPortal } from 'react-dom';
 
 import { getScheduleTimeOptions } from '../../../util/calendar-arrangement';
 import useComponentVisible from '../../../hooks/useComponentVisible';
@@ -9,26 +10,26 @@ import useComponentVisible from '../../../hooks/useComponentVisible';
 import { ScheduleView } from '../../Schedules/View/ScheduleView';
 import Dialog from '../../../lib/Dialog';
 import { DialogProps } from '../../../lib/Dialog/index.model';
-import { Schedule } from '../../../contexts/StoreContext/types/schedule';
 import { useStore } from '../../../contexts/StoreContext';
 import { useAppConfigUpdater } from '../../../contexts/AppConfigContext';
-import { createPortal } from 'react-dom';
+import { AdjustedSchedule } from '../Time/TimeRow';
+import { Schedule } from '../../../contexts/StoreContext/types/schedule';
 
 type SlotProps = {
-	scheduleProps: Schedule
+	schedule: AdjustedSchedule | Schedule;
 	stringifiedDate: string
 	scheduleViewPosition?: DialogProps['stylePosition']
 }
 
 type SlotTitleProps = {
-	scheduleProps: Schedule
+	schedule: AdjustedSchedule | Schedule
 	title: string
 	isHovered: boolean
 }
 
-function SlotTitle({ scheduleProps, title, isHovered }: SlotTitleProps) {
+function SlotTitle({ schedule, title, isHovered }: SlotTitleProps) {
 	const placeholder = title || '(No title)';
-	if ('completed' in scheduleProps && scheduleProps.completed) {
+	if ('completed' in schedule && schedule.completed) {
 		return <s>{placeholder}</s>
 	}
 	return isHovered ? <b>{placeholder}</b> : <>{placeholder}</>;
@@ -36,11 +37,11 @@ function SlotTitle({ scheduleProps, title, isHovered }: SlotTitleProps) {
 
 export default function Slot(props: SlotProps) {
 	const {
-		scheduleProps,
+		schedule,
 		stringifiedDate,
 	} = props;
-	const { calendarId, title, type } = scheduleProps;
-	const { time, date: scheduleDate } = scheduleProps.dateTime;
+	const { calendarId, title, type } = schedule;
+	const { time, date: scheduleDate } = schedule.dateTime;
 	const { start, end } = time;
 	const { calendars } = useStore();
 	const { recordPosition } = useAppConfigUpdater();
@@ -56,7 +57,7 @@ export default function Slot(props: SlotProps) {
 		isDraggable: false,
 		isSelfAdjustable: true,
 		componentProps: {
-			scheduleProps,
+			scheduleProps: schedule,
 			setIsScheduleViewVisible,
 		},
 		Component: ScheduleView,
@@ -80,7 +81,7 @@ export default function Slot(props: SlotProps) {
 
 	const calculateSlotHeight = () => {
 		const defaultHeight = 13;
-		if (scheduleProps.type === 'task') {
+		if (schedule.type === 'task') {
 			return defaultHeight * 2;
 		} else if (start < 0) {
 			return defaultHeight * 3;
@@ -100,16 +101,25 @@ export default function Slot(props: SlotProps) {
 	}
 
 	const associatedCalendar = calendars.find((obj) => obj.id === calendarId);
-	const bgColor = 'colorOption' in scheduleProps
-		? scheduleProps.colorOption.value || associatedCalendar?.colorOption.value
+	const bgColor = 'colorOption' in schedule
+		? schedule.colorOption.value || associatedCalendar?.colorOption.value
 		: associatedCalendar?.colorOption.value
 
-	const slotStyles = {
-		backgroundColor: bgColor,
-		borderLeft: `5px solid ${associatedCalendar?.colorOption.value}`,
-		height: `${calculateSlotHeight()}px`,
-		top: `${calculateTopPosition()}px`,
-		zIndex,
+	const calculateSlotStyles = (schedule: AdjustedSchedule | Schedule) => {
+		const adjustmentStyles: { width?: string, left?: number} = {};
+		if ('width' in schedule && 'left' in schedule) {
+			adjustmentStyles.left = schedule.left;
+			adjustmentStyles.width = `${Math.round(schedule.width || 0)}%`;
+		}
+
+		return {
+			backgroundColor: bgColor,
+			borderLeft: `5px solid ${associatedCalendar?.colorOption.value}`,
+			height: `${calculateSlotHeight()}px`,
+			top: `${calculateTopPosition()}px`,
+			zIndex,
+			...adjustmentStyles,
+		}
 	};
 
 	const handleMouseOut = () => {
@@ -130,7 +140,7 @@ export default function Slot(props: SlotProps) {
 	return (
 		<>
 			<button
-				style={slotStyles}
+				style={calculateSlotStyles(schedule)}
 				className='calendar-slot'
 				onMouseOver={handleMouseOver}
 				onMouseOut={handleMouseOut}
@@ -138,7 +148,11 @@ export default function Slot(props: SlotProps) {
 				ref={linkRef}
 			>
 				<div className='calendar-slot__text'>
-					<SlotTitle scheduleProps={scheduleProps} title={title} isHovered={isHovered} />
+					<SlotTitle
+						schedule={schedule}
+						title={title}
+						isHovered={isHovered}
+					/>
 					{` ${formattedTimeRange()}`}
 				</div>
 			</button>

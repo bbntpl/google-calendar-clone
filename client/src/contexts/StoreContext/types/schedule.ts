@@ -1,6 +1,6 @@
 import { ColorOption } from '../../../util/color-options';
 import { CalendarType } from './calendar';
-import { UserAction, UserActionAddMultiplePayload } from '../index.model';
+import { ExtractPayload, UserAction, UserActionAddMultiplePayload } from '../index.model';
 import { DateTimeInputs } from '../../CalendarConfigContext/index.model';
 
 export interface BaseSchedule {
@@ -45,6 +45,8 @@ export interface EditTask extends OmitScheduleProps {
 export type ScheduleId = {
 	id: Schedule['id']
 }
+
+export type SchedulePayloads = ExtractPayload<ScheduleActions>
 
 export type ScheduleActions =
 	| { type: UserAction.ADD, payload: Schedule }
