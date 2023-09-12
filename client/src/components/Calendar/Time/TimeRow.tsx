@@ -8,6 +8,7 @@ import { convertDateUnitsToString } from '../../../util/calendar-arrangement';
 import Slot from '../Slot/Slot';
 import { useCalendarConfigUpdater } from '../../../contexts/CalendarConfigContext/index';
 import { useAppConfigUpdater } from '../../../contexts/AppConfigContext';
+import useScheduleLayout from '../../../hooks/useScheduleLayout';
 
 interface TimeRowProps {
 	dayIndex: number,
@@ -18,8 +19,8 @@ interface TimeRowProps {
 }
 
 type SlotAdjustmentProps = {
-	width: number;
-	left: number;
+	width: number | string;
+	left: number | string;
 }
 
 type AdjustedEvent = Event & SlotAdjustmentProps
@@ -43,57 +44,9 @@ export default function TimeRow(props: TimeRowProps) {
 		setIsScheduleDialogVisible,
 		setDefaultDateTime,
 	} = useCalendarConfigUpdater();
-
-	const adjustSlotPositions = (schedules: Schedule[]): AdjustedSchedule[] => {
-		// Ascendingly sort schedules by start time then end time
-		const sortedSchedules = [...schedules].sort((a, b) => {
-			if (a.dateTime.time.start !== b.dateTime.time.start) {
-				return a.dateTime.time.start - b.dateTime.time.start;
-			}
-			return a.dateTime.time.end - b.dateTime.time.end;
-		});
-
-		const baseWidth = 98;
-		// const overlapReduction = 3;
-
-		const adjustedSchedules: AdjustedSchedule[]
-			= sortedSchedules.map(schedule => ({
-				...schedule,
-				width: baseWidth,
-				left: 0,
-			}));
-
-
-		for (let currentIndex = 0; currentIndex < adjustedSchedules.length; currentIndex++) {
-			const currentSchedule = adjustedSchedules[currentIndex];
-			const overlappingSchedules: AdjustedSchedule[] = [currentSchedule];
-
-			for (let comparedIndex = 0; comparedIndex < adjustedSchedules.length; comparedIndex++) {
-				const comparedSchedule = adjustedSchedules[comparedIndex];
-				const isScheduleNotCurrent = comparedSchedule !== currentSchedule;
-				const isComparedScheduleOverlapping =
-					comparedSchedule.dateTime.time.start < currentSchedule.dateTime.time.end &&
-					comparedSchedule.dateTime.time.end > currentSchedule.dateTime.time.start
-
-				if (isScheduleNotCurrent && isComparedScheduleOverlapping) {
-					overlappingSchedules.push(comparedSchedule);
-				}
-			}
-
-			const width = baseWidth / overlappingSchedules.length;
-			// const numberOfOverlaps = overlappingSchedules.length - 1;
-			// const widthReduction = overlapReduction * numberOfOverlaps;
-			// const reducedWidth = baseWidth - widthReduction;
-
-			overlappingSchedules.forEach((schedule, index) => {
-				schedule.width = width;
-				schedule.left = index * width;
-			});
-		}
-
-		return adjustedSchedules;
-	}
-
+	const {
+		adjustSlotPositions,
+	} = useScheduleLayout();
 
 	const adjustedSchedules = adjustSlotPositions(filteredSchedulesByTime);
 	return (

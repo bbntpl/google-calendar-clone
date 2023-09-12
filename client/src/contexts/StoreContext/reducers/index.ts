@@ -65,7 +65,6 @@ export default function executeAction<
 		case UserAction.ADD_MULTIPLE:
 			const { addedItems, whereTo } = action.payload;
 			const addedArr = [...state, ...addedItems] as State[];
-			console.log(addedItems, whereTo);
 			if (whereTo === 'storage' || whereTo === 'both') {
 				if (authenticatedUserId) {
 					addMultipleDocuments({

@@ -45,7 +45,6 @@ export default function Slot(props: SlotProps) {
 	const { start, end } = time;
 	const { calendars } = useStore();
 	const { recordPosition } = useAppConfigUpdater();
-	const [zIndex, setZIndex] = useState(1000);
 	const [isHovered, setIsHovered] = useState(false);
 	const [
 		scheduleViewRef,
@@ -106,10 +105,10 @@ export default function Slot(props: SlotProps) {
 		: associatedCalendar?.colorOption.value
 
 	const calculateSlotStyles = (schedule: AdjustedSchedule | Schedule) => {
-		const adjustmentStyles: { width?: string, left?: number} = {};
+		const adjustmentStyles: { width?: string | number, left?: string | number } = {};
 		if ('width' in schedule && 'left' in schedule) {
 			adjustmentStyles.left = schedule.left;
-			adjustmentStyles.width = `${Math.round(schedule.width || 0)}%`;
+			adjustmentStyles.width = schedule.width;
 		}
 
 		return {
@@ -117,18 +116,16 @@ export default function Slot(props: SlotProps) {
 			borderLeft: `5px solid ${associatedCalendar?.colorOption.value}`,
 			height: `${calculateSlotHeight()}px`,
 			top: `${calculateTopPosition()}px`,
-			zIndex,
+			zIndex: 800,
 			...adjustmentStyles,
 		}
 	};
 
 	const handleMouseOut = () => {
-		setZIndex(1000);
 		setIsHovered(false);
 	}
 
 	const handleMouseOver = () => {
-		setZIndex(2000);
 		setIsHovered(true);
 	}
 
@@ -137,6 +134,7 @@ export default function Slot(props: SlotProps) {
 		setIsScheduleViewVisible(visible => !visible)
 	}
 
+	console.log(calculateSlotStyles(schedule));
 	return (
 		<>
 			<button
