@@ -4,7 +4,7 @@ import { GoogleAuthProvider, UserCredential, signInWithPopup } from 'firebase/au
 import UserImage from '../../../assets/icons/user.png';
 
 import { auth } from '../../../firebase.config';
-import { useFirebaseAuth } from '../../../contexts/FirebaseAuthContext';
+import { isUser, useFirebaseAuth } from '../../../contexts/FirebaseAuthContext';
 import { getLocalStorageNamespace } from '../../../contexts/StoreContext';
 import useComponentVisible from '../../../hooks/useComponentVisible';
 import {
@@ -33,7 +33,7 @@ export default function UserAuth() {
   ] = useComponentVisible();
 
   useEffect(() => {
-    if (user && user.photoURL) {
+    if (isUser(user) && user.photoURL) {
       setPhotoSrc(user.photoURL);
     }
   }, [user])
@@ -48,7 +48,7 @@ export default function UserAuth() {
             remove(`${getLocalStorageNamespace()}_isUserAuthenticated`);
           })
       },
-      userEmail: user?.email,
+      userEmail: isUser(user) ? user?.email : null,
     },
     Component: AuthDialogContent,
     delta: { x: 0, y: 0 },

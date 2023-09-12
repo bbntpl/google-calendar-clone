@@ -79,7 +79,6 @@ export default function executeAction<
 					);
 				}
 			}
-			console.log('Dispatching schedules: ', addedItems);
 			return whereTo === 'memory' || whereTo === 'both'
 				? addedArr : state;
 		case UserAction.EDIT:

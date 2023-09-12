@@ -1,6 +1,6 @@
 
 import { DateUnits } from '../../../contexts/CalendarConfigContext/index.model';
-import { Schedule } from '../../../contexts/StoreContext/types/schedule';
+import { Schedule, Task, Event } from '../../../contexts/StoreContext/types/schedule';
 
 import '../styles.scss';
 
@@ -8,6 +8,7 @@ import { convertDateUnitsToString } from '../../../util/calendar-arrangement';
 import Slot from '../Slot/Slot';
 import { useCalendarConfigUpdater } from '../../../contexts/CalendarConfigContext/index';
 import { useAppConfigUpdater } from '../../../contexts/AppConfigContext';
+import useScheduleLayout from '../../../hooks/useScheduleLayout';
 
 interface TimeRowProps {
 	dayIndex: number,
@@ -16,6 +17,15 @@ interface TimeRowProps {
 	dateValues: DateUnits
 	filteredSchedulesByTime: Schedule[] | []
 }
+
+type SlotAdjustmentProps = {
+	width: number | string;
+	left: number | string;
+}
+
+type AdjustedEvent = Event & SlotAdjustmentProps
+type AdjustedTask = Task & SlotAdjustmentProps
+export type AdjustedSchedule = AdjustedEvent | AdjustedTask;
 
 export default function TimeRow(props: TimeRowProps) {
 	const {
@@ -34,7 +44,11 @@ export default function TimeRow(props: TimeRowProps) {
 		setIsScheduleDialogVisible,
 		setDefaultDateTime,
 	} = useCalendarConfigUpdater();
+	const {
+		adjustSlotPositions,
+	} = useScheduleLayout();
 
+	const adjustedSchedules = adjustSlotPositions(filteredSchedulesByTime);
 	return (
 		<div className='calendar-time__row'>
 			{
@@ -57,11 +71,11 @@ export default function TimeRow(props: TimeRowProps) {
 				}}
 			>
 				{
-					filteredSchedulesByTime.map((schedule) => {
+					adjustedSchedules.map((schedule) => {
 						return <Slot
 							key={`slot-${schedule.id}`}
 							stringifiedDate={convertDateUnitsToString(dateValues)}
-							scheduleProps={schedule}
+							schedule={schedule}
 						/>
 					})
 				}

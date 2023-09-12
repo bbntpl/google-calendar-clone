@@ -1,4 +1,4 @@
-import { Dispatch } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 
 import { Calendar, CalendarListActions } from './types/calendar'
 import { Schedule, ScheduleActions } from './types/schedule'
@@ -13,6 +13,18 @@ export enum UserAction {
 	REPLACE_ALL = 'REPLACE_ALL'
 }
 
+export type StoreStatus = {
+	isUserChanged: boolean
+	isCalendarsInitialized: boolean
+	isFetchedDataInitialized: boolean
+	isExternalEventsInitialized: boolean
+};
+
+export interface SaveToFirestoreProps<Actions> {
+	dispatchFn: (value: Actions) => void
+	action: Actions
+}
+
 export interface StoreState {
 	savedSchedules: Array<Schedule> | []
 	calendars: Array<Calendar> | []
@@ -20,6 +32,7 @@ export interface StoreState {
 
 export interface ContextState extends StoreState {
 	filteredSchedules: Array<Schedule> | []
+	status: StoreStatus
 }
 
 export type WhereToAddItems = 'memory' | 'both' | 'storage'
@@ -29,7 +42,10 @@ export type UserActionAddMultiplePayload = {
 	whereTo?: WhereToAddItems
 }
 
+export type ExtractPayload<Action> = Action extends { payload: infer P } ? P : never;
+
 export interface DispatchContextState {
 	dispatchSchedules: Dispatch<ScheduleActions>
 	dispatchCalendars: Dispatch<CalendarListActions>
+	setStatus: Dispatch<SetStateAction<StoreStatus>>
 }

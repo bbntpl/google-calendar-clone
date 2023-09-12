@@ -82,7 +82,8 @@
 					{
 						"max": 22
 					}
-				]
+				],
+				"react/prop-types": "off"
 			}
 		}
 	]
