@@ -15,7 +15,8 @@
     "allowJs": true,
   },
   "include": [
-    "**.ts"
+    "**.ts",
+    "api/server.ts"
   ],
   "exclude": [
     "/data/**."
