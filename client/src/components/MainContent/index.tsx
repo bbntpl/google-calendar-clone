@@ -101,7 +101,6 @@ export default function MainContent(props: MainContentProps):
             whereTo: 'memory',
           },
         });
-        console.log('Fetched holiday schedules are stored in memory', schedules.length, ' items');
       })
       .catch(error => {
         console.error('Error while fetching external holiday events:', error);

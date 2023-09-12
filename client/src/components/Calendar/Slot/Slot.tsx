@@ -134,7 +134,6 @@ export default function Slot(props: SlotProps) {
 		setIsScheduleViewVisible(visible => !visible)
 	}
 
-	console.log(calculateSlotStyles(schedule));
 	return (
 		<>
 			<button

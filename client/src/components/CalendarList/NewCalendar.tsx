@@ -48,7 +48,9 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 	const addCalendar = () => {
 		dispatchCalendars({
 			type: UserAction.ADD,
-			payload: { ...newCalendar, id: uniqueID() },
+			payload: {
+				addedItem: { ...newCalendar, id: uniqueID() },
+			},
 		})
 	}
 

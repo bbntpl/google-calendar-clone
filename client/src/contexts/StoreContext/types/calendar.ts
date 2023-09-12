@@ -3,6 +3,7 @@ import {
 	ExtractPayload,
 	UserAction,
 	UserActionAddMultiplePayload,
+	UserActionAddPayload,
 } from '../index.model';
 
 export type CalendarType = 'default' | 'holiday';
@@ -30,7 +31,7 @@ type CalendarId = {
 export type CalendarPayloads = ExtractPayload<CalendarListActions>;
 
 export type CalendarListActions =
-	| { type: UserAction.ADD, payload: Calendar }
+	| { type: UserAction.ADD, payload: UserActionAddPayload }
 	| { type: UserAction.ADD_MULTIPLE, payload: UserActionAddMultiplePayload }
 	| { type: UserAction.EDIT, payload: Calendar | Partial<Calendar> }
 	| { type: UserAction.REMOVE, payload: CalendarId }

@@ -37,6 +37,11 @@ export interface ContextState extends StoreState {
 
 export type WhereToAddItems = 'memory' | 'both' | 'storage'
 
+export type UserActionAddPayload = {
+	addedItem: Schedule | Calendar
+	whereTo?: WhereToAddItems
+}
+
 export type UserActionAddMultiplePayload = {
 	addedItems: Array<Schedule | Calendar>
 	whereTo?: WhereToAddItems

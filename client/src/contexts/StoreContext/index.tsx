@@ -116,7 +116,6 @@ export default function StoreProvider({ children }:
   // flag accordingly
   useEffect(() => {
     if (isInitial(user)) return;
-    console.log('User has changed to null or User object');
     setStatus(prevStatus => ({ ...prevStatus, isUserChanged: true }));
   }, [user])
 
@@ -124,7 +123,6 @@ export default function StoreProvider({ children }:
   // State user changes when the user signed out or signed in.
   useEffect(() => {
     if (!status.isUserChanged) return;
-    console.log('User has signed in/out');
     setStatus(prevStatus => ({
       ...prevStatus,
       isFetchedDataInitialized: false,
@@ -137,7 +135,6 @@ export default function StoreProvider({ children }:
   // the first initialization of data when the user has accessed this website
   useEffect(() => {
     if (!status.isUserChanged) return;
-    console.log('Initializing the fetched data (either local storage/firestore');
     if (isUser(user)) {
       Promise.all([
         retrieveDocs({

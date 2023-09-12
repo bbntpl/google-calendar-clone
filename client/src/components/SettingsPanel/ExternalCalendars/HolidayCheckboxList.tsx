@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import { useEffect, useState } from 'react';
 
 import { UserAction } from '../../../contexts/StoreContext/index.model';
@@ -58,11 +59,14 @@ export default function HolidayCheckboxList() {
           const calendarId = uniqueID();
           dispatchCalendars({
             type: UserAction.ADD,
-            payload: convertExternalEventsToCalendar({
-              calendarId,
-              regionCode: newlyAddedRegion,
-              holidayCalendar,
-            }),
+            payload: {
+              addedItem: convertExternalEventsToCalendar({
+                calendarId,
+                regionCode: newlyAddedRegion,
+                holidayCalendar,
+              }),
+              whereTo: 'both',
+            },
           })
 
           if (holidayCalendar && holidayCalendar.items) {
@@ -70,7 +74,10 @@ export default function HolidayCheckboxList() {
               const eventWithCalendarId = { ...event, calendarId }
               dispatchSchedules({
                 type: UserAction.ADD,
-                payload: convertExternalEventToSchedule(eventWithCalendarId),
+                payload: {
+                  addedItem: convertExternalEventToSchedule(eventWithCalendarId),
+                  whereTo: 'memory',
+                },
               })
             })
           }
@@ -90,7 +97,7 @@ export default function HolidayCheckboxList() {
             selectedRegionalHolidays.map(rh => rh.region);
           return mappedRegionalHolidaysCode.includes(region);
         })[0] || [];
-        
+
       const calendarEventsIds = savedSchedules
         .filter(schedule => schedule.calendarId === newlyRemovedRegion.id)
         .map(schedule => ({ id: schedule.id }));

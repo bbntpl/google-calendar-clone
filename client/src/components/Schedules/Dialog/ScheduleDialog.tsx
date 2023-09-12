@@ -99,8 +99,10 @@ export default function ScheduleDialog(props: ScheduleDialogProps) {
 	const addSchedule = () => {
 		dispatchSchedules({
 			type: UserAction.ADD,
-			payload: selectedScheduleType === 'event'
-				? eventProps : taskProps,
+			payload: {
+				addedItem: selectedScheduleType === 'event'
+					? eventProps : taskProps,
+			},
 		});
 	}
 

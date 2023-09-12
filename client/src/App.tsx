@@ -24,11 +24,9 @@ function App(): JSX.Element {
 		const storeIsReady = isExternalEventsInitialized && isFetchedDataInitialized;
 		const storeIsInResetMode = !isExternalEventsInitialized && !isFetchedDataInitialized;
 		if (storeIsReady && isInitialLoad) {
-			console.log('initial load component is unmounted');
 			setIsInitialLoad(false);
 		}
 		if (storeIsInResetMode && !isInitialLoad) {
-			console.log('initial loading component gets mounted again');
 			setIsInitialLoad(true);
 		}
 	}, [status])

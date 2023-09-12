@@ -1,6 +1,6 @@
 import { ColorOption } from '../../../util/color-options';
 import { CalendarType } from './calendar';
-import { ExtractPayload, UserAction, UserActionAddMultiplePayload } from '../index.model';
+import { ExtractPayload, UserAction, UserActionAddMultiplePayload, UserActionAddPayload } from '../index.model';
 import { DateTimeInputs } from '../../CalendarConfigContext/index.model';
 
 export interface BaseSchedule {
@@ -49,7 +49,7 @@ export type ScheduleId = {
 export type SchedulePayloads = ExtractPayload<ScheduleActions>
 
 export type ScheduleActions =
-	| { type: UserAction.ADD, payload: Schedule }
+	| { type: UserAction.ADD, payload: UserActionAddPayload }
 	| { type: UserAction.ADD_MULTIPLE, payload: UserActionAddMultiplePayload }
 	| { type: UserAction.EDIT, payload: SchedulePayload | Partial<Schedule> }
 	| { type: UserAction.REMOVE, payload: ScheduleId }

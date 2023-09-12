@@ -39,7 +39,7 @@ export function useInitializeCalendars(props: UseInitializeCalendarsProps) {
 			isUserChanged &&
 			(!isCalendarsInitialized && isFetchedDataInitialized) &&
 			!hasCalendars) {
-			console.log('The initial calendars are getting initialized');
+
 			// Initialize the calendars with default ones if no documents were
 			// fetched from either cloud firestore or local storage
 			const initialCalendars: Array<Calendar> = [

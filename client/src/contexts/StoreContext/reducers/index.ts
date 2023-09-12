@@ -48,20 +48,25 @@ export default function executeAction<
 
 	switch (action.type) {
 		case UserAction.ADD:
-			if (authenticatedUserId) {
-				addDocument({
-					collectionName: propKey,
-					item: action.payload,
-					userId: authenticatedUserId,
-				})
-			} else {
-				appendItemToArray<State>(
-					propKey,
-					action.payload as State,
-				);
+			const { addedItem } = action.payload;
+			const addedObject = [...state, addedItem as State];
+			if (action.payload.whereTo === 'storage' || action.payload.whereTo === 'both') {
+				if (authenticatedUserId) {
+					addDocument({
+						collectionName: propKey,
+						item: addedItem,
+						userId: authenticatedUserId,
+					})
+				} else {
+					appendItemToArray<State>(
+						propKey,
+						addedItem as State,
+					);
+				}
 			}
 
-			return [...state, action.payload as State];
+			return action.payload.whereTo === 'memory' || action.payload.whereTo === 'both'
+				? addedObject : state;
 		case UserAction.ADD_MULTIPLE:
 			const { addedItems, whereTo } = action.payload;
 			const addedArr = [...state, ...addedItems] as State[];

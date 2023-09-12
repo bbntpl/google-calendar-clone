@@ -77,12 +77,16 @@ export default function CalendarList({
 		} else if (areThereTasks && !taskCalendar) {
 			dispatchCalendars({
 				type: UserAction.ADD,
-				payload: Object.assign({}, calendarItemProps, { name: 'Tasks' }),
+				payload: {
+					addedItem: Object.assign({}, calendarItemProps, { name: 'Tasks' }),
+				},
 			});
 		} else if (areThereEvents && !evtCalendar) {
 			dispatchCalendars({
 				type: UserAction.ADD,
-				payload: Object.assign({}, calendarItemProps, { name: 'Events' }),
+				payload: {
+					addedItem: Object.assign({}, calendarItemProps, { name: 'Events' }),
+				},
 			});
 		}
 	}, [calendars, savedSchedules]);
