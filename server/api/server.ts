@@ -15,8 +15,8 @@ const {
 const PORT = 5000;
 const app = express();
 
-app.use(cors());
 app.use(express.json());
+app.use(cors());
 
 // Get the available holiday events based on the region value.
 // By default the region value is en.usa. 

@@ -9,7 +9,7 @@
 	},
 	"scripts": {
 		"dev": "ts-node-dev server.ts --env REACT_APP_ENV_MODE=development",
-		"start": "ts-node server.ts"
+		"start": "ts-node api/server.ts"
 	},
 	"dependencies": {
 		"@googleapis/calendar": "^9.3.1",
