@@ -3,15 +3,15 @@ Written in TypeScript.
 
 ## Available Features
 
-- [x] CRUD w/ Calendars
-- [x] User interaction w/ Mini Calendar
-- [x] CRUD w/ Schedules: Event and Task
+- [x] Calendars
+- [x] Mini Calendar
+- [x] Schedules: Event and Task
 - [x] Calendar View Selection: Day, Week, and last 4 days
 - [x] Draggable dialog w/ readjustable position
 - [X] Time Indicator (fully displayed in the current day column)
 - [x] External Holiday Events
 - [x] User Settings
-- [x] Google Authentication
+- [x] User Authentication with Firebase (Google account)
 - [X] Firebase Firestore
 
 ### Required configuration for .env Variables
@@ -30,8 +30,8 @@ REACT_APP_HOLIDAY_API_URL=https://your-holiday-api-url.com
 3. Create the following .env variables under /server:
 
 - `API_KEY`: Generate your API key [here](https://console.cloud.google.com/)
-- `CALENDAR_REGION`: If you're unsure about the value to initialize, use the following value: `en.usa`. To find the available options, refer to the list of supported regions in the `./server/data/google-calendar-list.txt` file.
 - `CALENDAR_ID`: By default, the value should be always `holiday@group.v.calendar.google.com`
+- `CALENDAR_REGION (optional)`: If you're unsure about the value to initialize, use the following value: `en.usa`. To find the available options, refer to the list of supported regions in the `./server/data/google-calendar-list.txt` file.
 
 _For example_
 
