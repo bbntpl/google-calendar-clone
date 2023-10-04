@@ -14,8 +14,6 @@ export function CurrentTimeIndicator({ parentHeight, date }: CurrentTimeIndicato
 	const MINUTE_IN_MS = 60 * 1000;
 	const hourHeight = parentHeight / 24;
 
-
-
 	const computePosition = () => {
 		const now = dayjs();
 		const currentHour = now.hour();
@@ -25,32 +23,27 @@ export function CurrentTimeIndicator({ parentHeight, date }: CurrentTimeIndicato
 
 	const [topPosition, setTopPosition] = useState(computePosition());
 
-	useEffect(() => {
-		const updateTimeUntilNextDay = () => {
-			const now = dayjs();
-			const endOfDay = now.endOf('day');
-			return endOfDay.diff(now, 'millisecond');
-		};
 
+
+	useEffect(() => {
 		// Compute the position of indicator every minute in real-time
 		const refreshIndicatorPos = () => {
 			const now = dayjs();
 			const isMidnight = now.hour() === 0 && now.minute() === 0;
-
 			if (isMidnight) {
 				setTopPosition(0);
 			} else {
 				setTopPosition(computePosition());
 			}
 
-			const nextUpdate = isMidnight ? MINUTE_IN_MS : updateTimeUntilNextDay();
-			intervalRef.current = window.setTimeout(refreshIndicatorPos, nextUpdate);
+			intervalRef.current = window.setTimeout(refreshIndicatorPos, MINUTE_IN_MS);
 		};
 
 		refreshIndicatorPos();
 
 		return () => {
 			if (intervalRef.current !== null) {
+				console.log('clear interval ref');
 				clearTimeout(intervalRef.current);
 			}
 		};

@@ -19,8 +19,6 @@
 		"typescript": "^5.2.2"
 	},
 	"scripts": {
-		"build:css": "sass src/**/**.css build/stylesheets ",
-		"watch:css": "sass src/**/**.css build/stylesheets -w",
 		"startnb": "BROWSER=none react-scripts start",
 		"start:dev": "env-cmd -f .env.development npm start",
 		"start": "react-scripts start",
