@@ -35,7 +35,7 @@ export interface ContextState extends StoreState {
 	status: StoreStatus
 }
 
-export type WhereToAddItems = 'memory' | 'both' | 'storage'
+export type WhereToAddItems = 'local' | 'both' | 'cloud';
 
 export type UserActionAddPayload = {
 	addedItem: Schedule | Calendar

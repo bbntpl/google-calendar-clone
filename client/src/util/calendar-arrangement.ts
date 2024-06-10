@@ -56,10 +56,17 @@ export const dayjsObj = ({ year, month, day }: DateUnits) => {
 }
 
 export const dayjsObjByDay = ({ date, calendarUnit, index }: DayjsObjByDay) => {
-	const dateFormat = `${date?.year}-${date?.month}-${date?.day}`;
-	return calendarUnit === 'week'
-		? dayjs(dateFormat).day(index)
-		: dayjs(dateFormat).add(index, 'day');
+	const validYear = date?.year || 2000;
+	const validMonth = (date?.month ?? 0)
+	const validDay = date?.day || 1;
+
+	const dateFormat = `${validYear}-${validMonth}-${validDay}`;
+
+	if (calendarUnit === 'day') {
+		return dayjs(dateFormat).add(index, 'day');
+	} else {
+		return dayjs(dateFormat).day(index);
+	}
 }
 
 export function getMonth(month = dayjs().month()) {

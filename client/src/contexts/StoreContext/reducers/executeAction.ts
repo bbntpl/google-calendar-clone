@@ -2,8 +2,10 @@ import { UserAction } from '../index.model';
 import { Calendar, CalendarListActions } from '../types/calendar';
 import { Schedule, ScheduleActions } from '../types/schedule';
 
+import { ExecuteActionProps } from './model';
 import * as LocalStorageHelper from '../../../util/local-storage';
 import { getLocalStorageNamespace } from '..';
+
 import {
 	addDocument,
 	addMultipleDocuments,
@@ -26,13 +28,6 @@ const {
 	get,
 } = LocalStorageHelper;
 
-
-interface ExecuteActionProps<S, A> {
-	state: S[] | []
-	action: A
-	propKey: string
-}
-
 export default function executeAction<
 	State extends Schedule | Calendar,
 	Action extends CalendarListActions | ScheduleActions
@@ -49,8 +44,10 @@ export default function executeAction<
 	switch (action.type) {
 		case UserAction.ADD:
 			const { addedItem } = action.payload;
+			action.payload.whereTo = action.payload.whereTo ?? 'both';
 			const addedObject = [...state, addedItem as State];
-			if (action.payload.whereTo === 'storage' || action.payload.whereTo === 'both') {
+
+			if (action.payload.whereTo === 'cloud' || action.payload.whereTo === 'both') {
 				if (authenticatedUserId) {
 					addDocument({
 						collectionName: propKey,
@@ -65,12 +62,14 @@ export default function executeAction<
 				}
 			}
 
-			return action.payload.whereTo === 'memory' || action.payload.whereTo === 'both'
+			return action.payload.whereTo === 'local' || action.payload.whereTo === 'both'
 				? addedObject : state;
 		case UserAction.ADD_MULTIPLE:
-			const { addedItems, whereTo } = action.payload;
+			const { addedItems } = action.payload;
+			action.payload.whereTo = action.payload.whereTo ?? 'both';
 			const addedArr = [...state, ...addedItems] as State[];
-			if (whereTo === 'storage' || whereTo === 'both') {
+
+			if (action.payload.whereTo === 'cloud' || action.payload.whereTo === 'both') {
 				if (authenticatedUserId) {
 					addMultipleDocuments({
 						collectionName: propKey,
@@ -84,7 +83,7 @@ export default function executeAction<
 					);
 				}
 			}
-			return whereTo === 'memory' || whereTo === 'both'
+			return action.payload.whereTo === 'local' || action.payload.whereTo === 'both'
 				? addedArr : state;
 		case UserAction.EDIT:
 			const editedArr = [...state.map((object: State) => {

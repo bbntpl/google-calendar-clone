@@ -98,7 +98,7 @@ export default function MainContent(props: MainContentProps):
           type: UserAction.ADD_MULTIPLE,
           payload: {
             addedItems: schedules,
-            whereTo: 'memory',
+            whereTo: 'local',
           },
         });
       })

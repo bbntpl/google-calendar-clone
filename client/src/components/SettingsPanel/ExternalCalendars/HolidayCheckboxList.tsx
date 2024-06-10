@@ -76,7 +76,7 @@ export default function HolidayCheckboxList() {
                 type: UserAction.ADD,
                 payload: {
                   addedItem: convertExternalEventToSchedule(eventWithCalendarId),
-                  whereTo: 'memory',
+                  whereTo: 'local',
                 },
               })
             })
@@ -150,10 +150,6 @@ export default function HolidayCheckboxList() {
   }
 
   return <div>
-    {renderCboxList({
-      listDesc: <b>Currently added Holliday Calendars: </b>,
-      filterBySelected: true,
-    })}
     {renderCboxList({
       listDesc: <i>Check the following regional holiday events that you want to be added: </i>,
       displayAll: fullViewCheckList,

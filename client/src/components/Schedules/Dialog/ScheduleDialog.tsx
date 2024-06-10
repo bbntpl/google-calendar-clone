@@ -102,6 +102,7 @@ export default function ScheduleDialog(props: ScheduleDialogProps) {
 			payload: {
 				addedItem: selectedScheduleType === 'event'
 					? eventProps : taskProps,
+				whereTo: 'both',
 			},
 		});
 	}

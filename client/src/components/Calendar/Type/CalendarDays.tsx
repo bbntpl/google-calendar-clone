@@ -62,6 +62,7 @@ export default function CalendarDays({ numOfDays }: { numOfDays: number }) {
 									<TimeBlockCol
 										dayIndex={dayIndex}
 										dateObj={dateObj(dayIndex)}
+										numOfDays={numOfDays}
 									/>
 									<CurrentTimeIndicator
 										parentHeight={dayColumnEl.current?.clientHeight ?? 1248}

@@ -15,7 +15,8 @@ interface TimeRowProps {
 	time?: string,
 	hourIndex?: number,
 	dateValues: DateUnits
-	filteredSchedulesByTime: Schedule[] | []
+	filteredSchedulesByTime: Schedule[] | [],
+	numOfDays: number
 }
 
 type SlotAdjustmentProps = {
@@ -67,6 +68,7 @@ export default function TimeRow(props: TimeRowProps) {
 							end: (hourIndex + 1),
 						},
 					});
+
 					setIsScheduleDialogVisible(true);
 				}}
 			>

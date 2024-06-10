@@ -50,6 +50,7 @@ export default function NewCalendar(props: AddNewCalendarProps) {
 			type: UserAction.ADD,
 			payload: {
 				addedItem: { ...newCalendar, id: uniqueID() },
+				whereTo: 'both',
 			},
 		})
 	}

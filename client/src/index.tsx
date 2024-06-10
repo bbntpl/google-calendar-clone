@@ -15,15 +15,13 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-	// <React.StrictMode>
-		<FirebaseAuthProvider>
-			<AppConfigProvider>
-				<CalendarConfigProvider>
-					<StoreProvider>
-						<App />
-					</StoreProvider>,
-				</CalendarConfigProvider>
-			</AppConfigProvider>
-		</FirebaseAuthProvider>,
-	// </React.StrictMode>,
+	<FirebaseAuthProvider>
+		<AppConfigProvider>
+			<CalendarConfigProvider>
+				<StoreProvider>
+					<App />
+				</StoreProvider>,
+			</CalendarConfigProvider>
+		</AppConfigProvider>
+	</FirebaseAuthProvider>,
 );

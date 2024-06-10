@@ -1,4 +1,4 @@
-import executeAction from '.';
+import executeAction from './executeAction';
 import { getLocalStorageNamespace } from '..';
 import { Calendar, CalendarListActions } from '../types/calendar';
 

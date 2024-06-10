@@ -73,10 +73,10 @@ export default function UserAuth() {
       const errorMessage = error.message;
       const email = error && error.customData ? error.customData.email : '';
       const credential = GoogleAuthProvider.credentialFromError(error);
-      console.log('error code: ', errorCode);
-      console.log('error message: ', errorMessage);
-      console.log('email: ', email);
-      console.log('credential: ', credential);
+      console.error('error code: ', errorCode);
+      console.error('error message: ', errorMessage);
+      console.error('email: ', email);
+      console.error('credential: ', credential);
     }
   }
 

@@ -13,7 +13,8 @@ import { Schedule } from '../../../contexts/StoreContext/types/schedule';
 
 interface TimeBlockColProps {
 	dayIndex: number,
-	dateObj: Dayjs
+	dateObj: Dayjs,
+	numOfDays: number
 }
 
 const dateFormats = {
@@ -23,7 +24,7 @@ const dateFormats = {
 }
 
 export default function TimeBlockCol(props: TimeBlockColProps) {
-	const { dayIndex, dateObj } = props;
+	const { dayIndex, dateObj, numOfDays } = props;
 	const { filteredSchedules } = useStore()
 
 	const defaultDateFormat = {
@@ -78,6 +79,7 @@ export default function TimeBlockCol(props: TimeBlockColProps) {
 					hourIndex={hourIndex}
 					dayIndex={dayIndex}
 					filteredSchedulesByTime={filteredSchedulesByTime}
+					numOfDays={numOfDays}
 				/>
 			})
 		}

@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 import {
   createContext,
   useContext,
@@ -11,12 +10,10 @@ import {
 import * as StoreModel from './index.model';
 import * as GlobalContextTypes from '../index.model';
 import { Schedule } from './types/schedule';
-
 import { isInitial, isUser, useFirebaseAuth } from '../FirebaseAuthContext';
-import calendarListReducer from './reducers/calendar-reducer';
-import scheduleReducer from './reducers/schedule-reducer';
+import calendarListReducer from './reducers/calendarReducer';
+import scheduleReducer from './reducers/scheduleReducer';
 import { Calendar } from './types/calendar';
-
 import { retrieveDocs } from '../../functions/firestore/retrieve-data';
 import { get } from '../../util/local-storage';
 import { useInitializeCalendars } from './hooks/useInitializeCalendars';
@@ -27,7 +24,6 @@ const StoreDispatchContext =
   createContext<StoreModel.DispatchContextState | null>(null);
 
 const localStorageNamespace = 'gccbvrbryn445-storage';
-
 const initialStatus: StoreModel.StoreStatus = {
   isUserChanged: false, // if user context is not 'INITIAL' anymore
   isFetchedDataInitialized: false,
@@ -78,11 +74,11 @@ export default function StoreProvider({ children }:
     const calendars = get<Array<Calendar>>(`${localStorageNamespace}_calendars`) || [];
     dispatchSchedules({
       type: StoreModel.UserAction.ADD_MULTIPLE,
-      payload: { addedItems: savedSchedules, whereTo: 'storage' },
+      payload: { addedItems: savedSchedules, whereTo: 'cloud' },
     })
     dispatchCalendars({
       type: StoreModel.UserAction.ADD_MULTIPLE,
-      payload: { addedItems: calendars, whereTo: 'storage' },
+      payload: { addedItems: calendars, whereTo: 'cloud' },
     })
 
     return calendars.length > 0;
@@ -169,7 +165,8 @@ export default function StoreProvider({ children }:
       }).catch(error => {
         console.error('Error retrieving documents:', error);
       });
-    } else {
+    }
+    else {
       initializeCalendarsAndUpdateStatus(initializeLocalItems);
     }
   }, [user, status.isUserChanged]);

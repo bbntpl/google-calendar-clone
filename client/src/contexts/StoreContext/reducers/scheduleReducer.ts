@@ -1,4 +1,4 @@
-import executeAction from '.';
+import executeAction from './executeAction';
 import { Schedule, ScheduleActions } from '../types/schedule';
 
 import { getLocalStorageNamespace } from '..';

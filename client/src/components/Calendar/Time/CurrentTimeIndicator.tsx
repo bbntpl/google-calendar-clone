@@ -43,7 +43,6 @@ export function CurrentTimeIndicator({ parentHeight, date }: CurrentTimeIndicato
 
 		return () => {
 			if (intervalRef.current !== null) {
-				console.log('clear interval ref');
 				clearTimeout(intervalRef.current);
 			}
 		};
