@@ -31,7 +31,7 @@ REACT_APP_HOLIDAY_API_URL=https://your-holiday-api-url.com
 
 - `API_KEY`: Generate your API key [here](https://console.cloud.google.com/)
 - `CALENDAR_ID`: By default, the value should be always `holiday@group.v.calendar.google.com`
-- `CALENDAR_REGION (optional)`: If you're unsure about the value to initialize, use the following value: `en.usa`. To find the available options, refer to the list of supported regions in the `./server/data/google-calendar-list.txt` file.
+- `CALENDAR_REGION (optional)`: If you're unsure about the value to initialize, use the following value: `en.usa`. To find the available options, refer to the list of supported regions on this [file](./client/src/data/localized-holiday-events.txt).
 
 _For example_
 
